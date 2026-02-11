@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Luxe Living | Premium Furniture",
-  description: "Discover exquisite furniture pieces for your home. Premium quality sofas, tables, chairs, and decor.",
+  title: "Luxe Living | Premium Modular Furniture for Nepal",
+  description: "IKEA-style modular furniture for Nepal — easy assembly + online customization. Transform your space with timeless design.",
 };
 
 export default function RootLayout({
