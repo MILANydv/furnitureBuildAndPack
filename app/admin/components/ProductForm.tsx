@@ -12,9 +12,20 @@ import {
     Tag as TagIcon,
     IndianRupee,
     Info,
-    CheckCircle2
+    CheckCircle2,
+    ChevronLeft,
+    Type,
+    FileText,
+    LayoutGrid,
+    Database,
+    ImageIcon,
+    Settings2,
+    ExternalLink,
+    Trash2,
+    ChevronDown
 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils/currency';
+import { toast } from 'react-hot-toast';
 
 interface ProductFormProps {
     initialData?: any;
@@ -52,217 +63,223 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
             });
 
             if (res.ok) {
+                toast.success(initialData ? 'Product updated' : 'Product published');
                 router.push('/admin/products');
                 router.refresh();
+            } else {
+                toast.error('Submission failed');
             }
         } catch (error) {
             console.error('Submission error:', error);
+            toast.error('An error occurred');
         } finally {
             setIsLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-10 pb-24">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-stone-100">
-                <div>
-                    <h1 className="text-2xl font-black text-stone-900 uppercase tracking-tight">
-                        {initialData ? 'Edit Masterpiece' : 'Craft New Product'}
-                    </h1>
-                    <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">
-                        Defining the essence of ModuLiving
-                    </p>
+        <div className="max-w-4xl mx-auto">
+            {/* Breadcrumb Header */}
+            <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-4">
+                    <button
+                        onClick={() => router.back()}
+                        className="p-2 hover:bg-stone-100 rounded-lg transition-all text-stone-500"
+                    >
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <div>
+                        <h1 className="text-xl font-bold text-stone-900 tracking-tight">
+                            {initialData ? initialData.name : 'Release New Product'}
+                        </h1>
+                    </div>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex items-center gap-2">
                     <button
                         type="button"
                         onClick={() => router.back()}
-                        className="px-6 py-3 bg-white border border-stone-200 rounded-[10px] text-stone-600 font-bold hover:bg-stone-50 transition-all text-xs uppercase tracking-widest active:scale-95"
+                        className="px-4 py-2 text-sm font-bold text-stone-500 hover:text-stone-900 transition-all font-sans"
                     >
-                        Discard
+                        Back
                     </button>
                     <button
-                        type="submit"
+                        onClick={handleSubmit}
                         disabled={isLoading}
-                        className="px-8 py-3 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-xs uppercase tracking-widest flex items-center gap-2 shadow-2xl active:scale-95 disabled:opacity-50"
+                        className="px-6 py-2 bg-stone-900 text-white text-sm font-bold rounded-lg hover:bg-stone-800 transition-all flex items-center gap-2 disabled:opacity-50"
                     >
-                        {isLoading ? (
-                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        ) : (
-                            <Save className="w-4 h-4" />
-                        )}
-                        {initialData ? 'Update Core' : 'Publish to Store'}
+                        {isLoading && <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>}
+                        {initialData ? 'Commit changes' : 'Publish to store'}
                     </button>
                 </div>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-10">
-                {/* Left Column - Core Info */}
-                <div className="lg:col-span-2 space-y-8">
-                    <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm space-y-8">
-                        <div className="flex items-center gap-3 mb-2">
-                            <Info className="w-5 h-5 text-amber-500" />
-                            <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest">General Identity</h2>
-                        </div>
-
-                        <div className="space-y-6">
-                            <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Product Designation</label>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
+                    {/* General Identity */}
+                    <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm">
+                        <div className="p-6 border-b border-stone-100 flex items-start gap-4 hover:bg-stone-50/50 transition-colors">
+                            <Type className="w-4.5 h-4.5 text-stone-400 mt-2.5" />
+                            <div className="flex-1 space-y-1">
+                                <label className="text-[13px] font-bold text-stone-700">Display Name</label>
                                 <input
                                     type="text"
                                     required
+                                    placeholder="e.g. Scandi Minimalist Bed"
                                     value={formData.name}
                                     onChange={(e) => {
                                         const name = e.target.value;
                                         const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
                                         setFormData({ ...formData, name, slug });
                                     }}
-                                    placeholder="e.g. Sovereign Velvet Sectional"
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 transition-all outline-none font-bold text-stone-900"
+                                    className="w-full text-[13px] font-bold bg-white border border-stone-200 rounded-md px-3 py-2 focus:border-stone-900 outline-none transition-all placeholder:text-stone-200"
                                 />
                             </div>
+                        </div>
 
-                            <div className="grid sm:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Unique Slug</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={formData.slug}
-                                        onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                                        className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Category Classification</label>
+                        <div className="p-6 border-b border-stone-100 flex items-start gap-4 hover:bg-stone-50/50 transition-colors">
+                            <FileText className="w-4.5 h-4.5 text-stone-400 mt-2.5" />
+                            <div className="flex-1 space-y-1">
+                                <label className="text-[13px] font-bold text-stone-700">Detailed Description</label>
+                                <textarea
+                                    rows={5}
+                                    placeholder="The narrative of the piece..."
+                                    value={formData.description}
+                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                                    className="w-full text-[13px] font-medium bg-white border border-stone-200 rounded-md px-3 py-2 focus:border-stone-900 outline-none transition-all placeholder:text-stone-200 resize-none"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="p-6 border-b border-stone-100 flex items-start gap-4 hover:bg-stone-50/50 transition-colors">
+                            <LayoutGrid className="w-4.5 h-4.5 text-stone-400 mt-2.5" />
+                            <div className="flex-1 space-y-1">
+                                <label className="text-[13px] font-bold text-stone-700">Product Category</label>
+                                <div className="relative">
                                     <select
                                         required
                                         value={formData.categoryId}
                                         onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-                                        className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900 appearance-none"
+                                        className="w-full text-[13px] font-medium bg-white border border-stone-200 rounded-md px-3 py-2 appearance-none focus:border-stone-900 outline-none"
                                     >
-                                        <option value="">Select Segment</option>
+                                        <option value="">Choose a segment</option>
                                         {categories.map((cat) => (
                                             <option key={cat.id} value={cat.id}>{cat.name}</option>
                                         ))}
                                     </select>
+                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none" />
                                 </div>
                             </div>
-
-                            <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Narrative Description</label>
-                                <textarea
-                                    rows={6}
-                                    value={formData.description}
-                                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900 resize-none"
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm space-y-8">
-                        <div className="flex items-center gap-3 mb-2">
-                            <IndianRupee className="w-5 h-5 text-amber-500" />
-                            <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest">Financials & Inventory</h2>
                         </div>
 
-                        <div className="grid sm:grid-cols-2 gap-8">
-                            <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Base Price (NPR)</label>
-                                <input
-                                    type="number"
-                                    required
-                                    value={formData.basePrice}
-                                    onChange={(e) => setFormData({ ...formData, basePrice: parseFloat(e.target.value) })}
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-black text-stone-900"
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Current Stock Units</label>
-                                <input
-                                    type="number"
-                                    required
-                                    value={formData.stock}
-                                    onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) })}
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-black text-stone-900"
-                                />
-                            </div>
-                        </div>
-                    </section>
-                </div>
-
-                {/* Right Column - Media & Config */}
-                <div className="space-y-8">
-                    <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm space-y-8">
-                        <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-3">
-                                <Upload className="w-5 h-5 text-amber-500" />
-                                <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest">Media Asset</h2>
+                        <div className="p-6 flex items-start gap-4 hover:bg-stone-50/50 transition-colors">
+                            <Database className="w-4.5 h-4.5 text-stone-400 mt-2.5" />
+                            <div className="flex-1 grid grid-cols-2 gap-6">
+                                <div className="space-y-1">
+                                    <label className="text-[13px] font-bold text-stone-700">Base Price</label>
+                                    <div className="relative">
+                                        <input
+                                            type="number"
+                                            value={formData.basePrice}
+                                            onChange={(e) => setFormData({ ...formData, basePrice: parseFloat(e.target.value) })}
+                                            className="w-full text-[13px] font-bold bg-white border border-stone-200 rounded-md px-3 py-2 pl-10 outline-none focus:border-stone-900"
+                                        />
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-stone-400">NPR</span>
+                                    </div>
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-[13px] font-bold text-stone-700">Inventory Units</label>
+                                    <input
+                                        type="number"
+                                        value={formData.stock}
+                                        onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) })}
+                                        className="w-full text-[13px] font-bold bg-white border border-stone-200 rounded-md px-3 py-2 outline-none focus:border-stone-900"
+                                    />
+                                </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div className="space-y-6">
-                            <div className="relative aspect-square rounded-[10px] bg-stone-50 border-2 border-dashed border-stone-200 overflow-hidden flex flex-col items-center justify-center text-center p-6 group">
-                                {formData.imageUrl ? (
-                                    <>
-                                        <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
-                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <button
-                                                type="button"
-                                                onClick={() => setFormData({ ...formData, imageUrl: '' })}
-                                                className="p-4 bg-white rounded-full text-red-600 shadow-xl"
-                                            >
-                                                <X className="w-6 h-6" />
-                                            </button>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="w-16 h-16 bg-white rounded-[10px] flex items-center justify-center text-stone-300 mb-4 shadow-sm">
-                                            <Upload className="w-8 h-8" />
-                                        </div>
-                                        <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest leading-relaxed">External Asset Link Required</p>
-                                    </>
+                    {/* Media Assets */}
+                    <div className="bg-white rounded-xl border border-stone-200 overflow-hidden shadow-sm">
+                        <div className="p-6 flex items-start gap-4">
+                            <ImageIcon className="w-4.5 h-4.5 text-stone-400 mt-2.5" />
+                            <div className="flex-1 space-y-4">
+                                <div className="space-y-1">
+                                    <label className="text-[13px] font-bold text-stone-700">Primary Product Image</label>
+                                    <input
+                                        type="text"
+                                        placeholder="External asset URL link..."
+                                        value={formData.imageUrl}
+                                        onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                                        className="w-full text-[13px] font-medium bg-white border border-stone-200 rounded-md px-3 py-2 focus:border-stone-900 outline-none placeholder:text-stone-200"
+                                    />
+                                </div>
+                                {formData.imageUrl && (
+                                    <div className="aspect-square w-48 bg-stone-50 rounded-lg border border-stone-200 overflow-hidden relative group">
+                                        <img src={formData.imageUrl} className="w-full h-full object-cover" alt="Product" />
+                                        <button
+                                            onClick={() => setFormData({ ...formData, imageUrl: '' })}
+                                            className="absolute inset-0 bg-stone-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white"
+                                        >
+                                            <Trash2 className="w-6 h-6" />
+                                        </button>
+                                    </div>
                                 )}
                             </div>
-                            <input
-                                type="text"
-                                placeholder="Enter image URL..."
-                                value={formData.imageUrl}
-                                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                                className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-xs"
-                            />
                         </div>
-                    </section>
+                    </div>
+                </div>
 
-                    <section className="bg-stone-900 p-10 rounded-[10px] text-white shadow-2xl space-y-8">
-                        <div className="flex items-center gap-3">
-                            <Layers className="w-5 h-5 text-amber-500" />
-                            <h2 className="text-sm font-black uppercase tracking-widest">Configuration</h2>
-                        </div>
-
-                        <div className="flex items-center justify-between p-6 bg-white/5 rounded-[10px] border border-white/5">
-                            <div>
-                                <p className="text-xs font-black uppercase tracking-widest">Modular System</p>
-                                <p className="text-[11px] font-bold text-stone-500 mt-1">Enable multi-variant behavior?</p>
+                <div className="space-y-6">
+                    <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-6 space-y-6">
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <Settings2 className="w-4 h-4 text-stone-400" />
+                                    <span className="text-[13px] font-bold text-stone-700">Configurable</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData({ ...formData, isConfigurable: !formData.isConfigurable })}
+                                    className={`w-10 h-5.5 rounded-full relative transition-all ${formData.isConfigurable ? 'bg-stone-900' : 'bg-stone-200'}`}
+                                >
+                                    <div className={`absolute top-0.75 w-4 h-4 bg-white rounded-full transition-all ${formData.isConfigurable ? 'left-5.25' : 'left-0.75'}`}></div>
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                onClick={() => setFormData({ ...formData, isConfigurable: !formData.isConfigurable })}
-                                className={`w-14 h-8 rounded-full transition-all relative ${formData.isConfigurable ? 'bg-amber-500' : 'bg-stone-700'}`}
-                            >
-                                <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-all ${formData.isConfigurable ? 'left-7' : 'left-1'}`}></div>
-                            </button>
                         </div>
 
-                        <div className="bg-white/5 p-6 rounded-[10px] border border-dashed border-white/10 text-center">
-                            <CheckCircle2 className="w-8 h-8 text-white/20 mx-auto mb-4" />
-                            <p className="text-[11px] font-bold text-stone-500 leading-relaxed uppercase tracking-widest">Advanced variants (colors, materials) can be managed after publication</p>
+                        <div className="pt-6 border-t border-stone-100 space-y-2">
+                            <div className="space-y-1 px-3">
+                                <label className="text-[10px] uppercase font-bold text-stone-400 tracking-widest">URL Slug</label>
+                                <p className="text-[12px] font-mono font-medium text-stone-500 break-all">/product/{formData.slug || '...'}</p>
+                            </div>
+                            <div className="pt-4 space-y-2">
+                                <button type="button" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-bold text-stone-500 hover:bg-stone-50 transition-all text-left">
+                                    <ExternalLink className="w-4 h-4" />
+                                    Preview live page
+                                </button>
+                                <button type="button" className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-bold text-red-500 hover:bg-red-50 transition-all text-left">
+                                    <Trash2 className="w-4 h-4" />
+                                    Archive product
+                                </button>
+                            </div>
                         </div>
-                    </section>
+                    </div>
+
+                    <div className="p-5 bg-stone-900 rounded-xl text-white shadow-xl relative overflow-hidden">
+                        <div className="relative z-10">
+                            <h4 className="text-[11px] font-bold uppercase tracking-widest text-white/50 mb-3">Modular Logic</h4>
+                            <p className="text-[13px] font-medium text-white/80 leading-relaxed">
+                                {formData.isConfigurable
+                                    ? "This product is set as a masterpiece. Customers will be able to select custom materials and dimensions."
+                                    : "This is a standalone SKU. Inventory will be tracked as a single unit without variations."
+                                }
+                            </p>
+                        </div>
+                        <Box className="absolute -right-6 -bottom-6 w-32 h-32 text-white/5 rotate-12" />
+                    </div>
                 </div>
             </div>
-        </form>
+        </div>
     );
 }

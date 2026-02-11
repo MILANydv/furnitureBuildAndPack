@@ -16,7 +16,9 @@ import {
   Store,
   Bell,
   Search,
-  Plus
+  Plus,
+  HelpCircle,
+  ExternalLink
 } from 'lucide-react';
 import { SessionProvider, signOut, useSession } from 'next-auth/react';
 
@@ -39,120 +41,87 @@ export default function AdminLayout({
 
   return (
     <SessionProvider>
-      <div className="min-h-screen bg-[#F8F9FA] flex font-sans">
-        {/* Sidebar */}
-        <aside className="w-[280px] bg-[#1A1C1E] text-stone-400 fixed inset-y-0 left-0 z-50 hidden lg:flex flex-col border-r border-white/5 shadow-2xl">
-          <div className="p-8">
-            <Link href="/admin/dashboard" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-amber-500 rounded-[10px] flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-amber-500/30 ring-2 ring-white/10">
+      <div className="min-h-screen bg-[#F5F5F5] flex font-sans text-stone-900">
+        {/* Sleek Compact Sidebar */}
+        <aside className="w-[240px] bg-white fixed inset-y-0 left-0 z-50 hidden lg:flex flex-col border-r border-stone-200">
+          <div className="p-6 flex items-center justify-between">
+            <Link href="/admin/dashboard" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 bg-stone-900 rounded-lg flex items-center justify-center text-white text-sm font-black">
                 M
               </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-black text-white tracking-tight leading-none">
-                  MODU<span className="text-amber-500">LIVING</span>
-                </span>
-                <span className="text-[11px] uppercase tracking-[0.2em] font-extrabold text-stone-500 mt-1">Management</span>
-              </div>
+              <span className="text-sm font-black tracking-tight uppercase">ModuLiving</span>
             </Link>
           </div>
 
-          <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto custom-scrollbar">
-            <div className="mb-8">
-              <p className="px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4">Core Management</p>
-              {navItems.slice(0, 4).map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center justify-between px-5 py-3 rounded-[10px] transition-all group ${isActive
-                      ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-lg shadow-amber-500/5'
-                      : 'hover:bg-white/5 hover:text-white border border-transparent'
-                      }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-amber-500' : 'group-hover:text-white'}`} />
-                      <span className="font-bold tracking-tight text-sm">{item.label}</span>
-                    </div>
-                    {isActive && <div className="w-1.5 h-1.5 bg-amber-500 rounded-full shadow-lg shadow-amber-500/50"></div>}
-                  </Link>
-                );
-              })}
-            </div>
+          <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto custom-scrollbar">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all group ${isActive
+                    ? 'bg-stone-100 text-stone-900'
+                    : 'text-stone-500 hover:bg-stone-50 hover:text-stone-900'
+                    }`}
+                >
+                  <item.icon className={`w-4 h-4 transition-colors ${isActive ? 'text-stone-900' : 'text-stone-400 group-hover:text-stone-900'}`} />
+                  <span className="font-bold text-[13px]">{item.label}</span>
+                </Link>
+              );
+            })}
 
-            <div className="mb-8">
-              <p className="px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4">Marketing & Visuals</p>
-              {navItems.slice(4).map((item) => {
-                const isActive = pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`flex items-center justify-between px-5 py-3 rounded-[10px] transition-all group ${isActive
-                      ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
-                      : 'hover:bg-white/5 hover:text-white border border-transparent'
-                      }`}
-                  >
-                    <div className="flex items-center gap-4">
-                      <item.icon className={`w-5 h-5 transition-colors ${isActive ? 'text-amber-500' : 'group-hover:text-white'}`} />
-                      <span className="font-bold tracking-tight text-sm">{item.label}</span>
-                    </div>
-                  </Link>
-                );
-              })}
+            <div className="pt-6 pb-2">
+              <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-2">Support</p>
+              <Link
+                href="/"
+                target="_blank"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-900 transition-all"
+              >
+                <ExternalLink className="w-4 h-4 text-stone-400" />
+                <span className="font-bold text-[13px]">Live Store</span>
+              </Link>
+              <button
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-stone-500 hover:bg-stone-50 hover:text-stone-900 transition-all text-left"
+              >
+                <HelpCircle className="w-4 h-4 text-stone-400" />
+                <span className="font-bold text-[13px]">Help Center</span>
+              </button>
             </div>
           </nav>
 
-          <div className="p-6 space-y-3 bg-black/20 m-4 rounded-[10px] border border-white/5">
-            <Link
-              href="/"
-              className="flex items-center gap-4 px-5 py-3 text-stone-400 hover:text-white hover:bg-white/5 rounded-[10px] transition-all font-bold text-sm"
-            >
-              <Store className="w-4.5 h-4.5" />
-              Visit Store
-            </Link>
-            <button
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className="w-full flex items-center gap-4 px-5 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-[10px] transition-all font-bold text-sm"
-            >
-              <LogOut className="w-4.5 h-4.5" />
-              Logout
-            </button>
+          <div className="p-4 border-t border-stone-100">
+            <AdminUserInfo />
           </div>
         </aside>
 
-        {/* Main Content Area */}
-        <div className="flex-1 lg:ml-[280px] flex flex-col min-h-screen">
-          {/* Top Header */}
-          <header className="h-24 bg-white/70 backdrop-blur-xl border-b border-stone-200 sticky top-0 z-40 px-10 flex items-center justify-between">
-            <div className="flex items-center gap-10">
-              <div className="relative group hidden xl:block">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-stone-400 group-focus-within:text-amber-500 transition-colors" />
-                <input
-                  type="text"
-                  placeholder="Search dashboard..."
-                  className="bg-stone-50 border border-stone-200 rounded-[10px] pl-12 pr-6 py-2.5 w-80 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-amber-500/5 focus:border-amber-500 transition-all"
-                />
-              </div>
-              <div className="text-xs font-bold text-stone-400 uppercase tracking-widest hidden sm:block">
-                Internal System / <span className="text-stone-900">{pathname.split('/').pop()}</span>
+        {/* Main Workspace Area */}
+        <div className="flex-1 lg:ml-[240px] flex flex-col min-h-screen">
+          {/* Minimal Header */}
+          <header className="h-14 bg-white/80 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40 px-8 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">
+                System / <span className="text-stone-900">{pathname.split('/').filter(Boolean).slice(-1)[0] || 'Dashboard'}</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-8">
-              <button className="relative p-3 bg-stone-50 rounded-[10px] border border-stone-200 text-stone-400 hover:text-amber-500 hover:border-amber-500/20 transition-all group">
-                <Bell className="w-5 h-5" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full ring-2 ring-white"></span>
+            <div className="flex items-center gap-4">
+              <button className="p-2 text-stone-400 hover:text-stone-900 transition-all">
+                <Bell className="w-4.5 h-4.5" />
               </button>
-
-              <div className="h-10 w-px bg-stone-200"></div>
-
-              <AdminUserInfo />
+              <div className="h-4 w-px bg-stone-200"></div>
+              <button
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className="p-2 text-stone-400 hover:text-red-500 transition-all"
+                title="Sign Out"
+              >
+                <LogOut className="w-4.5 h-4.5" />
+              </button>
             </div>
           </header>
 
-          {/* Content */}
-          <main className="p-10 max-w-[1600px] mx-auto w-full">
+          {/* Compact Viewport */}
+          <main className="p-8 max-w-5xl mx-auto w-full">
             {children}
           </main>
         </div>
@@ -165,11 +134,11 @@ export default function AdminLayout({
           background: transparent;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.05);
+          background: rgba(0, 0, 0, 0.05);
           border-radius: 10px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(0, 0, 0, 0.1);
         }
       `}</style>
     </SessionProvider>
@@ -180,13 +149,13 @@ function AdminUserInfo() {
   const { data: session } = useSession();
 
   return (
-    <div className="flex items-center gap-4">
-      <div className="flex flex-col items-end">
-        <span className="text-sm font-black text-stone-900 uppercase tracking-tight">{session?.user?.name || 'Admin'}</span>
-        <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Management Space</span>
+    <div className="flex items-center gap-3 p-1">
+      <div className="w-8 h-8 bg-stone-100 rounded-lg border border-stone-200 flex items-center justify-center text-stone-900 font-black text-xs">
+        {session?.user?.name?.charAt(0) || 'A'}
       </div>
-      <div className="w-12 h-12 bg-amber-100 rounded-[10px] border border-amber-500/20 overflow-hidden flex items-center justify-center text-amber-600 font-black shadow-lg shadow-amber-500/5 overflow-hidden">
-        {session?.user?.name?.charAt(0) || <Users className="w-6 h-6" />}
+      <div className="flex flex-col flex-1 min-w-0">
+        <span className="text-xs font-bold text-stone-900 truncate">{session?.user?.name || 'Administrator'}</span>
+        <span className="text-[10px] text-stone-400 truncate tracking-tight">{session?.user?.email || 'admin@moduliving.com'}</span>
       </div>
     </div>
   )

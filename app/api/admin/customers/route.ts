@@ -30,6 +30,7 @@ export async function GET() {
             id: customer.id,
             name: customer.name,
             email: customer.email,
+            isBlocked: customer.isBlocked,
             orderCount: customer._count.orders,
             createdAt: customer.createdAt.toISOString(),
         }));
