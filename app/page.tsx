@@ -1,49 +1,523 @@
+"use client";
+
+import { useState } from "react";
+import { ShoppingBag, Menu, X, Star, ArrowRight, Truck, Shield, Clock, Heart } from "lucide-react";
+
+const products = [
+  {
+    id: 1,
+    name: "Velvet Lounge Sofa",
+    price: 1299,
+    rating: 4.8,
+    reviews: 124,
+    category: "Living Room",
+    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500&h=500&fit=crop",
+    badge: "Best Seller"
+  },
+  {
+    id: 2,
+    name: "Oak Dining Table",
+    price: 899,
+    rating: 4.9,
+    reviews: 89,
+    category: "Dining",
+    image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=500&h=500&fit=crop",
+    badge: "New"
+  },
+  {
+    id: 3,
+    name: "Minimalist Bed Frame",
+    price: 749,
+    rating: 4.7,
+    reviews: 156,
+    category: "Bedroom",
+    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=500&h=500&fit=crop",
+    badge: null
+  },
+  {
+    id: 4,
+    name: "Ergonomic Office Chair",
+    price: 449,
+    rating: 4.6,
+    reviews: 203,
+    category: "Office",
+    image: "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?w=500&h=500&fit=crop",
+    badge: "Sale"
+  },
+  {
+    id: 5,
+    name: "Ceramic Table Lamp",
+    price: 129,
+    rating: 4.5,
+    reviews: 78,
+    category: "Lighting",
+    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&h=500&fit=crop",
+    badge: null
+  },
+  {
+    id: 6,
+    name: "Bookshelf Unit",
+    price: 349,
+    rating: 4.8,
+    reviews: 92,
+    category: "Storage",
+    image: "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=500&h=500&fit=crop",
+    badge: "Popular"
+  },
+  {
+    id: 7,
+    name: "Accent Armchair",
+    price: 599,
+    rating: 4.7,
+    reviews: 67,
+    category: "Living Room",
+    image: "https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=500&h=500&fit=crop",
+    badge: null
+  },
+  {
+    id: 8,
+    name: "Coffee Table",
+    price: 399,
+    rating: 4.6,
+    reviews: 145,
+    category: "Living Room",
+    image: "https://images.unsplash.com/photo-1532372320572-cda25653a26d?w=500&h=500&fit=crop",
+    badge: null
+  }
+];
+
+const categories = [
+  { name: "Living Room", image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=400&fit=crop" },
+  { name: "Bedroom", image: "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&h=400&fit=crop" },
+  { name: "Dining", image: "https://images.unsplash.com/photo-1617806118233-18e1de247200?w=400&h=400&fit=crop" },
+  { name: "Office", image: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=400&h=400&fit=crop" }
+];
+
+const testimonials = [
+  {
+    name: "Sarah Mitchell",
+    role: "Interior Designer",
+    content: "The quality of furniture from Luxe Living is exceptional. My clients are always impressed with the craftsmanship.",
+    avatar: "SM"
+  },
+  {
+    name: "James Chen",
+    role: "Homeowner",
+    content: "Outstanding service and beautiful pieces. The sofa I ordered transformed my living room completely.",
+    avatar: "JC"
+  },
+  {
+    name: "Emma Williams",
+    role: "Architect",
+    content: "I recommend Luxe Living to all my clients. Their attention to detail and modern designs are unmatched.",
+    avatar: "EW"
+  }
+];
+
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+  const [wishlist, setWishlist] = useState<number[]>([]);
+
+  const addToCart = () => {
+    setCartCount(prev => prev + 1);
+  };
+
+  const toggleWishlist = (id: number) => {
+    setWishlist(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-center gap-8 py-32 px-16 bg-white dark:bg-black">
-        <svg
-          viewBox="0 0 69 26"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="fill-black dark:fill-white"
-        >
-          <path d="M13.7917 24.3604C12.4622 25.3549 10.7895 25.8884 8.82032 25.8884C6.66971 25.8884 4.87412 25.3543 3.47587 24.3604H13.7917Z"></path>
-          <path d="M27.8204 24.3604C26.802 25.2894 25.534 25.8884 24.1756 25.8884C22.4188 25.8884 21.02 25.339 20.108 24.3604H27.8204Z"></path>
-          <path d="M44.5726 24.3604C43.0194 25.3511 41.0762 25.8884 38.8367 25.8884C36.5972 25.8884 34.6541 25.3511 33.1008 24.3604H44.5726Z"></path>
-          <path d="M6.10452 21.7838C6.64469 22.5408 7.32257 23.0964 8.12748 23.4234H2.40008C1.94592 22.9414 1.55318 22.3936 1.22435 21.7838H6.10452Z"></path>
-          <path d="M15.9753 21.7838C15.6457 22.3936 15.2602 22.9415 14.8213 23.4234H11.8608C12.7015 23.0973 13.4264 22.543 14.0227 21.7838H15.9753Z"></path>
-          <path d="M23.2016 21.7838C23.3205 22.5267 23.6272 23.0906 24.0875 23.4234H19.4507C19.2008 22.9377 19.0348 22.3887 18.9611 21.7838H23.2016Z"></path>
-          <path d="M29.6415 21.7838C29.3929 22.3649 29.0672 22.9198 28.6798 23.4234H26.2913C26.809 23.0921 27.2884 22.5303 27.6965 21.7838H29.6415Z"></path>
-          <path d="M34.7756 21.7838C35.1876 22.498 35.7076 23.0447 36.3327 23.4234H31.8901C31.3725 22.9406 30.9182 22.3925 30.5327 21.7838H34.7756Z"></path>
-          <path d="M47.1403 21.7838C46.7548 22.3925 46.3005 22.9406 45.7829 23.4234H41.3477C41.9765 23.0447 42.5011 22.4979 42.9178 21.7838H47.1403Z"></path>
-          <path d="M4.97293 19.2072C5.1237 19.8073 5.31836 20.3552 5.55486 20.8468H0.788749C0.585257 20.3346 0.420002 19.7875 0.293988 19.2072H4.97293Z"></path>
-          <path d="M16.9458 19.2072C16.8042 19.7876 16.6278 20.3347 16.4179 20.8468H14.6376C14.9063 20.3562 15.1356 19.8083 15.3244 19.2072H16.9458Z"></path>
-          <path d="M23.146 20.8468H18.9172V19.2072H23.146V20.8468Z"></path>
-          <path d="M33.879 19.2072C33.9937 19.8097 34.1454 20.3562 34.3337 20.8468H30.0171C30.0067 20.8251 29.9961 20.8035 29.9859 20.7817C29.9802 20.8034 29.9741 20.8251 29.9682 20.8468H28.1326C28.3289 20.3505 28.4984 19.8012 28.6354 19.2072H33.879Z"></path>
-          <path d="M48.2582 19.2072C48.1017 19.7867 47.8998 20.3339 47.6561 20.8468H43.3651C43.5558 20.3562 43.71 19.8097 43.8264 19.2072H48.2582Z"></path>
-          <path d="M4.61127 16.6306C4.63883 17.207 4.69545 17.7543 4.78 18.2703H0.128844C0.056725 17.7466 0.0134713 17.1997 0 16.6306H4.61127Z"></path>
-          <path d="M17.2781 17.2464C17.2423 17.5969 17.1958 17.9383 17.1392 18.2703H15.5758C15.6704 17.8506 15.7479 17.4096 15.8073 16.9484L17.2781 17.2464Z"></path>
-          <path d="M23.146 18.2703H18.9172V16.6306H23.146V18.2703Z"></path>
-          <path d="M33.6225 16.6306C33.6374 17.2111 33.6755 17.7576 33.7361 18.2703H28.8183C28.902 17.7493 28.9618 17.2012 28.9946 16.6306H33.6225Z"></path>
-          <path d="M48.643 16.6306C48.6191 17.199 48.5595 17.7459 48.4664 18.2703H43.9719C44.0335 17.7576 44.072 17.211 44.0873 16.6306H48.643Z"></path>
-          <path d="M23.146 6.89115H28.9193V8.56739H23.146V15.6937H18.9172V8.56739H15.8592L16.4324 14.49L14.9983 14.6762C14.0055 9.75933 13.1963 8.00865 9.8132 7.85966C6.45181 7.85968 4.61542 10.5441 4.592 15.6937H0.00268892C0.175472 9.48821 3.32011 6.14613 8.93079 6.14613C9.77653 6.14614 10.7326 6.25781 11.8725 6.51853C13.152 6.78855 14.2702 6.89115 15.697 6.89115C19.7286 6.89112 21.3074 4.20914 22.0796 0H23.146V6.89115Z"></path>
-          <path d="M38.8367 6.14613C44.6383 6.14616 48.4971 9.86614 48.6497 15.6937H44.092C44.0101 10.6034 42.1785 7.97132 38.8367 7.97128C35.5308 7.97128 33.6998 10.6034 33.618 15.6937H29.0235C29.1761 9.86611 33.0351 6.14613 38.8367 6.14613Z"></path>
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M58.5142 19.14C59.5559 19.14 60.9024 19.5091 60.9532 22.5701H58.3236C57.7138 22.5701 57.3201 22.734 57.3709 23.3763C57.5233 25.2074 57.9934 25.385 58.6413 25.385C59.3145 25.385 59.937 25.18 60.2545 23.9229C60.28 23.8546 60.4706 23.8545 60.5468 23.8545C60.6103 23.8545 60.8389 23.8546 60.8135 23.9229C60.4197 25.6993 59.6702 26 58.6413 26C57.5996 26 55.9862 25.631 55.9862 22.5701C55.9862 19.4954 57.536 19.14 58.5142 19.14ZM58.5142 19.5773C57.9044 19.5773 57.4217 19.9736 57.3455 22.0917H59.5813C59.5051 19.9737 59.1367 19.5773 58.5142 19.5773Z"
-          ></path>
-          <path d="M63.258 19.2631C63.3215 19.2631 63.3342 19.4543 63.3342 19.509C63.3342 19.55 63.3216 19.7276 63.258 19.7276C62.6737 19.7276 62.7118 20.083 62.8262 20.5066C62.9913 21.1899 63.5121 22.9663 63.6137 23.4309C63.6391 23.5676 63.7662 23.5539 63.817 23.4309L65.0238 20.1786C65.0365 20.124 65.1763 20.124 65.2525 20.124C65.3287 20.124 65.4685 20.124 65.4939 20.1786L66.6625 23.4309C66.7006 23.5539 66.8404 23.5539 66.8658 23.4309L67.6661 20.5203C67.7931 20.083 67.8186 19.7276 67.2342 19.7276C67.1834 19.7276 67.1707 19.5773 67.1707 19.509C67.1707 19.427 67.1834 19.2631 67.2342 19.2631H68.9238C68.9746 19.2631 69 19.427 69 19.509C69 19.5773 68.9746 19.7276 68.9238 19.7276C68.3903 19.7276 68.2378 20.1239 68.1235 20.5339C67.9965 20.9438 66.5613 25.8484 66.5482 25.9043C66.5228 25.959 66.4339 25.959 66.3704 25.959C66.3069 25.959 66.2179 25.9317 66.2052 25.9043C66.1036 25.426 65.0619 22.6247 64.9222 22.1054C64.9095 21.9824 64.7443 21.9824 64.7062 22.1191C64.6554 22.2286 63.3347 25.8485 63.3216 25.9043C63.3089 25.959 63.2326 25.959 63.1564 25.959C63.0802 25.959 63.004 25.959 62.9786 25.9043L61.4033 20.5339C61.2763 20.0693 61.1111 19.7276 60.5649 19.7276C60.5268 19.7276 60.5014 19.591 60.5014 19.509C60.5014 19.4133 60.5268 19.2631 60.5649 19.2631H63.258Z"></path>
-          <path d="M53.2441 19.1264C54.0064 19.1264 55.2766 19.3724 55.2766 21.2718V24.5105C55.2766 24.9204 55.3275 25.3167 55.8991 25.3167C55.9499 25.3167 55.9627 25.4807 55.9627 25.549C55.9627 25.631 55.9499 25.795 55.8991 25.795H53.2823C53.2441 25.795 53.2187 25.6584 53.2187 25.5627C53.2187 25.4671 53.2314 25.3167 53.2823 25.3167C53.8666 25.3167 53.892 24.9204 53.892 24.5105V21.5178C53.892 19.9053 53.4347 19.8507 53.0536 19.8507C52.4184 19.8507 52.2024 20.3699 52.0119 20.7525V24.5105C52.0119 24.9341 52.0627 25.3167 52.6598 25.3167C52.7106 25.3167 52.7233 25.508 52.7233 25.549C52.7233 25.6037 52.6979 25.795 52.6598 25.795H49.8777C49.8269 25.795 49.8015 25.6583 49.8015 25.549C49.8015 25.4671 49.8269 25.3168 49.8777 25.3167C50.6526 25.3167 50.7034 24.9068 50.7034 24.5105V20.5476C50.7034 20.0693 50.5764 19.7413 49.8777 19.7413C49.8269 19.7413 49.8015 19.6047 49.8015 19.4954C49.8015 19.3861 49.8269 19.2631 49.8777 19.2631H51.6308C51.8213 19.2631 51.9611 19.3314 51.9992 19.673C52.0119 19.7687 52.0754 19.796 52.1389 19.7276C52.3422 19.4817 52.6598 19.1264 53.2441 19.1264Z"></path>
-          <path d="M48.0394 25.9621H46.8V24.629H48.0394V25.9621Z"></path>
-        </svg>
-        <div className="flex flex-col items-center text-center">
-          <h1 className="max-w-xs text-2xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            Ready for your first task
-          </h1>
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-stone-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <span className="text-2xl font-bold text-stone-900 tracking-tight">Luxe<span className="text-amber-600">Living</span></span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#products" className="text-stone-600 hover:text-stone-900 transition-colors">Products</a>
+              <a href="#categories" className="text-stone-600 hover:text-stone-900 transition-colors">Categories</a>
+              <a href="#about" className="text-stone-600 hover:text-stone-900 transition-colors">About</a>
+              <a href="#contact" className="text-stone-600 hover:text-stone-900 transition-colors">Contact</a>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center space-x-4">
+              <button className="relative p-2 text-stone-600 hover:text-stone-900 transition-colors">
+                <ShoppingBag className="w-6 h-6" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-amber-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
+              <button 
+                className="md:hidden p-2 text-stone-600"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
         </div>
-      </main>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-white border-t border-stone-100">
+            <div className="px-4 py-4 space-y-3">
+              <a href="#products" className="block text-stone-600 hover:text-stone-900 py-2">Products</a>
+              <a href="#categories" className="block text-stone-600 hover:text-stone-900 py-2">Categories</a>
+              <a href="#about" className="block text-stone-600 hover:text-stone-900 py-2">About</a>
+              <a href="#contact" className="block text-stone-600 hover:text-stone-900 py-2">Contact</a>
+            </div>
+          </div>
+        )}
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative bg-stone-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-8 items-center min-h-[600px]">
+            <div className="px-4 sm:px-6 lg:px-8 py-16 lg:py-0">
+              <span className="inline-block px-4 py-1.5 bg-amber-100 text-amber-800 text-sm font-medium rounded-full mb-6">
+                New Collection 2025
+              </span>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight mb-6">
+                Transform Your Space With <span className="text-amber-600">Timeless</span> Design
+              </h1>
+              <p className="text-lg text-stone-600 mb-8 max-w-lg">
+                Discover curated furniture pieces that blend comfort, style, and quality craftsmanship for your dream home.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a 
+                  href="#products" 
+                  className="inline-flex items-center px-6 py-3 bg-stone-900 text-white font-medium rounded-lg hover:bg-stone-800 transition-colors"
+                >
+                  Shop Collection
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </a>
+                <a 
+                  href="#categories" 
+                  className="inline-flex items-center px-6 py-3 border-2 border-stone-900 text-stone-900 font-medium rounded-lg hover:bg-stone-900 hover:text-white transition-colors"
+                >
+                  Explore Categories
+                </a>
+              </div>
+              <div className="flex items-center gap-8 mt-12 pt-8 border-t border-stone-200">
+                <div>
+                  <p className="text-3xl font-bold text-stone-900">15K+</p>
+                  <p className="text-sm text-stone-600">Happy Customers</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-stone-900">500+</p>
+                  <p className="text-sm text-stone-600">Furniture Pieces</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-stone-900">4.9</p>
+                  <p className="text-sm text-stone-600">Average Rating</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative h-[400px] lg:h-[600px]">
+              <img 
+                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&h=1000&fit=crop" 
+                alt="Modern living room"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-stone-50/20 to-transparent lg:hidden" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="py-12 bg-white border-b border-stone-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-amber-50 rounded-lg">
+                <Truck className="w-6 h-6 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-stone-900">Free Shipping</h3>
+                <p className="text-sm text-stone-600">On orders over $500</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-amber-50 rounded-lg">
+                <Shield className="w-6 h-6 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-stone-900">5-Year Warranty</h3>
+                <p className="text-sm text-stone-600">Quality guaranteed</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-amber-50 rounded-lg">
+                <Clock className="w-6 h-6 text-amber-600" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-stone-900">24/7 Support</h3>
+                <p className="text-sm text-stone-600">Always here to help</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories */}
+      <section id="categories" className="py-20 bg-stone-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-stone-900 mb-4">Shop by Category</h2>
+            <p className="text-stone-600 max-w-2xl mx-auto">Explore our curated collections designed for every room in your home</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {categories.map((category) => (
+              <a 
+                key={category.name}
+                href="#products"
+                className="group relative overflow-hidden rounded-2xl aspect-square"
+              >
+                <img 
+                  src={category.image} 
+                  alt={category.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-xl font-semibold text-white">{category.name}</h3>
+                  <p className="text-white/80 text-sm mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Shop Now →</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Products */}
+      <section id="products" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-12">
+            <div>
+              <h2 className="text-3xl font-bold text-stone-900 mb-2">Featured Products</h2>
+              <p className="text-stone-600">Handpicked favorites from our collection</p>
+            </div>
+            <a href="#products" className="mt-4 sm:mt-0 inline-flex items-center text-amber-600 font-medium hover:text-amber-700">
+              View All Products
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </a>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <div key={product.id} className="group">
+                <div className="relative aspect-square rounded-xl overflow-hidden bg-stone-100 mb-4">
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  {product.badge && (
+                    <span className={`absolute top-3 left-3 px-3 py-1 text-xs font-semibold rounded-full ${
+                      product.badge === "Sale" ? "bg-red-500 text-white" :
+                      product.badge === "New" ? "bg-green-500 text-white" :
+                      "bg-amber-500 text-white"
+                    }`}>
+                      {product.badge}
+                    </span>
+                  )}
+                  <button 
+                    onClick={() => toggleWishlist(product.id)}
+                    className="absolute top-3 right-3 p-2 bg-white/90 rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white"
+                  >
+                    <Heart className={`w-5 h-5 ${wishlist.includes(product.id) ? "fill-red-500 text-red-500" : "text-stone-600"}`} />
+                  </button>
+                  <button 
+                    onClick={addToCart}
+                    className="absolute bottom-0 left-0 right-0 py-3 bg-stone-900 text-white font-medium opacity-0 group-hover:opacity-100 transition-opacity translate-y-full group-hover:translate-y-0"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+                <div>
+                  <p className="text-sm text-stone-500 mb-1">{product.category}</p>
+                  <h3 className="font-semibold text-stone-900 mb-1">{product.name}</h3>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex items-center">
+                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <span className="text-sm text-stone-600 ml-1">{product.rating}</span>
+                    </div>
+                    <span className="text-sm text-stone-400">({product.reviews} reviews)</span>
+                  </div>
+                  <p className="text-lg font-bold text-stone-900">${product.price}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 bg-stone-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-amber-400 font-medium">About Luxe Living</span>
+              <h2 className="text-3xl sm:text-4xl font-bold mt-4 mb-6">Crafting Spaces That Inspire</h2>
+              <p className="text-stone-300 text-lg mb-6">
+                For over a decade, Luxe Living has been at the forefront of modern furniture design. We believe that every piece of furniture should tell a story and transform your house into a home.
+              </p>
+              <p className="text-stone-300 mb-8">
+                Our commitment to sustainability means we source materials responsibly and craft each piece with care, ensuring beauty that lasts generations.
+              </p>
+              <div className="grid grid-cols-3 gap-8">
+                <div>
+                  <p className="text-3xl font-bold text-amber-400">10+</p>
+                  <p className="text-sm text-stone-400 mt-1">Years Experience</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-amber-400">50+</p>
+                  <p className="text-sm text-stone-400 mt-1">Expert Artisans</p>
+                </div>
+                <div>
+                  <p className="text-3xl font-bold text-amber-400">100%</p>
+                  <p className="text-sm text-stone-400 mt-1">Sustainable</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <img 
+                src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=700&h=500&fit=crop" 
+                alt="Furniture craftsmanship"
+                className="rounded-2xl"
+              />
+              <div className="absolute -bottom-6 -left-6 bg-amber-600 p-6 rounded-xl">
+                <p className="text-3xl font-bold">10K+</p>
+                <p className="text-sm">Homes Furnished</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 bg-stone-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-stone-900 mb-4">What Our Customers Say</h2>
+            <p className="text-stone-600">Trusted by homeowners and designers alike</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white p-6 rounded-2xl shadow-sm">
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-stone-600 mb-6">&ldquo;{testimonial.content}&rdquo;</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-stone-900 text-white rounded-full flex items-center justify-center font-medium">
+                    {testimonial.avatar}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-stone-900">{testimonial.name}</p>
+                    <p className="text-sm text-stone-500">{testimonial.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-20 bg-amber-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-stone-900 mb-4">Join Our Community</h2>
+          <p className="text-stone-600 mb-8">Subscribe to receive exclusive offers, design tips, and new arrival updates.</p>
+          <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+            <input 
+              type="email" 
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-3 rounded-lg border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500"
+            />
+            <button 
+              type="submit"
+              className="px-6 py-3 bg-stone-900 text-white font-medium rounded-lg hover:bg-stone-800 transition-colors"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer id="contact" className="bg-stone-900 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <div>
+              <span className="text-2xl font-bold tracking-tight">Luxe<span className="text-amber-600">Living</span></span>
+              <p className="text-stone-400 mt-4">Transforming houses into homes with premium furniture since 2015.</p>
+              <div className="flex gap-4 mt-6">
+                <a href="#" className="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center hover:bg-amber-600 transition-colors">
+                  <span className="sr-only">Facebook</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center hover:bg-amber-600 transition-colors">
+                  <span className="sr-only">Instagram</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z"/></svg>
+                </a>
+                <a href="#" className="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center hover:bg-amber-600 transition-colors">
+                  <span className="sr-only">Twitter</span>
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+                </a>
+              </div>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-stone-400">
+                <li><a href="#products" className="hover:text-white transition-colors">Products</a></li>
+                <li><a href="#categories" className="hover:text-white transition-colors">Categories</a></li>
+                <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Customer Service</h4>
+              <ul className="space-y-2 text-stone-400">
+                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Shipping Info</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Returns</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Track Order</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Contact Us</h4>
+              <ul className="space-y-2 text-stone-400">
+                <li>123 Design Street</li>
+                <li>New York, NY 10001</li>
+                <li>hello@luxeliving.com</li>
+                <li>+1 (555) 123-4567</li>
+              </ul>
+            </div>
+          </div>
+          <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-stone-400 text-sm">© 2025 Luxe Living. All rights reserved.</p>
+            <div className="flex gap-6 text-sm text-stone-400">
+              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
