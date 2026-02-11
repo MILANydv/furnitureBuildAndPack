@@ -48,8 +48,8 @@ export function BannerForm({ initialData }: { initialData?: any }) {
             <div className="flex items-center justify-between pb-8 border-b border-stone-100">
                 <h1 className="text-3xl font-black uppercase tracking-tight">{initialData ? 'Update Campaign' : 'New Campaign'}</h1>
                 <div className="flex gap-4">
-                    <button type="button" onClick={() => router.back()} className="px-6 py-3 bg-white border border-stone-200 rounded-2xl text-stone-600 font-bold hover:bg-stone-50 transition-all text-xs uppercase tracking-widest leading-none">Discard</button>
-                    <button type="submit" disabled={isLoading} className="px-8 py-3 bg-stone-900 text-white font-black rounded-2xl hover:bg-stone-800 transition-all text-xs uppercase tracking-widest leading-none flex items-center gap-2 shadow-2xl disabled:opacity-50">
+                    <button type="button" onClick={() => router.back()} className="px-6 py-3 bg-white border border-stone-200 rounded-[10px] text-stone-600 font-bold hover:bg-stone-50 transition-all text-xs uppercase tracking-widest leading-none">Discard</button>
+                    <button type="submit" disabled={isLoading} className="px-8 py-3 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-xs uppercase tracking-widest leading-none flex items-center gap-2 shadow-2xl disabled:opacity-50">
                         {isLoading && <div className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>}
                         <Save className="w-4 h-4" />
                         Save Banner
@@ -59,13 +59,13 @@ export function BannerForm({ initialData }: { initialData?: any }) {
 
             <div className="grid md:grid-cols-2 gap-10">
                 <div className="space-y-8">
-                    <section className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm space-y-6">
+                    <section className="bg-white p-8 rounded-[10px] border border-stone-100 shadow-sm space-y-6">
                         <div className="flex items-center gap-3">
                             <ImageIcon className="w-5 h-5 text-amber-500" />
                             <h2 className="text-sm font-black uppercase tracking-widest text-stone-900">Visual Settings</h2>
                         </div>
                         <div className="space-y-4">
-                            <div className="aspect-video bg-stone-50 rounded-[1.5rem] border-2 border-dashed border-stone-200 overflow-hidden relative group">
+                            <div className="aspect-video bg-stone-50 rounded-[10px] border-2 border-dashed border-stone-200 overflow-hidden relative group">
                                 {formData.imageUrl ? (
                                     <img src={formData.imageUrl} className="w-full h-full object-cover" />
                                 ) : (
@@ -80,18 +80,18 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                 placeholder="Media URL (direct link)..."
                                 value={formData.imageUrl}
                                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                                className="w-full px-5 py-3.5 bg-stone-50 rounded-xl text-xs font-bold border-transparent focus:bg-white focus:border-amber-500 transition-all outline-none"
+                                className="w-full px-5 py-3.5 bg-stone-50 rounded-[10px] text-xs font-bold border-transparent focus:bg-white focus:border-amber-500 transition-all outline-none"
                             />
                         </div>
                     </section>
 
-                    <section className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm space-y-6">
+                    <section className="bg-white p-8 rounded-[10px] border border-stone-100 shadow-sm space-y-6">
                         <div className="flex items-center gap-3">
                             <Layers className="w-5 h-5 text-amber-500" />
                             <h2 className="text-sm font-black uppercase tracking-widest text-stone-900">Execution</h2>
                         </div>
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between p-4 bg-stone-50 rounded-xl">
+                            <div className="flex items-center justify-between p-4 bg-stone-50 rounded-[10px]">
                                 <span className="text-[10px] font-black uppercase tracking-widest text-stone-400">Campaign Status</span>
                                 <button
                                     type="button"
@@ -107,7 +107,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                     type="number"
                                     value={formData.displayOrder}
                                     onChange={(e) => setFormData({ ...formData, displayOrder: parseInt(e.target.value) })}
-                                    className="w-full px-5 py-3.5 bg-stone-50 rounded-xl text-sm font-bold"
+                                    className="w-full px-5 py-3.5 bg-stone-50 rounded-[10px] text-sm font-bold"
                                 />
                             </div>
                         </div>
@@ -115,7 +115,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                 </div>
 
                 <div className="space-y-8">
-                    <section className="bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm space-y-6">
+                    <section className="bg-white p-8 rounded-[10px] border border-stone-100 shadow-sm space-y-6">
                         <h2 className="text-sm font-black uppercase tracking-widest text-stone-900 border-b pb-4">Content Metadata</h2>
                         <div className="space-y-6">
                             <div className="space-y-2">
@@ -125,7 +125,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                     placeholder="e.g. Winter Luxury Collection"
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full px-5 py-3.5 bg-stone-50 rounded-xl text-sm font-bold"
+                                    className="w-full px-5 py-3.5 bg-stone-50 rounded-[10px] text-sm font-bold"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -135,7 +135,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                     placeholder="Brief description of the campaign..."
                                     value={formData.subtitle}
                                     onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                                    className="w-full px-5 py-3.5 bg-stone-50 rounded-xl text-sm font-bold resize-none"
+                                    className="w-full px-5 py-3.5 bg-stone-50 rounded-[10px] text-sm font-bold resize-none"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -147,7 +147,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                         placeholder="/shop/new-arrivals"
                                         value={formData.linkUrl}
                                         onChange={(e) => setFormData({ ...formData, linkUrl: e.target.value })}
-                                        className="w-full pl-12 pr-5 py-3.5 bg-stone-50 rounded-xl text-xs font-bold"
+                                        className="w-full pl-12 pr-5 py-3.5 bg-stone-50 rounded-[10px] text-xs font-bold"
                                     />
                                 </div>
                             </div>

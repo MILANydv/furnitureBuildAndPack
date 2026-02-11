@@ -77,14 +77,14 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                     <button
                         type="button"
                         onClick={() => router.back()}
-                        className="px-6 py-3 bg-white border border-stone-200 rounded-2xl text-stone-600 font-bold hover:bg-stone-50 transition-all text-xs uppercase tracking-widest active:scale-95"
+                        className="px-6 py-3 bg-white border border-stone-200 rounded-[10px] text-stone-600 font-bold hover:bg-stone-50 transition-all text-xs uppercase tracking-widest active:scale-95"
                     >
                         Discard
                     </button>
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="px-8 py-3 bg-stone-900 text-white font-black rounded-2xl hover:bg-stone-800 transition-all text-xs uppercase tracking-widest flex items-center gap-2 shadow-2xl active:scale-95 disabled:opacity-50"
+                        className="px-8 py-3 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-xs uppercase tracking-widest flex items-center gap-2 shadow-2xl active:scale-95 disabled:opacity-50"
                     >
                         {isLoading ? (
                             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -99,7 +99,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
             <div className="grid lg:grid-cols-3 gap-10">
                 {/* Left Column - Core Info */}
                 <div className="lg:col-span-2 space-y-8">
-                    <section className="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm space-y-8">
+                    <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm space-y-8">
                         <div className="flex items-center gap-3 mb-2">
                             <Info className="w-5 h-5 text-amber-500" />
                             <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest">General Identity</h2>
@@ -118,7 +118,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                         setFormData({ ...formData, name, slug });
                                     }}
                                     placeholder="e.g. Sovereign Velvet Sectional"
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 transition-all outline-none font-bold text-stone-900"
+                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 transition-all outline-none font-bold text-stone-900"
                                 />
                             </div>
 
@@ -130,7 +130,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                         required
                                         value={formData.slug}
                                         onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                                        className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900"
+                                        className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900"
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -139,7 +139,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                         required
                                         value={formData.categoryId}
                                         onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
-                                        className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900 appearance-none"
+                                        className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900 appearance-none"
                                     >
                                         <option value="">Select Segment</option>
                                         {categories.map((cat) => (
@@ -155,13 +155,13 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                     rows={6}
                                     value={formData.description}
                                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900 resize-none"
+                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-stone-900 resize-none"
                                 />
                             </div>
                         </div>
                     </section>
 
-                    <section className="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm space-y-8">
+                    <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm space-y-8">
                         <div className="flex items-center gap-3 mb-2">
                             <IndianRupee className="w-5 h-5 text-amber-500" />
                             <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest">Financials & Inventory</h2>
@@ -175,7 +175,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                     required
                                     value={formData.basePrice}
                                     onChange={(e) => setFormData({ ...formData, basePrice: parseFloat(e.target.value) })}
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 transition-all outline-none font-black text-stone-900"
+                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-black text-stone-900"
                                 />
                             </div>
                             <div className="space-y-2">
@@ -185,7 +185,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                     required
                                     value={formData.stock}
                                     onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) })}
-                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 transition-all outline-none font-black text-stone-900"
+                                    className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-black text-stone-900"
                                 />
                             </div>
                         </div>
@@ -194,7 +194,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
                 {/* Right Column - Media & Config */}
                 <div className="space-y-8">
-                    <section className="bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm space-y-8">
+                    <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm space-y-8">
                         <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-3">
                                 <Upload className="w-5 h-5 text-amber-500" />
@@ -203,7 +203,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                         </div>
 
                         <div className="space-y-6">
-                            <div className="relative aspect-square rounded-[2rem] bg-stone-50 border-2 border-dashed border-stone-200 overflow-hidden flex flex-col items-center justify-center text-center p-6 group">
+                            <div className="relative aspect-square rounded-[10px] bg-stone-50 border-2 border-dashed border-stone-200 overflow-hidden flex flex-col items-center justify-center text-center p-6 group">
                                 {formData.imageUrl ? (
                                     <>
                                         <img src={formData.imageUrl} alt="Preview" className="w-full h-full object-cover" />
@@ -219,7 +219,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                     </>
                                 ) : (
                                     <>
-                                        <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-stone-300 mb-4 shadow-sm">
+                                        <div className="w-16 h-16 bg-white rounded-[10px] flex items-center justify-center text-stone-300 mb-4 shadow-sm">
                                             <Upload className="w-8 h-8" />
                                         </div>
                                         <p className="text-xs font-bold text-stone-500 uppercase tracking-widest leading-relaxed">External Asset Link Required</p>
@@ -231,18 +231,18 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                 placeholder="Enter image URL..."
                                 value={formData.imageUrl}
                                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                                className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-xs"
+                                className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[10px] focus:bg-white focus:border-amber-500 transition-all outline-none font-bold text-xs"
                             />
                         </div>
                     </section>
 
-                    <section className="bg-stone-900 p-10 rounded-[2.5rem] text-white shadow-2xl space-y-8">
+                    <section className="bg-stone-900 p-10 rounded-[10px] text-white shadow-2xl space-y-8">
                         <div className="flex items-center gap-3">
                             <Layers className="w-5 h-5 text-amber-500" />
                             <h2 className="text-sm font-black uppercase tracking-widest">Configuration</h2>
                         </div>
 
-                        <div className="flex items-center justify-between p-6 bg-white/5 rounded-2xl border border-white/5">
+                        <div className="flex items-center justify-between p-6 bg-white/5 rounded-[10px] border border-white/5">
                             <div>
                                 <p className="text-xs font-black uppercase tracking-widest">Modular System</p>
                                 <p className="text-[10px] font-bold text-stone-500 mt-1">Enable multi-variant behavior?</p>
@@ -256,7 +256,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                             </button>
                         </div>
 
-                        <div className="bg-white/5 p-6 rounded-2xl border border-dashed border-white/10 text-center">
+                        <div className="bg-white/5 p-6 rounded-[10px] border border-dashed border-white/10 text-center">
                             <CheckCircle2 className="w-8 h-8 text-white/20 mx-auto mb-4" />
                             <p className="text-[10px] font-bold text-stone-500 leading-relaxed uppercase tracking-widest">Advanced variants (colors, materials) can be managed after publication</p>
                         </div>

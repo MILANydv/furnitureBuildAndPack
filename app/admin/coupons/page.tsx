@@ -53,7 +53,7 @@ export default function AdminCouponsPage() {
           <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tight">Voucher Forge</h1>
           <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Registry of market discount levers</p>
         </div>
-        <Link href="/admin/coupons/new" className="px-10 py-4 bg-amber-600 text-white font-black rounded-2xl hover:bg-amber-700 transition-all flex items-center gap-2 text-xs uppercase tracking-widest shadow-2xl shadow-amber-600/20 active:scale-95">
+        <Link href="/admin/coupons/new" className="px-10 py-4 bg-amber-600 text-white font-black rounded-[10px] hover:bg-amber-700 transition-all flex items-center gap-2 text-xs uppercase tracking-widest shadow-2xl shadow-amber-600/20 active:scale-95">
           <Plus className="w-4 h-4" />
           Mint New Code
         </Link>
@@ -61,9 +61,9 @@ export default function AdminCouponsPage() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {coupons.map((coupon: any) => (
-          <div key={coupon.id} className="bg-white rounded-[2.5rem] border border-stone-100 shadow-sm overflow-hidden group hover:shadow-2xl transition-all duration-500">
+          <div key={coupon.id} className="bg-white rounded-[10px] border border-stone-100 shadow-sm overflow-hidden group hover:shadow-2xl transition-all duration-500">
             <div className="p-8 pb-0 flex justify-between items-start">
-              <div className="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500 shadow-sm border border-amber-500/10">
+              <div className="w-14 h-14 bg-amber-50 rounded-[10px] flex items-center justify-center text-amber-500 shadow-sm border border-amber-500/10">
                 <Ticket className="w-7 h-7" />
               </div>
               <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${coupon.isActive ? 'bg-emerald-500 text-white' : 'bg-stone-200 text-stone-500'}`}>
@@ -75,7 +75,7 @@ export default function AdminCouponsPage() {
               <span className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em] block mb-2">Discount Token</span>
               <h3 className="text-3xl font-black text-stone-900 tracking-widest uppercase mb-6 group-hover:text-amber-600 transition-colors leading-none">{coupon.code}</h3>
 
-              <div className="grid grid-cols-2 gap-6 bg-stone-50 p-6 rounded-[1.5rem] mb-8 border border-stone-100">
+              <div className="grid grid-cols-2 gap-6 bg-stone-50 p-6 rounded-[10px] mb-8 border border-stone-100">
                 <div>
                   <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">Benefit</p>
                   <p className="text-xl font-black text-stone-900 leading-none">
@@ -94,12 +94,12 @@ export default function AdminCouponsPage() {
                   <span className="text-[10px] font-black uppercase tracking-widest">{new Date(coupon.validUntil).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                 </div>
                 <div className="flex gap-2">
-                  <Link href={`/admin/coupons/${coupon.id}/edit`} className="p-3 text-stone-400 hover:text-stone-900 hover:bg-stone-50 rounded-xl transition-all">
+                  <Link href={`/admin/coupons/${coupon.id}/edit`} className="p-3 text-stone-400 hover:text-stone-900 hover:bg-stone-50 rounded-[10px] transition-all">
                     <Edit className="w-4.5 h-4.5" />
                   </Link>
                   <button
                     onClick={() => { if (confirm('Revoke this code?')) deleteMutation.mutate(coupon.id) }}
-                    className="p-3 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                    className="p-3 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-[10px] transition-all"
                   >
                     <Trash2 className="w-4.5 h-4.5" />
                   </button>
@@ -109,7 +109,7 @@ export default function AdminCouponsPage() {
           </div>
         ))}
         {coupons.length === 0 && (
-          <div className="col-span-full py-20 text-center border-2 border-dashed border-stone-100 rounded-[3rem]">
+          <div className="col-span-full py-20 text-center border-2 border-dashed border-stone-100 rounded-[10px]">
             <Zap className="w-16 h-16 text-stone-100 mx-auto mb-4" />
             <p className="font-black text-stone-300 uppercase tracking-widest text-xs">No active promotions</p>
           </div>

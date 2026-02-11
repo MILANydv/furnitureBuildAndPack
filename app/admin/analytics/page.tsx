@@ -43,7 +43,7 @@ export default function AdminAnalytics() {
                     <p className="text-stone-500 font-bold mt-2 uppercase tracking-[0.1em] text-xs">Deep scan of store performance metrics</p>
                 </div>
                 <div className="flex gap-4">
-                    <div className="px-6 py-3 bg-white border border-stone-200 rounded-[1.5rem] flex items-center gap-3">
+                    <div className="px-6 py-3 bg-white border border-stone-200 rounded-[10px] flex items-center gap-3">
                         <Target className="w-5 h-5 text-amber-500" />
                         <div className="flex flex-col">
                             <span className="text-[10px] font-black text-stone-400 uppercase leading-none mb-1">Store Target</span>
@@ -61,11 +61,11 @@ export default function AdminAnalytics() {
                     { label: 'Customer Base', value: stats.totalCustomers.toString(), icon: Users, trend: stats.customerGrowth, up: true, color: 'text-purple-600', bg: 'bg-purple-50' },
                     { label: 'Catalog Size', value: stats.totalProducts.toString(), icon: Box, trend: stats.productGrowth, up: true, color: 'text-amber-600', bg: 'bg-amber-50' }
                 ].map((stat, i) => (
-                    <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-stone-100 shadow-sm relative overflow-hidden group">
+                    <div key={i} className="bg-white p-8 rounded-[10px] border border-stone-100 shadow-sm relative overflow-hidden group">
                         <div className={`absolute top-0 right-0 w-32 h-32 ${stat.bg} -mr-16 -mt-16 rounded-full opacity-50 group-hover:scale-110 transition-transform duration-700`}></div>
                         <div className="relative">
                             <div className="flex justify-between items-start mb-8">
-                                <div className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-2xl flex items-center justify-center`}>
+                                <div className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-[10px] flex items-center justify-center`}>
                                     <stat.icon className="w-7 h-7" />
                                 </div>
                             </div>
@@ -86,10 +86,10 @@ export default function AdminAnalytics() {
 
             <div className="grid lg:grid-cols-5 gap-8">
                 {/* Top Products */}
-                <div className="lg:col-span-3 bg-white p-10 rounded-[2.5rem] border border-stone-100 shadow-sm">
+                <div className="lg:col-span-3 bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm">
                     <div className="flex items-center justify-between mb-10">
                         <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 bg-stone-50 rounded-2xl flex items-center justify-center text-stone-900 border border-stone-100">
+                            <div className="w-12 h-12 bg-stone-50 rounded-[10px] flex items-center justify-center text-stone-900 border border-stone-100">
                                 <Activity className="w-6 h-6" />
                             </div>
                             <div>
@@ -97,12 +97,12 @@ export default function AdminAnalytics() {
                                 <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">Based on recent sales volume</p>
                             </div>
                         </div>
-                        <div className="px-4 py-2 bg-stone-50 rounded-xl text-xs font-bold text-stone-600 border border-stone-100 uppercase tracking-widest">Global</div>
+                        <div className="px-4 py-2 bg-stone-50 rounded-[10px] text-xs font-bold text-stone-600 border border-stone-100 uppercase tracking-widest">Global</div>
                     </div>
 
                     <div className="space-y-6">
                         {stats.topProducts.map((product: any, i: number) => (
-                            <div key={i} className="flex items-center justify-between p-2 hover:bg-stone-50 rounded-2xl transition-colors group">
+                            <div key={i} className="flex items-center justify-between p-2 hover:bg-stone-50 rounded-[10px] transition-colors group">
                                 <div className="flex items-center gap-6">
                                     <span className="w-8 text-sm font-black text-stone-300">#{i + 1}</span>
                                     <div>
@@ -122,12 +122,12 @@ export default function AdminAnalytics() {
                 </div>
 
                 {/* Category Breakdown */}
-                <div className="lg:col-span-2 bg-[#1A1C1E] p-10 rounded-[2.5rem] text-white shadow-2xl relative overflow-hidden group">
+                <div className="lg:col-span-2 bg-[#1A1C1E] p-10 rounded-[10px] text-white shadow-2xl relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 -mr-32 -mt-32 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-125"></div>
 
                     <div className="relative">
                         <div className="flex items-center gap-4 mb-10">
-                            <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-amber-500 backdrop-blur-sm border border-white/5">
+                            <div className="w-12 h-12 bg-white/10 rounded-[10px] flex items-center justify-center text-amber-500 backdrop-blur-sm border border-white/5">
                                 <PieChart className="w-6 h-6" />
                             </div>
                             <div>
@@ -151,12 +151,12 @@ export default function AdminAnalytics() {
 
                             <div className="pt-8 border-t border-white/10 mt-10">
                                 <div className="flex items-center gap-3 mb-6">
-                                    <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center text-white/30">
+                                    <div className="w-10 h-10 bg-white/5 rounded-[10px] flex items-center justify-center text-white/30">
                                         <Layers className="w-5 h-5" />
                                     </div>
                                     <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] leading-relaxed">Inventory Utilization is currently at 89% capacity</p>
                                 </div>
-                                <button className="w-full py-4 bg-white text-stone-900 font-black rounded-2xl hover:bg-amber-500 hover:text-white transition-all text-xs uppercase tracking-widest active:scale-95 shadow-xl shadow-white/5">
+                                <button className="w-full py-4 bg-white text-stone-900 font-black rounded-[10px] hover:bg-amber-500 hover:text-white transition-all text-xs uppercase tracking-widest active:scale-95 shadow-xl shadow-white/5">
                                     Expand Catalog
                                 </button>
                             </div>
@@ -166,8 +166,8 @@ export default function AdminAnalytics() {
             </div>
 
             {/* Advanced Insights Placeholder */}
-            <div className="bg-white p-12 rounded-[3.5rem] border border-stone-200 min-h-[500px] flex flex-col items-center justify-center text-center space-y-8 shadow-sm">
-                <div className="w-24 h-24 bg-amber-50 rounded-[2rem] flex items-center justify-center text-amber-600 shadow-xl shadow-amber-500/5 animate-bounce-slow">
+            <div className="bg-white p-12 rounded-[10px] border border-stone-200 min-h-[500px] flex flex-col items-center justify-center text-center space-y-8 shadow-sm">
+                <div className="w-24 h-24 bg-amber-50 rounded-[10px] flex items-center justify-center text-amber-600 shadow-xl shadow-amber-500/5 animate-bounce-slow">
                     <BarChart3 className="w-10 h-10" />
                 </div>
                 <div className="space-y-3">
@@ -175,10 +175,10 @@ export default function AdminAnalytics() {
                     <p className="text-stone-500 max-w-xl font-bold uppercase tracking-widest text-[10px] leading-relaxed">Predictive engine is currently indexing past transaction patterns to provide revenue forecasting.</p>
                 </div>
                 <div className="flex gap-4">
-                    <button className="px-10 py-4 bg-stone-900 text-white font-black rounded-2xl hover:bg-stone-800 transition-all text-xs uppercase tracking-widest shadow-2xl active:scale-95">
+                    <button className="px-10 py-4 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-xs uppercase tracking-widest shadow-2xl active:scale-95">
                         Download Full Dataset
                     </button>
-                    <button className="px-10 py-4 bg-white border border-stone-200 text-stone-900 font-black rounded-2xl hover:bg-stone-50 transition-all text-xs uppercase tracking-widest active:scale-95">
+                    <button className="px-10 py-4 bg-white border border-stone-200 text-stone-900 font-black rounded-[10px] hover:bg-stone-50 transition-all text-xs uppercase tracking-widest active:scale-95">
                         Schedule Report
                     </button>
                 </div>

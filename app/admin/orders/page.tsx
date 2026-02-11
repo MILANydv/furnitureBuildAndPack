@@ -60,14 +60,14 @@ export default function AdminOrders() {
           <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Real-time transaction & fulfillment stream</p>
         </div>
         <div className="flex gap-4">
-          <div className="px-6 py-3 bg-white border border-stone-100 rounded-2xl flex items-center gap-3">
+          <div className="px-6 py-3 bg-white border border-stone-100 rounded-[10px] flex items-center gap-3">
             <Calendar className="w-4 h-4 text-amber-600" />
             <span className="text-xs font-black text-stone-900 uppercase tracking-widest">Archive 2024</span>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] p-4 shadow-sm border border-stone-100 flex flex-col lg:flex-row gap-4 items-center">
+      <div className="bg-white rounded-[10px] p-4 shadow-sm border border-stone-100 flex flex-col lg:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full group">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-300 group-focus-within:text-amber-600 transition-colors" />
           <input
@@ -75,16 +75,16 @@ export default function AdminOrders() {
             placeholder="Search by Order ID or Client pseudonym..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-16 pr-8 py-4 bg-stone-50 border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500/10 transition-all outline-none font-bold text-stone-900 text-sm"
+            className="w-full pl-16 pr-8 py-4 bg-stone-50 border-transparent rounded-[10px] focus:bg-white focus:border-amber-500/10 transition-all outline-none font-bold text-stone-900 text-sm"
           />
         </div>
-        <button className="px-8 py-4 bg-white border border-stone-100 text-stone-400 font-bold rounded-2xl hover:text-stone-900 transition-all text-xs uppercase tracking-widest flex items-center gap-2">
+        <button className="px-8 py-4 bg-white border border-stone-100 text-stone-400 font-bold rounded-[10px] hover:text-stone-900 transition-all text-xs uppercase tracking-widest flex items-center gap-2">
           <Filter className="w-4 h-4" />
           Segment
         </button>
       </div>
 
-      <div className="bg-white rounded-[3rem] border border-stone-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-[10px] border border-stone-100 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-stone-50/50 border-b border-stone-100">
@@ -103,7 +103,7 @@ export default function AdminOrders() {
                   <tr key={order.id} className="hover:bg-stone-50/50 transition-all group cursor-pointer" onClick={() => router.push(`/admin/orders/${order.id}`)}>
                     <td className="px-10 py-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-stone-50 rounded-xl flex items-center justify-center text-stone-900 border border-stone-200/50 group-hover:border-amber-500/20 transition-all">
+                        <div className="w-12 h-12 bg-stone-50 rounded-[10px] flex items-center justify-center text-stone-900 border border-stone-200/50 group-hover:border-amber-500/20 transition-all">
                           <span className="text-[10px] font-black">#{order.id.slice(-4).toUpperCase()}</span>
                         </div>
                         <div>
@@ -128,7 +128,7 @@ export default function AdminOrders() {
                       {formatPrice(order.total)}
                     </td>
                     <td className="px-10 py-6 text-right">
-                      <div className="inline-flex p-3 bg-stone-50 text-stone-300 rounded-xl group-hover:bg-amber-500 group-hover:text-white transition-all shadow-sm">
+                      <div className="inline-flex p-3 bg-stone-50 text-stone-300 rounded-[10px] group-hover:bg-amber-500 group-hover:text-white transition-all shadow-sm">
                         <ArrowUpRight className="w-5 h-5" />
                       </div>
                     </td>

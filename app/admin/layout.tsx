@@ -44,7 +44,7 @@ export default function AdminLayout({
         <aside className="w-[280px] bg-[#1A1C1E] text-stone-400 fixed inset-y-0 left-0 z-50 hidden lg:flex flex-col border-r border-white/5 shadow-2xl">
           <div className="p-8">
             <Link href="/admin/dashboard" className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-amber-500/30 ring-2 ring-white/10">
+              <div className="w-10 h-10 bg-amber-500 rounded-[10px] flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-amber-500/30 ring-2 ring-white/10">
                 M
               </div>
               <div className="flex flex-col">
@@ -65,7 +65,7 @@ export default function AdminLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center justify-between px-5 py-3 rounded-xl transition-all group ${isActive
+                    className={`flex items-center justify-between px-5 py-3 rounded-[10px] transition-all group ${isActive
                       ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20 shadow-lg shadow-amber-500/5'
                       : 'hover:bg-white/5 hover:text-white border border-transparent'
                       }`}
@@ -88,7 +88,7 @@ export default function AdminLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center justify-between px-5 py-3 rounded-xl transition-all group ${isActive
+                    className={`flex items-center justify-between px-5 py-3 rounded-[10px] transition-all group ${isActive
                       ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
                       : 'hover:bg-white/5 hover:text-white border border-transparent'
                       }`}
@@ -103,17 +103,17 @@ export default function AdminLayout({
             </div>
           </nav>
 
-          <div className="p-6 space-y-3 bg-black/20 m-4 rounded-[2rem] border border-white/5">
+          <div className="p-6 space-y-3 bg-black/20 m-4 rounded-[10px] border border-white/5">
             <Link
               href="/"
-              className="flex items-center gap-4 px-5 py-3 text-stone-400 hover:text-white hover:bg-white/5 rounded-2xl transition-all font-bold text-sm"
+              className="flex items-center gap-4 px-5 py-3 text-stone-400 hover:text-white hover:bg-white/5 rounded-[10px] transition-all font-bold text-sm"
             >
               <Store className="w-4.5 h-4.5" />
               Visit Store
             </Link>
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
-              className="w-full flex items-center gap-4 px-5 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-2xl transition-all font-bold text-sm"
+              className="w-full flex items-center gap-4 px-5 py-3 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-[10px] transition-all font-bold text-sm"
             >
               <LogOut className="w-4.5 h-4.5" />
               Logout
@@ -131,7 +131,7 @@ export default function AdminLayout({
                 <input
                   type="text"
                   placeholder="Search dashboard..."
-                  className="bg-stone-50 border border-stone-200 rounded-2xl pl-12 pr-6 py-2.5 w-80 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-amber-500/5 focus:border-amber-500 transition-all"
+                  className="bg-stone-50 border border-stone-200 rounded-[10px] pl-12 pr-6 py-2.5 w-80 text-sm font-medium focus:outline-none focus:ring-4 focus:ring-amber-500/5 focus:border-amber-500 transition-all"
                 />
               </div>
               <div className="text-xs font-bold text-stone-400 uppercase tracking-widest hidden sm:block">
@@ -140,7 +140,7 @@ export default function AdminLayout({
             </div>
 
             <div className="flex items-center gap-8">
-              <button className="relative p-3 bg-stone-50 rounded-2xl border border-stone-200 text-stone-400 hover:text-amber-500 hover:border-amber-500/20 transition-all group">
+              <button className="relative p-3 bg-stone-50 rounded-[10px] border border-stone-200 text-stone-400 hover:text-amber-500 hover:border-amber-500/20 transition-all group">
                 <Bell className="w-5 h-5" />
                 <span className="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full ring-2 ring-white"></span>
               </button>
@@ -185,7 +185,7 @@ function AdminUserInfo() {
         <span className="text-sm font-black text-stone-900 uppercase tracking-tight">{session?.user?.name || 'Admin'}</span>
         <span className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Management Space</span>
       </div>
-      <div className="w-12 h-12 bg-amber-100 rounded-2xl border border-amber-500/20 overflow-hidden flex items-center justify-center text-amber-600 font-black shadow-lg shadow-amber-500/5 overflow-hidden">
+      <div className="w-12 h-12 bg-amber-100 rounded-[10px] border border-amber-500/20 overflow-hidden flex items-center justify-center text-amber-600 font-black shadow-lg shadow-amber-500/5 overflow-hidden">
         {session?.user?.name?.charAt(0) || <Users className="w-6 h-6" />}
       </div>
     </div>

@@ -47,14 +47,14 @@ export default function AdminCustomers() {
           <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Management of the ModuLiving community</p>
         </div>
         <div className="flex gap-4">
-          <div className="px-6 py-3 bg-white border border-stone-100 rounded-2xl flex items-center gap-3">
+          <div className="px-6 py-3 bg-white border border-stone-100 rounded-[10px] flex items-center gap-3">
             <Shield className="w-5 h-5 text-amber-500" />
             <span className="text-xs font-black text-stone-900 uppercase tracking-widest">KYC Compliant</span>
           </div>
         </div>
       </div>
 
-      <div className="bg-white rounded-[2.5rem] p-4 shadow-sm border border-stone-100 flex flex-col lg:flex-row gap-4 items-center">
+      <div className="bg-white rounded-[10px] p-4 shadow-sm border border-stone-100 flex flex-col lg:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full group">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-300 group-focus-within:text-amber-600 transition-colors" />
           <input
@@ -62,10 +62,10 @@ export default function AdminCustomers() {
             placeholder="Search by verified email, user name or ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-16 pr-8 py-4 bg-stone-50 border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500/10 transition-all outline-none font-bold text-stone-900 text-sm"
+            className="w-full pl-16 pr-8 py-4 bg-stone-50 border-transparent rounded-[10px] focus:bg-white focus:border-amber-500/10 transition-all outline-none font-bold text-stone-900 text-sm"
           />
         </div>
-        <button className="px-8 py-4 bg-white border border-stone-100 text-stone-400 font-bold rounded-2xl hover:text-stone-900 transition-all text-xs uppercase tracking-widest">
+        <button className="px-8 py-4 bg-white border border-stone-100 text-stone-400 font-bold rounded-[10px] hover:text-stone-900 transition-all text-xs uppercase tracking-widest">
           <Filter className="w-4 h-4" />
           Filter
         </button>
@@ -73,9 +73,9 @@ export default function AdminCustomers() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {filteredCustomers.map((customer: any) => (
-          <div key={customer.id} className="bg-white rounded-[3rem] border border-stone-100 shadow-sm overflow-hidden group hover:shadow-2xl transition-all duration-700 hover:-translate-y-2">
+          <div key={customer.id} className="bg-white rounded-[10px] border border-stone-100 shadow-sm overflow-hidden group hover:shadow-2xl transition-all duration-700 hover:-translate-y-2">
             <div className="p-10 pb-8 flex items-center gap-6">
-              <div className="w-16 h-16 bg-amber-50 rounded-[1.5rem] border border-amber-500/10 flex items-center justify-center text-amber-600 font-black text-xl shadow-inner group-hover:scale-110 transition-transform">
+              <div className="w-16 h-16 bg-amber-50 rounded-[10px] border border-amber-500/10 flex items-center justify-center text-amber-600 font-black text-xl shadow-inner group-hover:scale-110 transition-transform">
                 {customer.name?.charAt(0) || <User className="w-8 h-8" />}
               </div>
               <div>
@@ -88,11 +88,11 @@ export default function AdminCustomers() {
             </div>
 
             <div className="px-10 space-y-4">
-              <div className="flex items-center gap-4 p-4 bg-stone-50 rounded-2xl border border-transparent group-hover:border-stone-100 transition-all">
+              <div className="flex items-center gap-4 p-4 bg-stone-50 rounded-[10px] border border-transparent group-hover:border-stone-100 transition-all">
                 <Mail className="w-4.5 h-4.5 text-stone-300" />
                 <span className="text-xs font-bold text-stone-500 truncate">{customer.email}</span>
               </div>
-              <div className="flex items-center gap-4 p-4 bg-stone-50 rounded-2xl border border-transparent group-hover:border-stone-100 transition-all">
+              <div className="flex items-center gap-4 p-4 bg-stone-50 rounded-[10px] border border-transparent group-hover:border-stone-100 transition-all">
                 <ShoppingBag className="w-4.5 h-4.5 text-stone-300" />
                 <span className="text-xs font-bold text-stone-500">{customer._count?.orders || 0} Total Transactions</span>
               </div>
@@ -103,7 +103,7 @@ export default function AdminCustomers() {
                 <Calendar className="w-4 h-4 text-stone-300" />
                 <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Member Since {new Date(customer.createdAt).getFullYear()}</span>
               </div>
-              <button className="p-4 bg-stone-50 text-stone-300 rounded-2xl group-hover:bg-stone-900 group-hover:text-white transition-all shadow-sm">
+              <button className="p-4 bg-stone-50 text-stone-300 rounded-[10px] group-hover:bg-stone-900 group-hover:text-white transition-all shadow-sm">
                 <ArrowUpRight className="w-5 h-5" />
               </button>
             </div>
