@@ -87,11 +87,11 @@ async function main() {
       imageUrl: 'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=500&h=500&fit=crop',
       stock: 5,
       isConfigurable: true,
-      dimensions: {
+      dimensions: JSON.stringify({
         length: 200,
         width: 100,
         height: 75,
-      },
+      }),
     },
   });
 
@@ -100,12 +100,12 @@ async function main() {
     data: [
       {
         productId: table.id,
-        material: 'Oak',
+        frameType: 'Oak',
         priceModifier: 0,
       },
       {
         productId: table.id,
-        material: 'Walnut',
+        frameType: 'Walnut',
         priceModifier: 200,
       },
       {

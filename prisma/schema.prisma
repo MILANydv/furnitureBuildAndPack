@@ -2,11 +2,11 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -63,13 +63,13 @@ model Product {
   id             String   @id @default(cuid())
   name           String
   slug           String   @unique
-  description    String?  @db.Text
+  description    String?
   basePrice      Float
   categoryId     String
   isConfigurable Boolean  @default(false)
   imageUrl       String?
-  images         String[] @default([])
-  dimensions     Json?    // { length, width, height }
+  images         String   @default("")
+  dimensions     String?  // JSON string: { length, width, height }
   stock          Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -128,7 +128,7 @@ model Order {
   userId          String
   total           Float
   status          OrderStatus @default(PENDING)
-  shippingAddress Json        // { street, city, postalCode, country, phone }
+  shippingAddress String      // JSON string: { street, city, postalCode, country, phone }
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
@@ -147,7 +147,7 @@ model OrderItem {
   variantId   String?
   qty         Int
   price       Float
-  configuration Json?  // Saved configuration for configurable products
+  configuration String?  // JSON string: Saved configuration for configurable products
   createdAt   DateTime @default(now())
 
   order   Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
@@ -164,7 +164,7 @@ model Review {
   productId String
   userId    String
   rating    Int      // 1-5
-  comment   String?  @db.Text
+  comment   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -213,7 +213,7 @@ model CartItem {
   productId     String
   variantId     String?
   qty           Int      @default(1)
-  configuration Json?    // Saved configuration for configurable products
+  configuration String?  // JSON string: Saved configuration for configurable products
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
