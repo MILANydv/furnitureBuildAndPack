@@ -23,7 +23,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     }
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="p-6">
             <ProductForm initialData={product} categories={categories} />
         </div>
     );

@@ -98,7 +98,7 @@ export default function AdminLayout({
         {/* Main Workspace Area */}
         <div className="flex-1 lg:ml-[240px] flex flex-col min-h-screen">
           {/* Minimal Header */}
-          <header className="h-14 bg-white/80 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40 px-8 flex items-center justify-between">
+          <header className="h-14 bg-white/80 backdrop-blur-md border-b border-stone-200 sticky top-0 z-40 px-6 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">
                 System / <span className="text-stone-900">{pathname.split('/').filter(Boolean).slice(-1)[0] || 'Dashboard'}</span>
