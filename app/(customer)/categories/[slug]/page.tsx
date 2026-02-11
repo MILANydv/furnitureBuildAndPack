@@ -3,6 +3,15 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma/client';
 import { ProductCard } from '@/app/components/product/ProductCard';
 
+export async function generateStaticParams() {
+  const categories = await prisma.category.findMany({
+    select: { slug: true },
+  });
+  return categories.map((category) => ({
+    slug: category.slug,
+  }));
+}
+
 export async function generateMetadata({
   params,
 }: {

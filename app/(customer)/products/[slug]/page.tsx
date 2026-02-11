@@ -10,6 +10,16 @@ import { ReviewSection } from '@/app/components/product/ReviewSection';
 
 const productService = new ProductService();
 
+export async function generateStaticParams() {
+  const products = await prisma.product.findMany({
+    select: { slug: true },
+  });
+  return products.map((product) => ({
+    slug: product.slug,
+  }));
+}
+
+
 export async function generateMetadata({
   params,
 }: {

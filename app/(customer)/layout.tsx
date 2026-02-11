@@ -1,5 +1,5 @@
 import { Navbar } from '@/app/components/layout/Navbar';
-import { SessionProvider } from 'next-auth/react';
+import AuthProvider from '@/app/components/providers/AuthProvider';
 
 export default function CustomerLayout({
   children,
@@ -7,9 +7,9 @@ export default function CustomerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SessionProvider>
+    <AuthProvider>
       <Navbar />
       {children}
-    </SessionProvider>
+    </AuthProvider>
   );
 }
