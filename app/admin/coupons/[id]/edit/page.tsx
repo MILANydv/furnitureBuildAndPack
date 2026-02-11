@@ -10,7 +10,7 @@ export default async function EditCouponPage({ params }: { params: { id: string 
     if (!coupon) notFound();
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="p-6">
             <CouponForm initialData={coupon} />
         </div>
     );

@@ -16,7 +16,11 @@ import {
   BarChart3,
   Activity,
   Zap,
-  Ticket
+  Ticket,
+  ChevronRight,
+  Layers,
+  Search,
+  LayoutGrid
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { formatPrice } from '@/lib/utils/currency';
@@ -29,22 +33,22 @@ async function fetchStats() {
 
 export default function AdminDashboard() {
   const router = useRouter();
-  const { data: stats, isLoading, error } = useQuery({
+  const { data: stats, isLoading } = useQuery({
     queryKey: ['admin-stats'],
     queryFn: fetchStats,
   });
 
   if (isLoading) return (
     <div className="flex items-center justify-center min-h-[400px]">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-stone-800"></div>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-stone-800"></div>
     </div>
   );
 
   const dashboardStats = [
-    { label: 'Revenue', value: formatPrice(stats.totalRevenue), icon: DollarSign, trend: stats.revenueGrowth, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Orders', value: stats.totalOrders.toString(), icon: ShoppingBag, trend: stats.orderGrowth, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Products', value: stats.totalProducts.toString(), icon: Box, trend: stats.productGrowth, color: 'text-amber-600', bg: 'bg-amber-50' },
-    { label: 'Customers', value: stats.totalCustomers.toString(), icon: Users, trend: stats.customerGrowth, color: 'text-purple-600', bg: 'bg-purple-50' },
+    { label: 'Net Revenue', value: formatPrice(stats.totalRevenue), icon: DollarSign, trend: stats.revenueGrowth, trendIcon: TrendingUp, color: 'text-emerald-600' },
+    { label: 'Transaction Count', value: stats.totalOrders.toString(), icon: ShoppingBag, trend: stats.orderGrowth, trendIcon: Activity, color: 'text-blue-600' },
+    { label: 'Artifact Collection', value: stats.totalProducts.toString(), icon: Package, trend: stats.productGrowth, trendIcon: Box, color: 'text-amber-600' },
+    { label: 'Verified Base', value: stats.totalCustomers.toString(), icon: Users, trend: stats.customerGrowth, trendIcon: Zap, color: 'text-stone-900' },
   ];
 
   function ShoppingBag(props: any) {
@@ -52,139 +56,161 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-12 pb-20">
-      {/* Dynamic Welcome Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
+    <div className="p-6 space-y-8">
+      {/* Sleek Dashboard Header */}
+      <div className="flex items-center justify-between border-b border-stone-200 pb-8 mt-4">
         <div>
-          <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight leading-none">Command Center</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Real-time synchronization of store heartbeat</p>
+          <h1 className="text-xl font-bold text-stone-900 tracking-tight">Command Center</h1>
+          <div className="flex items-center gap-2 mt-1">
+            <LayoutGrid className="w-3.5 h-3.5 text-stone-400" />
+            <p className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">Global store synchronization active</p>
+          </div>
         </div>
-        <div className="flex gap-4">
-          <Link href="/admin/products/new" className="px-8 py-3.5 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] shadow-2xl active:scale-95">
-            <Package className="w-4 h-4" />
-            Forge Product
+        <div className="flex items-center gap-3">
+          <div className="relative group hidden md:block">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-300 group-focus-within:text-stone-900 transition-all" />
+            <input
+              type="text"
+              placeholder="Search nexus..."
+              className="bg-white border border-stone-200 rounded-lg pl-9 pr-4 py-1.5 text-xs font-bold text-stone-900 outline-none w-48 focus:w-64 focus:border-stone-900 transition-all placeholder:text-stone-300"
+            />
+          </div>
+          <Link href="/admin/products/new" className="px-5 py-2 bg-stone-900 text-white text-[13px] font-bold rounded-lg hover:bg-stone-800 transition-all flex items-center gap-2 shadow-sm">
+            <Plus className="w-4 h-4" />
+            New SKU
           </Link>
         </div>
       </div>
 
-      {/* Primary Metrics Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {dashboardStats.map((stat, index) => (
-          <div key={index} className="bg-white rounded-[10px] p-8 border border-stone-100 shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
-            <div className={`absolute top-0 right-0 w-24 h-24 ${stat.bg} -mr-12 -mt-12 rounded-full opacity-40 transition-transform duration-700 group-hover:scale-150`}></div>
-            <div className="relative">
-              <div className="flex items-center justify-between mb-8">
-                <div className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-[10px] flex items-center justify-center transition-transform group-hover:rotate-12`}>
-                  <stat.icon className="w-7 h-7" />
-                </div>
-                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest ${stat.trend.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
-                  <TrendingUp className="w-3.5 h-3.5" />
-                  {stat.trend}
-                </div>
-              </div>
-              <div className="space-y-1">
-                <p className="text-stone-500 font-bold text-[11px] uppercase tracking-widest leading-none mb-3">{stat.label}</p>
-                <p className="text-3xl font-black text-stone-900 leading-none">{stat.value}</p>
+      {/* Metric Ribbons */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {dashboardStats.map((stat, i) => (
+          <div key={i} className="bg-white p-5 rounded-xl border border-stone-200 shadow-sm hover:border-stone-400 transition-all group">
+            <div className="flex justify-between items-start mb-4">
+              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">{stat.label}</span>
+              <stat.icon className="w-4 h-4 text-stone-300 group-hover:text-stone-900 transition-colors" />
+            </div>
+            <div className="flex items-end justify-between">
+              <span className="text-2xl font-black text-stone-900 tracking-tighter">{stat.value}</span>
+              <div className="flex items-center gap-1 text-[10px] font-black text-emerald-600 mb-1">
+                <stat.trendIcon className="w-3 h-3" />
+                {stat.trend}
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-10">
-        {/* Transaction Stream */}
-        <div className="lg:col-span-2 bg-white rounded-[10px] border border-stone-100 shadow-sm overflow-hidden flex flex-col">
-          <div className="p-10 border-b border-stone-50 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-stone-50 rounded-[10px] flex items-center justify-center text-stone-900 border border-stone-100 shadow-inner">
-                <Activity className="w-6 h-6" />
+      <div className="grid lg:grid-cols-3 gap-8">
+        {/* Core Stream */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-stone-100 bg-stone-50/30 flex items-center justify-between">
+              <h3 className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">Recent Transactions</h3>
+              <Link href="/admin/orders" className="text-[10px] font-bold text-stone-900 uppercase tracking-widest hover:underline flex items-center gap-1">
+                View Matrix <ChevronRight className="w-3 h-3" />
+              </Link>
+            </div>
+            <div className="divide-y divide-stone-50">
+              {stats.recentOrders.map((order: any, i: number) => (
+                <div
+                  key={i}
+                  onClick={() => router.push(`/admin/orders/${order.id}`)}
+                  className="px-6 py-4 flex items-center justify-between hover:bg-stone-50/50 transition-colors cursor-pointer"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="p-2 bg-stone-50 border border-stone-100 rounded text-[10px] font-mono font-black text-stone-400 uppercase">
+                      #{order.id.slice(-4).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[13px] font-bold text-stone-900 uppercase tracking-tight truncate max-w-[150px]">{order.customer}</p>
+                      <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">{order.date}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <span className="text-sm font-black text-stone-900 tabular-nums">{formatPrice(order.total)}</span>
+                    <div className={`w-2 h-2 rounded-full ${order.status === 'delivered' ? 'bg-emerald-500' : order.status === 'processing' ? 'bg-blue-500' : 'bg-stone-300'}`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-stone-900 rounded-xl p-8 text-white shadow-xl relative overflow-hidden group">
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4 text-stone-400 uppercase tracking-widest text-[10px] font-bold">
+                <Zap className="w-3.5 h-3.5" /> Promotion Engine active
               </div>
-              <div>
-                <h2 className="text-xl font-black text-stone-900 uppercase tracking-tight">Post-Transaction Log</h2>
-                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">Live order acquisitions</p>
+              <h4 className="text-2xl font-black text-white uppercase tracking-tight mb-4">Launch New Campaign</h4>
+              <p className="text-sm font-medium text-stone-400 leading-relaxed max-w-md mb-8">
+                Deploying visual hooks and discount tokens can accelerate user conversion by up to 18% in the current market climate.
+              </p>
+              <div className="flex gap-4">
+                <Link href="/admin/banners/new" className="px-6 py-2.5 bg-white text-stone-900 text-[11px] font-black uppercase tracking-widest rounded-lg hover:bg-stone-200 transition-all flex items-center gap-2 shadow-lg shadow-white/5">
+                  Banner Hook
+                </Link>
+                <Link href="/admin/coupons/new" className="px-6 py-2.5 bg-stone-800 text-white text-[11px] font-black uppercase tracking-widest rounded-lg hover:bg-stone-700 transition-all border border-white/5 shadow-lg">
+                  Mint Coupon
+                </Link>
               </div>
             </div>
-            <Link href="/admin/orders" className="p-3 bg-stone-50 text-stone-400 hover:text-stone-900 rounded-[10px] transition-all border border-transparent hover:border-stone-100">
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-          <div className="overflow-x-auto flex-1">
-            <table className="w-full">
-              <thead className="bg-stone-50/30 border-b border-stone-50">
-                <tr>
-                  <th className="px-10 py-5 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Token</th>
-                  <th className="px-10 py-5 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Entity</th>
-                  <th className="px-10 py-5 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Value</th>
-                  <th className="px-10 py-5 text-right text-[11px] font-bold text-stone-400 uppercase tracking-widest">State</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone-50">
-                {stats.recentOrders.map((order: any) => (
-                  <tr key={order.id} className="hover:bg-amber-50/20 transition-all group cursor-pointer" onClick={() => router.push(`/admin/orders/${order.id}`)}>
-                    <td className="px-10 py-6 font-black text-stone-900 uppercase tracking-tight">#{order.id.slice(-6)}</td>
-                    <td className="px-10 py-6">
-                      <p className="text-sm font-black text-stone-900 uppercase tracking-tight">{order.customer}</p>
-                      <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">{order.date}</p>
-                    </td>
-                    <td className="px-10 py-6 font-black text-stone-900 tabular-nums">{formatPrice(order.total)}</td>
-                    <td className="px-10 py-6 text-right">
-                      <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${order.status === 'delivered' ? 'bg-emerald-50 text-emerald-700' :
-                        order.status === 'processing' ? 'bg-blue-50 text-blue-700' :
-                          'bg-stone-50 text-stone-500'
-                        }`}>
-                        {order.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Layers className="absolute -right-8 -bottom-8 w-48 h-48 text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-1000" />
           </div>
         </div>
 
-        {/* Action Center Sidebar */}
-        <div className="space-y-10">
-          <div className="bg-stone-900 rounded-[10px] p-10 text-white relative overflow-hidden shadow-2xl group border border-white/5">
-            <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl transition-transform group-hover:scale-150 duration-1000"></div>
-            <div className="relative">
-              <div className="w-14 h-14 bg-white/10 rounded-[10px] flex items-center justify-center text-amber-500 mb-8 backdrop-blur-sm border border-white/10">
-                <Ticket className="w-7 h-7 rotate-12" />
+        {/* Intelligence Sidebar */}
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-6 overflow-hidden relative">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">Growth Velocity</h3>
+              <Activity className="w-4 h-4 text-stone-900" />
+            </div>
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex justify-between items-end">
+                  <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Fiscal Target</span>
+                  <span className="text-[12px] font-black text-stone-900 uppercase">82%</span>
+                </div>
+                <div className="h-1 w-full bg-stone-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-stone-900 rounded-full" style={{ width: '82%' }}></div>
+                </div>
               </div>
-              <h3 className="text-2xl font-black mb-4 uppercase tracking-tight leading-none">Execute Promotion</h3>
-              <p className="text-white/50 text-sm font-medium uppercase tracking-widest mb-10 leading-relaxed">Injection of new discount tokens into the market can boost quarterly acquisitions by up to 15%.</p>
-              <Link href="/admin/coupons/new" className="w-full py-4 bg-white text-stone-900 font-bold rounded-[10px] hover:bg-amber-500 hover:text-white transition-all inline-flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.1em] shadow-xl active:scale-95">
-                Generate Token
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="p-4 bg-stone-50 rounded-lg border border-stone-100">
+                <p className="text-[11px] text-stone-500 font-medium leading-relaxed uppercase tracking-widest mb-1 opacity-60">Insight Buffer</p>
+                <p className="text-[12px] text-stone-900 font-bold leading-relaxed tracking-tight">
+                  The core category "Living Room" is currently experiencing a high-volume surge in active carts.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-[10px] p-10 border border-stone-100 shadow-sm relative group overflow-hidden">
-            <div className="relative">
-              <div className="flex items-center justify-between mb-8">
-                <h3 className="text-sm font-black text-stone-900 uppercase tracking-widest">Growth Velocity</h3>
-                <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-                  <Activity className="w-4 h-4" />
-                </div>
+          <div className="bg-white rounded-xl border border-stone-200 shadow-sm p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-stone-50 rounded-lg text-stone-900 border border-stone-100"><BarChart3 className="w-4 h-4" /></div>
+              <span className="text-[11px] font-bold text-stone-400 uppercase tracking-widest leading-none">Market Analytics</span>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-4 border-b border-stone-50">
+                <span className="text-[12px] font-bold text-stone-900 uppercase tracking-tight">Conversion</span>
+                <span className="text-[12px] font-black text-emerald-600 uppercase">3.4%</span>
               </div>
-              <div className="space-y-8">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-end">
-                    <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest leading-none">Monthly Target</span>
-                    <span className="text-sm font-black text-stone-900 leading-none">82%</span>
-                  </div>
-                  <div className="w-full bg-stone-50 h-3 rounded-full overflow-hidden border border-stone-100">
-                    <div className="bg-amber-500 h-full w-[82%] rounded-full shadow-lg shadow-amber-500/30 transition-all duration-1000"></div>
-                  </div>
-                </div>
-                <div className="p-6 bg-stone-50 rounded-[10px] border border-stone-100">
-                  <p className="text-[11px] font-bold text-stone-500 leading-relaxed uppercase tracking-widest">The engine predicts a high-volume surge in the &apos;Living Room&apos; category based on current cart activity.</p>
-                </div>
+              <div className="flex items-center justify-between pb-4 border-b border-stone-50">
+                <span className="text-[12px] font-bold text-stone-900 uppercase tracking-tight">Acquisition</span>
+                <span className="text-[12px] font-black text-stone-900 uppercase">1.2k</span>
               </div>
+              <button className="w-full py-2.5 text-[11px] font-black uppercase tracking-widest text-stone-400 hover:text-stone-900 hover:bg-stone-50 transition-all rounded-lg border border-dashed border-stone-200">
+                Expand Dataset
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+function Plus(props: any) {
+  return (
+    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
+  )
 }

@@ -75,7 +75,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
     const currentStatus = statusFlow.find(s => s.value === order.status) || statusFlow[0];
 
     return (
-        <div className="max-w-5xl mx-auto pb-20">
+        <div className="p-6 pb-20">
             {/* Minimal Header */}
             <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">

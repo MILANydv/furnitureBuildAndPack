@@ -8,10 +8,17 @@ import {
   ToggleLeft,
   Edit,
   Trash2,
-  Eye
+  Eye,
+  Layers,
+  ChevronDown,
+  Monitor,
+  ExternalLink,
+  MoveUp,
+  MoveDown
 } from 'lucide-react';
 import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 async function fetchBanners() {
   const res = await fetch('/api/admin/banners');
@@ -34,83 +41,98 @@ export default function AdminBannersPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-banners'] });
-    }
+      toast.success('Visual asset removed');
+    },
+    onError: () => toast.error('Removal failed')
   });
 
   if (isLoading) return (
     <div className="flex items-center justify-center min-h-[400px]">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-stone-800"></div>
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-stone-800"></div>
     </div>
   );
 
   return (
-    <div className="space-y-12 pb-20">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
+    <div className="p-6 space-y-8">
+      {/* Sleek Header */}
+      <div className="flex items-center justify-between border-b border-stone-200 pb-8 mt-4">
         <div>
-          <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight">Hero Campaigns</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Visual hooks of the landing interface</p>
+          <h1 className="text-xl font-bold text-stone-900 tracking-tight">Campaign Gallery</h1>
+          <div className="flex items-center gap-2 mt-1">
+            <Monitor className="w-3.5 h-3.5 text-stone-400" />
+            <p className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">{banners.length} Active Hooks</p>
+          </div>
         </div>
-        <Link href="/admin/banners/new" className="px-10 py-4 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all flex items-center gap-2 text-xs uppercase tracking-widest shadow-2xl active:scale-95">
+        <Link href="/admin/banners/new" className="px-5 py-2 bg-stone-900 text-white text-[13px] font-bold rounded-lg hover:bg-stone-800 transition-all flex items-center gap-2 shadow-sm">
           <Plus className="w-4 h-4" />
-          Deploy Banner
+          New Campaign
         </Link>
       </div>
 
-      {banners.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {banners.map((banner: any) => (
-            <div key={banner.id} className="group bg-white rounded-[10px] shadow-sm border border-stone-100 overflow-hidden hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 flex flex-col">
-              <div className="relative h-64 w-full bg-stone-100 overflow-hidden">
+      {/* Banners List (Cal.com Style) */}
+      <div className="bg-white rounded-xl border border-stone-200 shadow-sm overflow-hidden divide-y divide-stone-50">
+        {banners.map((banner: any) => (
+          <div key={banner.id} className="p-6 flex items-center justify-between hover:bg-stone-50/30 transition-all group">
+            <div className="flex items-center gap-6 flex-1 min-w-0">
+              <div className="w-24 h-14 rounded-lg bg-stone-50 border border-stone-200 overflow-hidden flex-shrink-0 relative group-hover:border-stone-400 transition-all">
                 {banner.imageUrl ? (
-                  <img src={banner.imageUrl} alt={banner.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
+                  <img src={banner.imageUrl} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-stone-300"><ImageIcon className="w-12 h-12" /></div>
+                  <div className="w-full h-full flex items-center justify-center text-stone-200"><ImageIcon className="w-4 h-4" /></div>
                 )}
-
-                <div className="absolute top-6 left-6 flex gap-2">
-                  <span className={`px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest ring-4 ring-white shadow-2xl ${banner.isActive ? 'bg-emerald-500 text-white' : 'bg-stone-500 text-white'}`}>
-                    {banner.isActive ? 'Live' : 'Off-Air'}
-                  </span>
-                  <span className="px-5 py-2 rounded-full text-[11px] font-bold bg-stone-900 text-white uppercase tracking-widest ring-4 ring-white shadow-2xl">
-                    Pos #{banner.displayOrder}
-                  </span>
+                <div className="absolute top-1 right-1 px-1.5 py-0.5 bg-white/90 backdrop-blur rounded text-[9px] font-black uppercase text-stone-900 shadow-sm">
+                  #{banner.displayOrder}
                 </div>
               </div>
-
-              <div className="p-10 flex-1">
-                <h3 className="text-2xl font-black text-stone-900 mb-2 truncate group-hover:text-amber-600 transition-colors uppercase tracking-tight leading-none">{banner.title}</h3>
-                <p className="text-[11px] text-stone-500 font-bold uppercase tracking-widest mb-10 pb-6 border-b border-stone-50">Visual Campaign Asset</p>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-2">
-                    <Link href={`/admin/banners/${banner.id}/edit`} className="p-4 bg-stone-50 text-stone-400 rounded-[10px] hover:bg-stone-900 hover:text-white transition-all shadow-sm">
-                      <Edit className="w-5 h-5" />
-                    </Link>
-                    <button
-                      onClick={() => { if (confirm('Cease this campaign?')) deleteMutation.mutate(banner.id) }}
-                      className="p-4 bg-stone-50 text-stone-400 rounded-[10px] hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                    >
-                      <Trash2 className="w-5 h-5" />
-                    </button>
-                  </div>
-                  <Link href={banner.linkUrl || '#'} className="bg-amber-500 text-white p-4 rounded-[10px] shadow-xl shadow-amber-500/20 active:scale-95 group/link">
-                    <ArrowRight className="w-6 h-6 group-hover/link:translate-x-1 transition-transform" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3 mb-1">
+                  <Link href={`/admin/banners/${banner.id}/edit`} className="text-[14px] font-bold text-stone-900 uppercase tracking-tight hover:text-blue-600 transition-colors truncate">
+                    {banner.title || 'Draft Campaign'}
                   </Link>
+                  <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest ${banner.isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-stone-100 text-stone-400'}`}>
+                    {banner.isActive ? 'Broadcasting' : 'Hold'}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-stone-400">
+                  <p className="text-[10px] font-bold uppercase tracking-widest leading-none truncate max-w-[300px]">{banner.subtitle || 'No subtext'}</p>
+                  <div className="w-1 h-1 rounded-full bg-stone-200 flex-shrink-0"></div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest leading-none truncate flex items-center gap-1.5"><ExternalLink className="w-3 h-3" /> {banner.linkUrl}</p>
                 </div>
               </div>
             </div>
-          ))}
+
+            <div className="flex items-center gap-2 ml-6">
+              <div className="flex items-center gap-1 p-1 bg-stone-50 rounded-lg group-hover:bg-white transition-colors border border-transparent group-hover:border-stone-200">
+                <button className="p-1.5 text-stone-300 hover:text-stone-900 transition-colors" title="Move Up"><MoveUp className="w-3.5 h-3.5" /></button>
+                <button className="p-1.5 text-stone-300 hover:text-stone-900 transition-colors" title="Move Down"><MoveDown className="w-3.5 h-3.5" /></button>
+              </div>
+              <div className="h-4 w-px bg-stone-100 mx-1"></div>
+              <Link href={`/admin/banners/${banner.id}/edit`} className="p-2 text-stone-300 hover:text-stone-900 transition-colors"><Edit className="w-4 h-4" /></Link>
+              <button
+                onClick={() => { if (confirm('Cease this campaign?')) deleteMutation.mutate(banner.id) }}
+                className="p-2 text-stone-300 hover:text-red-500 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        ))}
+        {banners.length === 0 && (
+          <div className="p-20 text-center">
+            <p className="text-[11px] font-bold text-stone-400 uppercase tracking-widest">The visual horizon is currently empty.</p>
+          </div>
+        )}
+      </div>
+
+      <div className="p-8 bg-stone-900 rounded-xl text-white shadow-xl flex items-center justify-between overflow-hidden relative group">
+        <div className="relative z-10 flex-1">
+          <h4 className="text-[11px] font-bold text-stone-400 uppercase tracking-[0.2em] mb-4">Strategic Placement</h4>
+          <p className="text-sm font-medium text-stone-300 leading-relaxed max-w-lg">
+            Sequential order affects the visual hierarchy on the landing interface. Banners with Position #0 are the primary focal points of the store experience.
+          </p>
         </div>
-      ) : (
-        <div className="text-center py-32 bg-stone-50 rounded-[10px] border-4 border-dashed border-stone-200">
-          <ImageIcon className="w-24 h-24 text-stone-200 mx-auto mb-8" />
-          <h2 className="text-3xl font-black text-stone-900 mb-2 tracking-tight uppercase">Empty Gallery</h2>
-          <p className="text-stone-500 mb-12 max-w-sm mx-auto font-bold uppercase tracking-widest text-[11px]">Your storefront is missing its visual pulse.</p>
-          <Link href="/admin/banners/new" className="inline-block px-12 py-5 bg-amber-600 text-white font-black rounded-[10px] hover:bg-amber-700 transition-all shadow-2xl shadow-amber-600/30 uppercase tracking-[0.2em] text-xs active:scale-95">
-            Initialize Content
-          </Link>
-        </div>
-      )}
+        <div className="text-7xl font-black text-white/5 absolute -right-4 -bottom-4 group-hover:text-white/10 transition-all select-none rotate-12">VISUALS</div>
+      </div>
     </div>
   );
 }

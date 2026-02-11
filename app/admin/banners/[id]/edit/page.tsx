@@ -10,7 +10,7 @@ export default async function EditBannerPage({ params }: { params: { id: string 
     if (!banner) notFound();
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="p-6">
             <BannerForm initialData={banner} />
         </div>
     );

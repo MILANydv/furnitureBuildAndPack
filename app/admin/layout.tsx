@@ -120,8 +120,8 @@ export default function AdminLayout({
             </div>
           </header>
 
-          {/* Compact Viewport */}
-          <main className="p-8 max-w-5xl mx-auto w-full">
+          {/* Fluid Viewport */}
+          <main className="w-full">
             {children}
           </main>
         </div>

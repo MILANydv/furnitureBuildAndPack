@@ -5,7 +5,7 @@ export default async function NewProductPage() {
     const categories = await prisma.category.findMany();
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="p-6">
             <ProductForm categories={categories} />
         </div>
     );

@@ -16,7 +16,8 @@ import {
     ChevronDown,
     Calendar,
     Download,
-    Filter
+    Filter,
+    Info
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { formatPrice } from '@/lib/utils/currency';
@@ -40,7 +41,7 @@ export default function AdminAnalytics() {
     );
 
     return (
-        <div className="space-y-8 max-w-6xl mx-auto">
+        <div className="p-6 space-y-8">
             {/* Contextual Header */}
             <div className="flex items-center justify-between border-b border-stone-200 pb-8 mt-4">
                 <div>
