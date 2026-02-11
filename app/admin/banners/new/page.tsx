@@ -1,4 +1,4 @@
-import { BannerForm } from '../components/BannerForm';
+import { BannerForm } from '@/app/admin/components/BannerForm';
 
 export default function NewBannerPage() {
     return (
