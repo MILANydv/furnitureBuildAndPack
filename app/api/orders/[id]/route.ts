@@ -2,7 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/config';
 import { OrderService } from '@/server/modules/orders/order.service';
-import { OrderStatus } from '@prisma/client';
+
+const OrderStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
+} as const;
+
+type OrderStatusType = typeof OrderStatus[keyof typeof OrderStatus];
 
 const orderService = new OrderService();
 
@@ -63,7 +72,7 @@ export async function PATCH(
     const body = await request.json();
     const { status } = body;
 
-    if (!status || !Object.values(OrderStatus).includes(status)) {
+    if (!status || !Object.values(OrderStatus).includes(status as any)) {
       return NextResponse.json(
         { error: 'Invalid status' },
         { status: 400 }
