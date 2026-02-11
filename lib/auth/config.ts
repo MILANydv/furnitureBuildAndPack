@@ -12,14 +12,14 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error('Please enter an email and password');
         }
 
         const userService = new UserService();
         const user = await userService.getUserByEmail(credentials.email);
 
-        if (!user) {
-          return null;
+        if (!user || !user.password) {
+          throw new Error('No user found with this email');
         }
 
         const isValid = await userService.verifyPassword(
@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!isValid) {
-          return null;
+          throw new Error('Incorrect password');
         }
 
         return {
@@ -44,14 +44,14 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
-        session.user.role = token.role as string;
+        session.user.id = token.id;
+        session.user.role = token.role;
       }
       return session;
     },

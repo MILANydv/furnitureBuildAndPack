@@ -2,14 +2,30 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Search, ShoppingBag, Heart, Menu, X, User, ChevronDown } from 'lucide-react';
+import {
+  Search,
+  ShoppingBag,
+  Heart,
+  Menu,
+  X,
+  User,
+  ChevronDown,
+  LogOut,
+  LayoutDashboard,
+  Settings,
+  ShoppingCart,
+  UserCircle
+} from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCategories } from '@/hooks/useCategories';
 
 export function Header() {
+  const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { cart } = useCart();
   const { wishlist } = useWishlist();
   const { data: categories = [] } = useCategories();
@@ -116,12 +132,109 @@ export function Header() {
             </Link>
 
             {/* Account */}
-            <Link
-              href="/account"
-              className="hidden sm:flex p-2 text-stone-600 hover:text-stone-900 transition-colors"
+            <div
+              className="relative"
+              onMouseEnter={() => setIsProfileOpen(true)}
+              onMouseLeave={() => setIsProfileOpen(false)}
             >
-              <User className="w-5 h-5" />
-            </Link>
+              <button
+                className="hidden sm:flex p-2 text-stone-600 hover:text-stone-900 transition-colors items-center gap-1"
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+              >
+                {session?.user ? (
+                  <div className="w-8 h-8 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold text-xs ring-2 ring-white">
+                    {session.user.name?.charAt(0) || session.user.email?.charAt(0).toUpperCase()}
+                  </div>
+                ) : (
+                  <User className="w-5 h-5" />
+                )}
+                <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${isProfileOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Account Dropdown */}
+              {isProfileOpen && (
+                <div className="absolute right-0 top-full w-64 bg-white shadow-2xl rounded-2xl border border-stone-100 py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                  {session?.user ? (
+                    <>
+                      <div className="px-4 py-3 border-b border-stone-100 mb-2">
+                        <p className="text-sm font-bold text-stone-900 truncate">{session.user.name}</p>
+                        <p className="text-xs text-stone-500 truncate">{session.user.email}</p>
+                        {session.user.role === 'ADMIN' && (
+                          <span className="inline-block mt-2 px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-black uppercase tracking-widest rounded">Admin</span>
+                        )}
+                      </div>
+
+                      <div className="space-y-0.5 px-2">
+                        <Link
+                          href="/account"
+                          className="flex items-center gap-3 px-3 py-2 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 rounded-xl transition-colors font-medium"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <UserCircle className="w-4 h-4" />
+                          Account Overview
+                        </Link>
+                        <Link
+                          href="/account/orders"
+                          className="flex items-center gap-3 px-3 py-2 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 rounded-xl transition-colors font-medium"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <ShoppingCart className="w-4 h-4" />
+                          My Orders
+                        </Link>
+                        {session.user.role === 'ADMIN' && (
+                          <Link
+                            href="/admin/dashboard"
+                            className="flex items-center gap-3 px-3 py-2 text-sm text-amber-600 hover:bg-amber-50 rounded-xl transition-colors font-bold"
+                            onClick={() => setIsProfileOpen(false)}
+                          >
+                            <LayoutDashboard className="w-4 h-4" />
+                            Admin Panel
+                          </Link>
+                        )}
+                        <Link
+                          href="/account/profile"
+                          className="flex items-center gap-3 px-3 py-2 text-sm text-stone-600 hover:bg-stone-50 hover:text-stone-900 rounded-xl transition-colors font-medium"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          <Settings className="w-4 h-4" />
+                          Settings
+                        </Link>
+                      </div>
+
+                      <div className="mt-3 pt-3 border-t border-stone-100 px-2">
+                        <button
+                          onClick={() => signOut()}
+                          className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors font-bold"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Sign Out
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="px-4 py-4 text-center">
+                      <p className="text-sm text-stone-500 mb-4 font-medium">Sign in to manage your orders and profile.</p>
+                      <div className="flex flex-col gap-2">
+                        <Link
+                          href="/auth/signin"
+                          className="w-full py-2.5 bg-stone-900 text-white text-sm font-bold rounded-xl hover:bg-stone-800 transition-colors"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          Sign In
+                        </Link>
+                        <Link
+                          href="/auth/signup"
+                          className="w-full py-2.5 border border-stone-200 text-stone-900 text-sm font-bold rounded-xl hover:bg-stone-50 transition-colors"
+                          onClick={() => setIsProfileOpen(false)}
+                        >
+                          Create Account
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* Mobile Menu Button */}
             <button
@@ -207,11 +320,70 @@ export function Header() {
             </Link>
             <Link
               href="/contact"
-              className="block py-2 text-stone-600 hover:text-stone-900"
+              className="block py-2 text-stone-600 hover:text-stone-900 border-b border-stone-50 pb-4"
               onClick={() => setIsMenuOpen(false)}
             >
               Contact
             </Link>
+
+            {/* Mobile Auth Links */}
+            <div className="pt-2">
+              {session?.user ? (
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 px-2 py-2 bg-stone-50 rounded-xl">
+                    <div className="w-10 h-10 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center font-bold">
+                      {session.user.name?.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-stone-900">{session.user.name}</p>
+                      <p className="text-xs text-stone-500">{session.user.email}</p>
+                    </div>
+                  </div>
+                  <Link
+                    href="/account"
+                    className="flex items-center gap-3 py-2 text-stone-600 font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <UserCircle className="w-5 h-5" />
+                    My Account
+                  </Link>
+                  {session.user.role === 'ADMIN' && (
+                    <Link
+                      href="/admin/dashboard"
+                      className="flex items-center gap-3 py-2 text-amber-600 font-bold"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <LayoutDashboard className="w-5 h-5" />
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => signOut()}
+                    className="flex items-center gap-3 py-2 text-red-600 font-bold w-full text-left"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <Link
+                    href="/auth/signin"
+                    className="flex items-center justify-center py-3 bg-stone-900 text-white font-bold rounded-xl text-sm"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/signup"
+                    className="flex items-center justify-center py-3 border border-stone-200 text-stone-900 font-bold rounded-xl text-sm"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Register
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

@@ -11,7 +11,8 @@ import {
   ArrowUpRight,
   TrendingUp,
   Clock,
-  ArrowRight
+  ArrowRight,
+  BarChart3
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { formatPrice } from '@/lib/utils/currency';

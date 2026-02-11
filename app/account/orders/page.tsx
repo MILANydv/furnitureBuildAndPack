@@ -1,30 +1,29 @@
-import { ShoppingBag, Search, ExternalLink } from 'lucide-react';
+import { ShoppingBag, Search, ExternalLink, Package } from 'lucide-react';
 import { formatPrice } from '@/lib/utils/currency';
 import Link from 'next/link';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth/config';
+import { prisma } from '@/lib/prisma/client';
+import { redirect } from 'next/navigation';
+import { OrderStatus } from '@prisma/client';
 
-export default function OrdersPage() {
-    // Mock logic: Empty state or orders list
-    const orders = [
-        {
-            id: 'ORD-2024-001',
-            date: 'Feb 10, 2024',
-            total: 45000,
-            status: 'Delivered',
-            items: [
-                { name: 'Modular Sofa Sectional', qty: 1, image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=100&h=100&fit=crop' },
-                { name: 'Marble Top Coffee Table', qty: 1, image: 'https://images.unsplash.com/photo-1577145900570-4c0567ec3792?w=100&h=100&fit=crop' }
-            ]
+export default async function OrdersPage() {
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+        redirect('/auth/signin');
+    }
+
+    const orders = await prisma.order.findMany({
+        where: { userId: session.user.id },
+        include: {
+            items: {
+                include: {
+                    product: true
+                }
+            }
         },
-        {
-            id: 'ORD-2024-003',
-            date: 'Feb 12, 2024',
-            total: 12000,
-            status: 'In Transit',
-            items: [
-                { name: 'Oak Side Table', qty: 2, image: 'https://images.unsplash.com/photo-1550928431-ee0ec6db30d3?w=100&h=100&fit=crop' }
-            ]
-        }
-    ];
+        orderBy: { createdAt: 'desc' }
+    });
 
     return (
         <div>
@@ -52,7 +51,7 @@ export default function OrdersPage() {
                                 <div className="flex gap-8">
                                     <div>
                                         <p className="text-xs uppercase tracking-wider text-stone-500 font-bold mb-1">Order Placed</p>
-                                        <p className="text-sm font-semibold text-stone-800">{order.date}</p>
+                                        <p className="text-sm font-semibold text-stone-800">{new Date(order.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</p>
                                     </div>
                                     <div>
                                         <p className="text-xs uppercase tracking-wider text-stone-500 font-bold mb-1">Total</p>
@@ -60,7 +59,7 @@ export default function OrdersPage() {
                                     </div>
                                     <div className="hidden sm:block">
                                         <p className="text-xs uppercase tracking-wider text-stone-500 font-bold mb-1">Order ID</p>
-                                        <p className="text-sm font-semibold text-stone-800">{order.id}</p>
+                                        <p className="text-sm font-semibold text-stone-800 uppercase">#ORD-{order.id.slice(-8)}</p>
                                     </div>
                                 </div>
                                 <div>
@@ -72,30 +71,47 @@ export default function OrdersPage() {
                             </div>
 
                             <div className="p-6">
-                                <div className="flex items-center gap-2 mb-4">
-                                    <span className={`w-2 h-2 rounded-full ${order.status === 'Delivered' ? 'bg-green-500' : 'bg-blue-500 animate-pulse'
+                                <div className="flex items-center gap-2 mb-6">
+                                    <span className={`w-2.5 h-2.5 rounded-full ${order.status === OrderStatus.DELIVERED ? 'bg-green-500' :
+                                        order.status === OrderStatus.CANCELLED ? 'bg-red-500' : 'bg-blue-500 animate-pulse'
                                         }`}></span>
-                                    <p className="font-bold text-stone-900">{order.status}</p>
+                                    <p className="font-black text-stone-900 uppercase tracking-widest text-xs">{order.status}</p>
                                 </div>
 
                                 <div className="space-y-4">
                                     {order.items.map((item, idx) => (
                                         <div key={idx} className="flex gap-4">
-                                            <div className="relative w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-stone-100 border border-stone-200">
-                                                <img src={item.image} alt={item.name} className="object-cover w-full h-full" />
+                                            <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-stone-100 border border-stone-200">
+                                                {item.product.images?.split(',')[0] ? (
+                                                    <img src={item.product.images.split(',')[0]} alt={item.product.name} className="object-cover w-full h-full text-[10px]" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-stone-300">
+                                                        <Package className="w-6 h-6" />
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="flex-1">
-                                                <p className="font-semibold text-stone-900 line-clamp-1">{item.name}</p>
-                                                <p className="text-sm text-stone-500">Quantity: {item.qty}</p>
+                                                <p className="font-bold text-stone-900 line-clamp-1">{item.product.name}</p>
+                                                <div className="flex items-center gap-3 mt-1">
+                                                    <p className="text-xs font-bold text-stone-500 bg-stone-100 px-2 py-0.5 rounded">Qty: {item.qty}</p>
+                                                    <p className="text-xs font-bold text-stone-500">{formatPrice(item.price)}</p>
+                                                </div>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             </div>
 
-                            <div className="bg-stone-50 px-6 py-3 flex gap-4 border-t border-stone-100">
-                                <button className="text-xs font-bold text-amber-600 hover:text-amber-700 transition-colors uppercase tracking-widest">Write a Review</button>
-                                <button className="text-xs font-bold text-stone-500 hover:text-stone-700 transition-colors uppercase tracking-widest">Buy Again</button>
+                            <div className="bg-stone-50 px-6 py-3 flex gap-6 border-t border-stone-100">
+                                {order.status === OrderStatus.DELIVERED && (
+                                    <button className="text-[10px] font-black text-amber-600 hover:text-amber-700 transition-colors uppercase tracking-widest">Write a Review</button>
+                                )}
+                                <Link
+                                    href="/shop/products"
+                                    className="text-[10px] font-black text-stone-500 hover:text-stone-700 transition-colors uppercase tracking-widest"
+                                >
+                                    Shop More
+                                </Link>
                             </div>
                         </div>
                     ))}

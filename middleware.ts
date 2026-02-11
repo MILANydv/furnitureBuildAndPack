@@ -16,10 +16,18 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        const isAdminRoute = req.nextUrl.pathname.startsWith('/admin');
+        const { pathname } = req.nextUrl;
+        const isAdminRoute = pathname.startsWith('/admin');
+        const isAccountRoute = pathname.startsWith('/account');
+
         if (isAdminRoute) {
           return token?.role === 'ADMIN';
         }
+
+        if (isAccountRoute) {
+          return !!token;
+        }
+
         return true;
       },
     },
@@ -27,5 +35,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/account/:path*'],
 };
