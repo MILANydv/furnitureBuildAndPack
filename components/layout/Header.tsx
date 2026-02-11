@@ -52,7 +52,7 @@ export function Header() {
                   {categories.map((category) => (
                     <Link
                       key={category.id}
-                      href={`/products/category/${category.slug}`}
+                      href={`/shop/products/category/${category.slug}`}
                       className="block px-4 py-2 text-stone-600 hover:bg-stone-50 hover:text-stone-900 transition-colors"
                     >
                       {category.name}
@@ -145,6 +145,11 @@ export function Header() {
                 placeholder="Search for furniture..."
                 className="w-full pl-12 pr-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500"
                 autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    window.location.href = `/shop/products?search=${e.currentTarget.value}`;
+                  }
+                }}
               />
               <button
                 onClick={() => setIsSearchOpen(false)}
@@ -172,7 +177,7 @@ export function Header() {
             {categories.map((category) => (
               <Link
                 key={category.id}
-                href={`/products/category/${category.slug}`}
+                href={`/shop/products/category/${category.slug}`}
                 className="block py-2 pl-4 text-stone-600 hover:text-stone-900"
                 onClick={() => setIsMenuOpen(false)}
               >

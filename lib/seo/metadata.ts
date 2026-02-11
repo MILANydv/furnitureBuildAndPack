@@ -65,7 +65,7 @@ export function generateHomeMetadata(): Metadata {
 export function generateProductMetadata(product: Product): Metadata {
   const title = product.seoTitle || `${product.name} | Buy Online in Nepal`;
   const description = product.seoDescription || product.shortDescription || product.description.slice(0, 160);
-  const url = `${siteConfig.url}/products/${product.slug}`;
+  const url = `${siteConfig.url}/shop/products/${product.slug}`;
   const image = product.images.find(img => img.isPrimary)?.url || product.images[0]?.url;
 
   return {
@@ -111,10 +111,33 @@ export function generateProductMetadata(product: Product): Metadata {
   };
 }
 
+export function generateProductsMetadata(): Metadata {
+  const title = 'All Products | ModuLiving Nepal';
+  const description = 'Browse our complete collection of premium modular furniture in Nepal. Custom sizes, easy assembly, and timeless designs for every room.';
+  const url = `${siteConfig.url}/shop/products`;
+
+  return {
+    title,
+    description,
+    keywords: ['furniture nepal', 'modular furniture nepal', 'online furniture store', 'buy modular sofa nepal', 'custom size bed nepal'],
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url,
+      title,
+      description,
+      siteName: siteConfig.name,
+    },
+  };
+}
+
 export function generateCategoryMetadata(category: Category): Metadata {
   const title = category.seoTitle || `${category.name} Furniture | ModuLiving Nepal`;
   const description = category.seoDescription || `Shop ${category.name.toLowerCase()} furniture online in Nepal. Custom sizes, flatpack delivery, easy assembly.`;
-  const url = `${siteConfig.url}/products/category/${category.slug}`;
+  const url = `${siteConfig.url}/shop/products/category/${category.slug}`;
 
   return {
     title,

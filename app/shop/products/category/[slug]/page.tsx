@@ -24,11 +24,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     };
   }
 
-  // Helper for metadata generation
-  return {
-    title: `${category.name} | Luxe Living`,
-    description: category.description || `Browse ${category.name} furniture collection`,
-  };
+  return generateCategoryMetadata(category as any);
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
@@ -55,8 +51,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: 'Home', url: '/' },
-    { name: 'Products', url: '/products' },
-    { name: category.name, url: `/products/category/${category.slug}` },
+    { name: 'Products', url: '/shop/products' },
+    { name: category.name, url: `/shop/products/category/${category.slug}` },
   ]);
 
   return (
@@ -123,7 +119,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                 <div className="text-center py-16">
                   <p className="text-stone-500">No products found in this category.</p>
                   <a
-                    href="/products"
+                    href="/shop/products"
                     className="inline-block mt-4 text-amber-600 hover:underline"
                   >
                     View all products

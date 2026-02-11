@@ -5,7 +5,8 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { FurnitureViewer } from '@/app/components/configurator/FurnitureViewer';
 import { ConfiguratorControls } from '@/app/components/configurator/ConfiguratorControls';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, ArrowLeft } from 'lucide-react';
+import { formatPrice } from '@/lib/utils/currency';
 
 interface Configuration {
     length?: number;
@@ -20,7 +21,7 @@ interface Configuration {
 
 export function ConfiguratorClient() {
     const params = useParams();
-    const productSlug = params.productSlug as string;
+    const productSlug = params.slug as string;
     const [product, setProduct] = useState<any>(null);
     const [options, setOptions] = useState<any>(null);
     const [configuration, setConfiguration] = useState<Configuration>({});
@@ -28,8 +29,9 @@ export function ConfiguratorClient() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchProduct();
-        fetchOptions();
+        if (productSlug) {
+            fetchProduct();
+        }
     }, [productSlug]);
 
     useEffect(() => {
@@ -37,6 +39,12 @@ export function ConfiguratorClient() {
             calculatePrice();
         }
     }, [configuration, product]);
+
+    useEffect(() => {
+        if (product) {
+            fetchOptions();
+        }
+    }, [product]);
 
     const fetchProduct = async () => {
         try {
@@ -107,9 +115,10 @@ export function ConfiguratorClient() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-stone-50 py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <p className="text-center text-stone-600">Loading configurator...</p>
+            <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-stone-900 mx-auto mb-4"></div>
+                    <p className="text-stone-600">Loading configurator...</p>
                 </div>
             </div>
         );
@@ -117,9 +126,12 @@ export function ConfiguratorClient() {
 
     if (!product) {
         return (
-            <div className="min-h-screen bg-stone-50 py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <p className="text-center text-stone-600">Product not found</p>
+            <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+                <div className="text-center">
+                    <p className="text-lg font-medium text-stone-900 mb-4">Product not found</p>
+                    <Link href="/shop/build-your-own" className="text-amber-600 hover:underline">
+                        Return to Collection
+                    </Link>
                 </div>
             </div>
         );
@@ -129,21 +141,28 @@ export function ConfiguratorClient() {
         <div className="min-h-screen bg-stone-50 py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-8">
-                    <Link href={`/products/${productSlug}`} className="text-amber-600 hover:text-amber-700">
-                        ← Back to Product
+                    <Link href={`/shop/products/${productSlug}`} className="inline-flex items-center text-stone-600 hover:text-stone-900 transition-colors">
+                        <ArrowLeft className="w-4 h-4 mr-2" />
+                        Back to Product Detail
                     </Link>
-                    <h1 className="text-4xl font-bold text-stone-900 mt-4">Build Your Own {product.name}</h1>
+                    <h1 className="text-4xl font-bold text-stone-900 mt-4">Customize Your {product.name}</h1>
+                    <p className="text-stone-500 mt-2">Personalize the dimensions and materials to fit your space perfectly.</p>
                 </div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2">
-                        <div className="bg-white rounded-lg p-6 h-[600px]">
+                        <div className="bg-white rounded-2xl p-6 h-[600px] shadow-sm border border-stone-100 overflow-hidden relative">
+                            <div className="absolute top-4 left-4 z-10">
+                                <span className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full">
+                                    Live Preview
+                                </span>
+                            </div>
                             <FurnitureViewer configuration={configuration} />
                         </div>
                     </div>
 
                     <div className="lg:col-span-1">
-                        <div className="bg-white rounded-lg p-6 sticky top-24">
+                        <div className="bg-white rounded-2xl p-6 sticky top-24 shadow-sm border border-stone-100">
                             <ConfiguratorControls
                                 options={options}
                                 configuration={configuration}
@@ -151,17 +170,20 @@ export function ConfiguratorClient() {
                             />
 
                             <div className="mt-8 pt-8 border-t border-stone-200">
-                                <div className="flex justify-between items-center mb-4">
-                                    <span className="text-lg font-semibold text-stone-900">Total Price</span>
-                                    <span className="text-3xl font-bold text-stone-900">${price.toFixed(2)}</span>
+                                <div className="flex justify-between items-center mb-6">
+                                    <span className="text-lg font-semibold text-stone-900">Configured Price</span>
+                                    <span className="text-3xl font-bold text-stone-900">{formatPrice(price)}</span>
                                 </div>
                                 <button
                                     onClick={handleAddToCart}
-                                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-stone-900 text-white rounded-lg hover:bg-stone-800 transition-colors"
+                                    className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-stone-900 text-white rounded-xl hover:bg-stone-800 transition-all active:scale-95 font-semibold"
                                 >
                                     <ShoppingCart className="w-5 h-5" />
-                                    Add to Cart
+                                    Add Custom Piece to Cart
                                 </button>
+                                <p className="text-xs text-stone-400 text-center mt-4">
+                                    *Manufacturing time: 10-14 days for custom pieces
+                                </p>
                             </div>
                         </div>
                     </div>

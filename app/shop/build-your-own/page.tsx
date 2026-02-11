@@ -114,7 +114,11 @@ export default async function BuildYourOwnPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {customizableProducts.map((product) => (
-              <ProductCard key={product.id} product={product as any} />
+              <ProductCard
+                key={product.id}
+                product={product as any}
+                customHref={`/shop/build-your-own/${product.slug}`}
+              />
             ))}
           </div>
         </div>

@@ -53,29 +53,29 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-stone-400 mt-4 mb-6">
-              IKEA-style modular furniture for Nepal. Easy assembly, 
+              IKEA-style modular furniture for Nepal. Easy assembly,
               online customization, and affordable prices.
             </p>
             <div className="flex gap-4">
-              <a 
-                href="https://facebook.com/modulivingnepal" 
-                target="_blank" 
+              <a
+                href="https://facebook.com/modulivingnepal"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center hover:bg-amber-600 transition-colors"
               >
                 <Facebook className="w-5 h-5" />
               </a>
-              <a 
-                href="https://instagram.com/modulivingnepal" 
-                target="_blank" 
+              <a
+                href="https://instagram.com/modulivingnepal"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center hover:bg-amber-600 transition-colors"
               >
                 <Instagram className="w-5 h-5" />
               </a>
-              <a 
-                href="https://twitter.com/modulivingnepal" 
-                target="_blank" 
+              <a
+                href="https://twitter.com/modulivingnepal"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-stone-800 rounded-full flex items-center justify-center hover:bg-amber-600 transition-colors"
               >
@@ -94,7 +94,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="text-stone-400 hover:text-white transition-colors">
+                <Link href="/shop/products" className="text-stone-400 hover:text-white transition-colors">
                   All Products
                 </Link>
               </li>

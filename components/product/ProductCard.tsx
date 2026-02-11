@@ -24,20 +24,23 @@ interface ProductCardProps {
   isInWishlist?: boolean;
   onToggleWishlist?: (id: string) => void;
   onAddToCart?: () => void;
+  customHref?: string;
 }
 
 export function ProductCard({
   product,
   isInWishlist = false,
   onToggleWishlist,
-  onAddToCart
+  onAddToCart,
+  customHref
 }: ProductCardProps) {
+  const href = customHref || `/shop/products/${product.slug}`;
 
   return (
     <div className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300">
       {/* Image Container */}
       <div className="relative aspect-square overflow-hidden bg-stone-100">
-        <Link href={`/shop/products/${product.slug}`}>
+        <Link href={href}>
           <Image
             src={product.imageUrl || '/placeholder.jpg'}
             alt={product.name}
@@ -93,7 +96,7 @@ export function ProductCard({
 
       {/* Content */}
       <div className="p-4">
-        <Link href={`/shop/products/${product.slug}`}>
+        <Link href={href}>
           {product.category && (
             <p className="text-sm text-stone-500 mb-1">{product.category.name}</p>
           )}
