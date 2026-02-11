@@ -1,18 +1,40 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/config';
-import { redirect } from 'next/navigation';
-import { UserService } from '@/server/modules/users/user.service';
-import { Search, Mail, UserPlus, Filter, MoreHorizontal, ShoppingBag, MapPin } from 'lucide-react';
+'use client';
 
-const userService = new UserService();
+import {
+  Search,
+  Mail,
+  UserPlus,
+  Filter,
+  MoreHorizontal,
+  ShoppingBag,
+  MapPin
+} from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 
-export default async function AdminCustomersPage() {
-  const session = await getServerSession(authOptions);
-  if (!session || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
+async function fetchCustomers() {
+  const res = await fetch('/api/admin/customers');
+  if (!res.ok) throw new Error('Failed to fetch customers');
+  return res.json();
+}
 
-  const { users } = await userService.getUsers({ role: 'CUSTOMER', limit: 50 });
+export default function AdminCustomersPage() {
+  const { data: customers = [], isLoading, error } = useQuery({
+    queryKey: ['admin-customers'],
+    queryFn: fetchCustomers,
+  });
+
+  if (isLoading) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="p-12 text-center bg-red-50 rounded-3xl border border-red-100">
+      <p className="text-red-600 font-bold mb-2">Error loading customers</p>
+      <p className="text-red-500 text-sm">Please try refreshing the page.</p>
+    </div>
+  );
 
   return (
     <div className="space-y-8">
@@ -34,19 +56,23 @@ export default async function AdminCustomersPage() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm">
           <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Total Customers</p>
-          <p className="text-2xl font-black text-stone-900">{users.length}</p>
+          <p className="text-2xl font-black text-stone-900">{customers.length}</p>
         </div>
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm text-green-600">
           <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">New This Month</p>
-          <p className="text-2xl font-black">24</p>
+          <p className="text-2xl font-black">0</p>
         </div>
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm text-amber-600">
-          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Active Shoppers</p>
-          <p className="text-2xl font-black">156</p>
+          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Avg. Orders</p>
+          <p className="text-2xl font-black">
+            {customers.length > 0
+              ? (customers.reduce((acc: number, c: any) => acc + c.orderCount, 0) / customers.length).toFixed(1)
+              : 0}
+          </p>
         </div>
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm text-purple-600">
-          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Avg. LTV</p>
-          <p className="text-2xl font-black">NPR 45K</p>
+          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Active Shoppers</p>
+          <p className="text-2xl font-black">{customers.filter((c: any) => c.orderCount > 0).length}</p>
         </div>
       </div>
 
@@ -82,18 +108,18 @@ export default async function AdminCustomersPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {users.map((user: any) => (
+              {customers.map((user: any) => (
                 <tr key={user.id} className="hover:bg-amber-50/20 transition-all group">
                   <td className="px-8 py-5">
                     <div className="flex items-center gap-4">
-                      <div className="w-11 h-11 bg-stone-100 rounded-2xl flex items-center justify-center text-stone-400 font-black border border-stone-200 group-hover:scale-110 transition-transform">
-                        {user.name?.charAt(0) || user.email.charAt(0).toUpperCase()}
+                      <div className="w-11 h-11 bg-stone-100 rounded-2xl flex items-center justify-center text-stone-400 font-black border border-stone-200 group-hover:scale-110 transition-transform uppercase">
+                        {user.name?.charAt(0) || user.email.charAt(0)}
                       </div>
                       <div>
                         <p className="font-bold text-stone-900 group-hover:text-amber-600 transition-colors">{user.name || 'Anonymous'}</p>
                         <div className="flex items-center gap-1.5 text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-0.5">
                           <MapPin className="w-3 h-3" />
-                          Kathmandu, Nepal
+                          Location N/A
                         </div>
                       </div>
                     </div>
@@ -108,7 +134,7 @@ export default async function AdminCustomersPage() {
                     <div className="flex items-center gap-2">
                       <div className="flex items-center gap-1 text-[11px] font-bold text-stone-500 bg-stone-50 px-2 py-1 rounded-lg">
                         <ShoppingBag className="w-3 h-3 text-stone-400" />
-                        3 Orders
+                        {user.orderCount} Orders
                       </div>
                     </div>
                   </td>
@@ -127,7 +153,7 @@ export default async function AdminCustomersPage() {
                   </td>
                 </tr>
               ))}
-              {users.length === 0 && (
+              {customers.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-8 py-12 text-center text-stone-400 italic">No customers found</td>
                 </tr>

@@ -76,14 +76,14 @@ export default async function AdminBannersPage() {
                   <span className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Order Position: {banner.displayOrder}</span>
                 </div>
                 <h3 className="text-xl font-black text-stone-900 mb-2 truncate group-hover:text-amber-600 transition-colors uppercase tracking-tight">{banner.title}</h3>
-                <p className="text-sm text-stone-500 line-clamp-2 leading-relaxed mb-6 font-medium">{banner.subtitle || 'No subtitle provided for this campaign.'}</p>
+                <p className="text-sm text-stone-500 line-clamp-2 leading-relaxed mb-6 font-medium">Click preview to see where this banner leads.</p>
 
                 <div className="flex items-center justify-between pt-6 border-t border-stone-100">
                   <div className="flex items-center gap-2">
                     <ToggleLeft className={`w-5 h-5 ${banner.isActive ? 'text-green-500' : 'text-stone-300'}`} />
                     <span className="text-xs font-bold text-stone-500 tracking-wide uppercase">Toggle Visibility</span>
                   </div>
-                  <Link href={banner.buttonLink || '#'} className="inline-flex items-center gap-1.5 text-stone-900 hover:text-amber-600 font-black text-xs uppercase tracking-widest transition-all">
+                  <Link href={banner.linkUrl || '#'} className="inline-flex items-center gap-1.5 text-stone-900 hover:text-amber-600 font-black text-xs uppercase tracking-widest transition-all">
                     Preview Link
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>

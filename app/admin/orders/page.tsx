@@ -3,64 +3,13 @@
 import Link from 'next/link';
 import { Search, Eye, Package, CheckCircle, XCircle, Filter, Download, MoreVertical, Calendar } from 'lucide-react';
 import { formatPrice } from '@/lib/utils/currency';
+import { useQuery } from '@tanstack/react-query';
 
-// Mock orders data
-const orders = [
-  {
-    id: 'ORD-001',
-    customer: 'Priya Sharma',
-    email: 'priya@example.com',
-    total: 45000,
-    status: 'delivered',
-    date: 'Feb 10, 2025',
-    items: 2
-  },
-  {
-    id: 'ORD-002',
-    customer: 'Rajesh Gurung',
-    email: 'rajesh@example.com',
-    total: 78000,
-    status: 'processing',
-    date: 'Feb 09, 2025',
-    items: 3
-  },
-  {
-    id: 'ORD-003',
-    customer: 'Anita Pradhan',
-    email: 'anita@example.com',
-    total: 23000,
-    status: 'pending',
-    date: 'Feb 09, 2025',
-    items: 1
-  },
-  {
-    id: 'ORD-004',
-    customer: 'Kumar Shrestha',
-    email: 'kumar@example.com',
-    total: 125000,
-    status: 'shipped',
-    date: 'Feb 08, 2025',
-    items: 5
-  },
-  {
-    id: 'ORD-005',
-    customer: 'Sita Rai',
-    email: 'sita@example.com',
-    total: 34000,
-    status: 'delivered',
-    date: 'Feb 07, 2025',
-    items: 1
-  },
-  {
-    id: 'ORD-006',
-    customer: 'Bikash Tamang',
-    email: 'bikash@example.com',
-    total: 56000,
-    status: 'cancelled',
-    date: 'Feb 06, 2025',
-    items: 2
-  },
-];
+async function fetchOrders() {
+  const res = await fetch('/api/admin/orders');
+  if (!res.ok) throw new Error('Failed to fetch orders');
+  return res.json();
+}
 
 const statusConfig = {
   pending: { label: 'Pending', color: 'bg-amber-50 text-amber-700 ring-amber-600/10', icon: Package },
@@ -71,6 +20,24 @@ const statusConfig = {
 };
 
 export default function AdminOrders() {
+  const { data: orders = [], isLoading, error } = useQuery({
+    queryKey: ['admin-orders'],
+    queryFn: fetchOrders,
+  });
+
+  if (isLoading) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="p-12 text-center bg-red-50 rounded-3xl border border-red-100">
+      <p className="text-red-600 font-bold mb-2">Error loading orders</p>
+      <p className="text-red-500 text-sm">Please try refreshing the page.</p>
+    </div>
+  );
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -94,20 +61,20 @@ export default function AdminOrders() {
       {/* Stats Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm">
-          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Active Orders</p>
-          <p className="text-2xl font-black text-stone-900">12</p>
+          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Total Orders</p>
+          <p className="text-2xl font-black text-stone-900">{orders.length}</p>
         </div>
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm text-blue-600">
           <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Processing</p>
-          <p className="text-2xl font-black">5</p>
+          <p className="text-2xl font-black">{orders.filter((o: any) => o.status === 'processing').length}</p>
         </div>
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm text-amber-600">
           <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Pending</p>
-          <p className="text-2xl font-black">3</p>
+          <p className="text-2xl font-black">{orders.filter((o: any) => o.status === 'pending').length}</p>
         </div>
         <div className="p-6 bg-white rounded-2xl border border-stone-100 shadow-sm text-green-600">
-          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Delivered Today</p>
-          <p className="text-2xl font-black">4</p>
+          <p className="text-[10px] uppercase tracking-widest font-black text-stone-400 mb-2">Delivered</p>
+          <p className="text-2xl font-black">{orders.filter((o: any) => o.status === 'delivered').length}</p>
         </div>
       </div>
 
@@ -147,23 +114,23 @@ export default function AdminOrders() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {orders.map((order) => {
-                const status = statusConfig[order.status as keyof typeof statusConfig];
+              {orders.map((order: any) => {
+                const status = statusConfig[order.status as keyof typeof statusConfig] || statusConfig.pending;
                 const StatusIcon = status.icon;
 
                 return (
                   <tr key={order.id} className="hover:bg-amber-50/20 transition-all group">
                     <td className="px-8 py-5 font-black text-stone-900">
-                      {order.id}
+                      #{order.id.slice(-6).toUpperCase()}
                       <p className="text-[10px] font-bold text-stone-400 mt-0.5">{order.date}</p>
                     </td>
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 bg-stone-100 rounded-full flex items-center justify-center text-stone-400 font-bold border border-stone-200">
-                          {order.customer.charAt(0)}
+                          {order.customer?.charAt(0) || 'U'}
                         </div>
                         <div>
-                          <p className="text-sm font-bold text-stone-900">{order.customer}</p>
+                          <p className="text-sm font-bold text-stone-900">{order.customer || 'Guest'}</p>
                           <p className="text-[10px] font-medium text-stone-400">{order.email}</p>
                         </div>
                       </div>
@@ -178,9 +145,9 @@ export default function AdminOrders() {
                     </td>
                     <td className="px-8 py-5 text-right">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-2.5 text-stone-400 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-all">
+                        <Link href={`/admin/orders/${order.id}`} className="p-2.5 text-stone-400 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-all">
                           <Eye className="w-4.5 h-4.5" />
-                        </button>
+                        </Link>
                         <button className="p-2.5 text-stone-400 hover:text-stone-900 hover:bg-stone-100 rounded-xl transition-all">
                           <MoreVertical className="w-4.5 h-4.5" />
                         </button>
@@ -189,23 +156,13 @@ export default function AdminOrders() {
                   </tr>
                 );
               })}
+              {orders.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-8 py-12 text-center text-stone-400 italic">No orders found.</td>
+                </tr>
+              )}
             </tbody>
           </table>
-        </div>
-      </div>
-
-      {/* Pagination */}
-      <div className="flex items-center justify-between px-8">
-        <p className="text-sm font-bold text-stone-400 uppercase tracking-widest">
-          Showing <span className="text-stone-900">1 to {orders.length}</span> of {orders.length} orders
-        </p>
-        <div className="flex gap-2">
-          <button className="px-6 py-2 bg-white border border-stone-200 rounded-xl text-stone-900 font-bold hover:bg-stone-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-xs" disabled>
-            Previous
-          </button>
-          <button className="px-6 py-2 bg-white border border-stone-200 rounded-xl text-stone-900 font-bold hover:bg-stone-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all text-xs" disabled>
-            Next
-          </button>
         </div>
       </div>
     </div>
