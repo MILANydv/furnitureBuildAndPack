@@ -26,3 +26,31 @@ export async function GET() {
         return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
     }
 }
+
+export async function POST(req: Request) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session || session.user.role !== 'ADMIN') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const body = await req.json();
+        const product = await prisma.product.create({
+            data: {
+                name: body.name,
+                slug: body.slug,
+                description: body.description,
+                basePrice: body.basePrice,
+                stock: body.stock,
+                imageUrl: body.imageUrl,
+                categoryId: body.categoryId,
+                isConfigurable: body.isConfigurable,
+            }
+        });
+
+        return NextResponse.json(product);
+    } catch (error) {
+        console.error('Create Product Error:', error);
+        return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
+    }
+}

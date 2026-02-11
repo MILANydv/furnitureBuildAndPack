@@ -1,4 +1,4 @@
-import { CouponForm } from '../components/CouponForm';
+import { CouponForm } from '@/app/admin/components/CouponForm';
 
 export default function NewCouponPage() {
     return (

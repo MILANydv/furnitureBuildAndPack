@@ -1,91 +1,100 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/config';
-import { redirect } from 'next/navigation';
-import { prisma } from '@/lib/prisma/client';
+'use client';
+
+import {
+  ImageIcon,
+  Plus,
+  Layout,
+  ArrowRight,
+  ToggleLeft,
+  Edit,
+  Trash2,
+  Eye
+} from 'lucide-react';
 import Link from 'next/link';
-import { ImageIcon, Plus, Layout, ArrowRight, ToggleLeft, Edit, Trash2 } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-export default async function AdminBannersPage() {
-  const session = await getServerSession(authOptions);
-  if (!session || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
+async function fetchBanners() {
+  const res = await fetch('/api/admin/banners');
+  if (!res.ok) throw new Error('Failed to fetch banners');
+  return res.json();
+}
 
-  const banners = await prisma.campaignBanner.findMany({
-    orderBy: [{ displayOrder: 'asc' }, { createdAt: 'desc' }],
+export default function AdminBannersPage() {
+  const queryClient = useQueryClient();
+  const { data: banners = [], isLoading } = useQuery({
+    queryKey: ['admin-banners'],
+    queryFn: fetchBanners,
   });
 
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await fetch(`/api/admin/banners/${id}`, { method: 'DELETE' });
+      if (!res.ok) throw new Error('Delete failed');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-banners'] });
+    }
+  });
+
+  if (isLoading) return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-stone-800"></div>
+    </div>
+  );
+
   return (
-    <div className="space-y-10">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+    <div className="space-y-12 pb-20">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900 leading-none mb-2">Campaign & Hero Banners</h1>
-          <p className="text-stone-500 font-medium">Capture attention with high-impact visual banners on the homepage.</p>
+          <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tight">Hero Campaigns</h1>
+          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Visual hooks of the landing interface</p>
         </div>
-        <div className="flex gap-3">
-          <Link href="/admin/banners/new" className="px-6 py-3 bg-stone-900 text-white font-bold rounded-xl hover:bg-stone-800 transition-all flex items-center gap-2 text-sm shadow-xl shadow-stone-900/10 active:scale-95">
-            <Plus className="w-4 h-4" />
-            Add New Banner
-          </Link>
-        </div>
+        <Link href="/admin/banners/new" className="px-10 py-4 bg-stone-900 text-white font-black rounded-2xl hover:bg-stone-800 transition-all flex items-center gap-2 text-xs uppercase tracking-widest shadow-2xl active:scale-95">
+          <Plus className="w-4 h-4" />
+          Deploy Banner
+        </Link>
       </div>
 
       {banners.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {banners.map((banner: any) => (
-            <div key={banner.id} className="group bg-white rounded-[2rem] shadow-sm border border-stone-100 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:-translate-y-1">
-              {/* Image Preview */}
-              <div className="relative h-56 w-full bg-stone-100 overflow-hidden">
+            <div key={banner.id} className="group bg-white rounded-[3rem] shadow-sm border border-stone-100 overflow-hidden hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 flex flex-col">
+              <div className="relative h-64 w-full bg-stone-100 overflow-hidden">
                 {banner.imageUrl ? (
-                  <img
-                    src={banner.imageUrl}
-                    alt={banner.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  <img src={banner.imageUrl} alt={banner.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-stone-300">
-                    <ImageIcon className="w-12 h-12" />
-                  </div>
+                  <div className="w-full h-full flex items-center justify-center text-stone-300"><ImageIcon className="w-12 h-12" /></div>
                 )}
 
-                {/* Badge Overlay */}
-                <div className="absolute top-4 left-4">
-                  <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ring-4 ring-white shadow-lg ${banner.isActive ? 'bg-green-500 text-white' : 'bg-stone-500 text-white'
-                    }`}>
-                    {banner.isActive ? 'Live' : 'Draft'}
+                <div className="absolute top-6 left-6 flex gap-2">
+                  <span className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest ring-4 ring-white shadow-2xl ${banner.isActive ? 'bg-emerald-500 text-white' : 'bg-stone-500 text-white'}`}>
+                    {banner.isActive ? 'Live' : 'Off-Air'}
                   </span>
-                </div>
-
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="flex gap-1.5">
-                    <button className="p-2 bg-white/90 backdrop-blur-sm text-stone-600 rounded-xl hover:bg-white hover:text-blue-600 transition-all shadow-xl">
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button className="p-2 bg-white/90 backdrop-blur-sm text-stone-600 rounded-xl hover:bg-white hover:text-red-600 transition-all shadow-xl">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+                  <span className="px-5 py-2 rounded-full text-[10px] font-black bg-stone-900 text-white uppercase tracking-widest ring-4 ring-white shadow-2xl">
+                    Pos #{banner.displayOrder}
+                  </span>
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-8">
-                <div className="flex items-center gap-2 mb-3">
-                  <Layout className="w-4 h-4 text-amber-500" />
-                  <span className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Order Position: {banner.displayOrder}</span>
-                </div>
-                <h3 className="text-xl font-black text-stone-900 mb-2 truncate group-hover:text-amber-600 transition-colors uppercase tracking-tight">{banner.title}</h3>
-                <p className="text-sm text-stone-500 line-clamp-2 leading-relaxed mb-6 font-medium">Click preview to see where this banner leads.</p>
+              <div className="p-10 flex-1">
+                <h3 className="text-2xl font-black text-stone-900 mb-2 truncate group-hover:text-amber-600 transition-colors uppercase tracking-tight leading-none">{banner.title}</h3>
+                <p className="text-xs text-stone-400 font-bold uppercase tracking-widest mb-10 pb-6 border-b border-stone-50">Visual Campaign Asset</p>
 
-                <div className="flex items-center justify-between pt-6 border-t border-stone-100">
-                  <div className="flex items-center gap-2">
-                    <ToggleLeft className={`w-5 h-5 ${banner.isActive ? 'text-green-500' : 'text-stone-300'}`} />
-                    <span className="text-xs font-bold text-stone-500 tracking-wide uppercase">Toggle Visibility</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-2">
+                    <Link href={`/admin/banners/${banner.id}/edit`} className="p-4 bg-stone-50 text-stone-400 rounded-2xl hover:bg-stone-900 hover:text-white transition-all shadow-sm">
+                      <Edit className="w-5 h-5" />
+                    </Link>
+                    <button
+                      onClick={() => { if (confirm('Cease this campaign?')) deleteMutation.mutate(banner.id) }}
+                      className="p-4 bg-stone-50 text-stone-400 rounded-2xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
                   </div>
-                  <Link href={banner.linkUrl || '#'} className="inline-flex items-center gap-1.5 text-stone-900 hover:text-amber-600 font-black text-xs uppercase tracking-widest transition-all">
-                    Preview Link
-                    <ArrowRight className="w-3.5 h-3.5" />
+                  <Link href={banner.linkUrl || '#'} className="bg-amber-500 text-white p-4 rounded-2xl shadow-xl shadow-amber-500/20 active:scale-95 group/link">
+                    <ArrowRight className="w-6 h-6 group-hover/link:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </div>
@@ -93,12 +102,12 @@ export default async function AdminBannersPage() {
           ))}
         </div>
       ) : (
-        <div className="text-center py-24 bg-stone-50 rounded-[3rem] border-2 border-dashed border-stone-200">
-          <ImageIcon className="w-20 h-20 text-stone-200 mx-auto mb-6" />
-          <h2 className="text-2xl font-black text-stone-900 mb-2 tracking-tight uppercase">No banners found</h2>
-          <p className="text-stone-500 mb-10 max-w-sm mx-auto font-medium">Your homepage looks empty! Add a visual banner to highlight your new collection or sales.</p>
-          <Link href="/admin/banners/new" className="inline-block px-10 py-4 bg-amber-600 text-white font-black rounded-2xl hover:bg-amber-700 transition-all shadow-2xl shadow-amber-600/30 uppercase tracking-widest text-sm active:scale-95">
-            Craft First Banner
+        <div className="text-center py-32 bg-stone-50 rounded-[4rem] border-4 border-dashed border-stone-200">
+          <ImageIcon className="w-24 h-24 text-stone-200 mx-auto mb-8" />
+          <h2 className="text-3xl font-black text-stone-900 mb-2 tracking-tight uppercase">Empty Gallery</h2>
+          <p className="text-stone-500 mb-12 max-w-sm mx-auto font-bold uppercase tracking-widest text-[10px]">Your storefront is missing its visual pulse.</p>
+          <Link href="/admin/banners/new" className="inline-block px-12 py-5 bg-amber-600 text-white font-black rounded-[2rem] hover:bg-amber-700 transition-all shadow-2xl shadow-amber-600/30 uppercase tracking-[0.2em] text-xs active:scale-95">
+            Initialize Content
           </Link>
         </div>
       )}

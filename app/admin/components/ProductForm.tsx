@@ -112,7 +112,11 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                     type="text"
                                     required
                                     value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                    onChange={(e) => {
+                                        const name = e.target.value;
+                                        const slug = name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+                                        setFormData({ ...formData, name, slug });
+                                    }}
                                     placeholder="e.g. Sovereign Velvet Sectional"
                                     className="w-full px-6 py-4 bg-stone-50 border border-transparent rounded-[1.5rem] focus:bg-white focus:border-amber-500 focus:ring-4 focus:ring-amber-500/5 transition-all outline-none font-bold text-stone-900"
                                 />

@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma/client';
-import { CouponForm } from '../../components/CouponForm';
+import { CouponForm } from '@/app/admin/components/CouponForm';
 import { notFound } from 'next/navigation';
 
 export default async function EditCouponPage({ params }: { params: { id: string } }) {
