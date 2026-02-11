@@ -14,7 +14,7 @@ export interface Category {
   name: string;
   slug: string;
   description: string | null;
-  image: string | null;
+  imageUrl: string | null;
   parentId: string | null;
   seoTitle: string | null;
   seoDescription: string | null;
@@ -29,6 +29,7 @@ export interface Product {
   description: string;
   shortDescription: string | null;
   basePrice: number;
+  imageUrl: string | null;
   categoryId: string;
   category: Category;
   images: ProductImage[];

@@ -1,26 +1,46 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Script from 'next/script';
-import { products, getProductBySlug, getRelatedProducts } from '@/data/products';
+import { prisma } from '@/lib/prisma/client';
 import { ProductGallery } from '@/components/product/ProductGallery';
 import { ProductCard } from '@/components/product/ProductCard';
-import { generateProductMetadata, generateProductJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo/metadata';
 import { ProductDetailClient } from './ProductDetailClient';
+import { mapPrismaProduct } from '@/lib/prisma/mappers';
+import {
+  generateProductMetadata,
+  generateProductJsonLd,
+  generateBreadcrumbJsonLd
+} from '@/lib/seo/metadata';
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return products.map((product) => ({
-    slug: product.slug,
-  }));
+export const dynamic = 'force-dynamic';
+
+async function getProduct(slug: string) {
+  const product = await prisma.product.findUnique({
+    where: { slug },
+    include: {
+      category: true,
+      variants: true,
+      configurableParts: true,
+      reviews: {
+        include: {
+          user: true
+        }
+      }
+    },
+  });
+
+  if (!product) return null;
+  return mapPrismaProduct(product as any);
 }
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
-  
+  const product = await getProduct(slug);
+
   if (!product) {
     return {
       title: 'Product Not Found',
@@ -32,19 +52,38 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProduct(slug);
 
   if (!product) {
     notFound();
   }
 
-  const relatedProducts = getRelatedProducts(product.id, 4);
-  
+  // Fetch related products
+  const relatedPrismaProducts = await prisma.product.findMany({
+    where: {
+      categoryId: product.categoryId,
+      id: { not: product.id }
+    },
+    include: {
+      category: true,
+      variants: true,
+      configurableParts: true,
+      reviews: {
+        include: {
+          user: true
+        }
+      }
+    },
+    take: 4
+  });
+
+  const relatedProducts = relatedPrismaProducts.map(p => mapPrismaProduct(p as any));
+
   const productJsonLd = generateProductJsonLd(product);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: 'Home', url: '/' },
-    { name: product.category.name, url: `/products/category/${product.category.slug}` },
-    { name: product.name, url: `/products/${product.slug}` },
+    { name: product.category.name, url: `/shop/products/category/${product.category.slug}` },
+    { name: product.name, url: `/shop/products/${product.slug}` },
   ]);
 
   return (
@@ -59,14 +98,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      
+
       <div className="min-h-screen bg-white">
         {/* Breadcrumb */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="flex items-center gap-2 text-sm text-stone-500">
             <a href="/" className="hover:text-stone-900">Home</a>
             <span>/</span>
-            <a href={`/products/category/${product.category.slug}`} className="hover:text-stone-900">
+            <a href={`/shop/products/category/${product.category.slug}`} className="hover:text-stone-900">
               {product.category.name}
             </a>
             <span>/</span>
@@ -79,7 +118,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Gallery */}
             <ProductGallery images={product.images} productName={product.name} />
-            
+
             {/* Product Info */}
             <ProductDetailClient product={product} />
           </div>

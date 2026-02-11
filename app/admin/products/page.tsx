@@ -1,11 +1,20 @@
-'use client';
 
 import Link from 'next/link';
 import { Plus, Search, Edit, Trash2, Eye } from 'lucide-react';
-import { products } from '@/data/products';
+import { prisma } from '@/lib/prisma/client';
 import { formatPrice } from '@/lib/utils/currency';
 
-export default function AdminProducts() {
+export const dynamic = 'force-dynamic';
+
+export default async function AdminProducts() {
+  const products = await prisma.product.findMany({
+    include: {
+      category: true,
+      variants: true
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
   return (
     <div className="min-h-screen bg-stone-50">
       {/* Admin Header */}
@@ -19,8 +28,8 @@ export default function AdminProducts() {
               <span className="text-stone-400">|</span>
               <span className="text-stone-600">Admin Panel</span>
             </div>
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="text-sm text-amber-600 hover:underline"
             >
               View Store
@@ -46,11 +55,10 @@ export default function AdminProducts() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block px-4 py-2 rounded-lg transition-colors ${
-                    item.active 
-                      ? 'bg-amber-50 text-amber-700 font-medium' 
-                      : 'text-stone-600 hover:bg-stone-50'
-                  }`}
+                  className={`block px-4 py-2 rounded-lg transition-colors ${item.active
+                    ? 'bg-amber-50 text-amber-700 font-medium'
+                    : 'text-stone-600 hover:bg-stone-50'
+                    }`}
                 >
                   {item.label}
                 </Link>
@@ -102,8 +110,8 @@ export default function AdminProducts() {
                       <tr key={product.id} className="hover:bg-stone-50">
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-3">
-                            <img 
-                              src={product.images[0]?.url} 
+                            <img
+                              src={product.imageUrl || '/placeholder.jpg'}
                               alt={product.name}
                               className="w-12 h-12 rounded-lg object-cover"
                             />
@@ -119,12 +127,11 @@ export default function AdminProducts() {
                           {product.variants.reduce((sum, v) => sum + v.stock, 0)} units
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            product.isActive 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-stone-100 text-stone-800'
-                          }`}>
-                            {product.isActive ? 'Active' : 'Inactive'}
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${product.stock > 0
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-stone-100 text-stone-800'
+                            }`}>
+                            {product.stock > 0 ? 'Active' : 'Inactive'}
                           </span>
                         </td>
                         <td className="px-6 py-4">

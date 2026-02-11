@@ -5,13 +5,16 @@ import Link from 'next/link';
 import { Search, ShoppingBag, Heart, Menu, X, User, ChevronDown } from 'lucide-react';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
-import { categories } from '@/data/products';
+import { useCategories } from '@/hooks/useCategories';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { cart } = useCart();
   const { wishlist } = useWishlist();
+  const { data: categories = [] } = useCategories();
+
+  // ... (rest of the component logic)
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-stone-100">
@@ -37,7 +40,7 @@ export function Header() {
             <Link href="/" className="text-stone-600 hover:text-stone-900 transition-colors">
               Home
             </Link>
-            
+
             {/* Categories Dropdown */}
             <div className="relative group">
               <button className="flex items-center text-stone-600 hover:text-stone-900 transition-colors">
@@ -55,6 +58,9 @@ export function Header() {
                       {category.name}
                     </Link>
                   ))}
+                  {categories.length === 0 && (
+                    <span className="block px-4 py-2 text-stone-400 italic">No categories</span>
+                  )}
                 </div>
               </div>
             </div>
@@ -155,8 +161,8 @@ export function Header() {
       {isMenuOpen && (
         <div className="lg:hidden bg-white border-t border-stone-200">
           <div className="px-4 py-4 space-y-3">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="block py-2 text-stone-600 hover:text-stone-900"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -173,29 +179,29 @@ export function Header() {
                 {category.name}
               </Link>
             ))}
-            <Link 
-              href="/shop/build-your-own" 
+            <Link
+              href="/shop/build-your-own"
               className="block py-2 text-amber-600 font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
               Build Your Own
             </Link>
-            <Link 
-              href="/shop/wishlist" 
+            <Link
+              href="/shop/wishlist"
               className="block py-2 text-stone-600 hover:text-stone-900"
               onClick={() => setIsMenuOpen(false)}
             >
               Wishlist ({wishlist.length})
             </Link>
-            <Link 
-              href="/about" 
+            <Link
+              href="/about"
               className="block py-2 text-stone-600 hover:text-stone-900"
               onClick={() => setIsMenuOpen(false)}
             >
               About
             </Link>
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="block py-2 text-stone-600 hover:text-stone-900"
               onClick={() => setIsMenuOpen(false)}
             >

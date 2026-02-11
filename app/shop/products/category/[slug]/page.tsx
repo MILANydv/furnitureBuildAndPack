@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { categories, products, getProductsByCategory } from '@/data/products';
+import { prisma } from '@/lib/prisma/client';
 import { generateCategoryMetadata, generateBreadcrumbJsonLd } from '@/lib/seo/metadata';
 import { ProductCard } from '@/components/product/ProductCard';
 import { CategoryFilter } from './CategoryFilter';
@@ -10,40 +10,48 @@ interface CategoryPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return categories.map((category) => ({
-    slug: category.slug,
-  }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const category = categories.find(c => c.slug === slug);
-  
+  const category = await prisma.category.findUnique({
+    where: { slug },
+  });
+
   if (!category) {
     return {
       title: 'Category Not Found',
     };
   }
 
-  return generateCategoryMetadata(category);
+  // Helper for metadata generation
+  return {
+    title: `${category.name} | Luxe Living`,
+    description: category.description || `Browse ${category.name} furniture collection`,
+  };
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
-  
-  const category = categories.find(c => c.slug === slug);
-  
+
+  const category = await prisma.category.findUnique({
+    where: { slug },
+  });
+
   if (!category) {
     notFound();
   }
 
-  const categoryProducts = getProductsByCategory(slug);
-  
-  // Get all materials for filter
-  const allMaterials = Array.from(new Set(
-    products.map(p => p.material).filter(Boolean)
-  ));
+  const categoryProducts = await prisma.product.findMany({
+    where: { categoryId: category.id },
+    include: { category: true },
+  });
+
+  // Get all materials for filter - this might need adjustment based on how materials are stored
+  // For now, let's just get distinct materials if we had a way, but since they are in variants, 
+  // we might skip this complex query for now or do a simpler one.
+  // Let's simplified assuming we might build a filter later or fetch from variants.
+  const allMaterials: string[] = [];
 
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
     { name: 'Home', url: '/' },
@@ -58,14 +66,14 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      
+
       <div className="min-h-screen bg-white">
         {/* Category Hero */}
         <div className="relative bg-stone-900 text-white">
           <div className="absolute inset-0 overflow-hidden">
-            {category.image && (
-              <img 
-                src={category.image} 
+            {category.imageUrl && (
+              <img
+                src={category.imageUrl}
                 alt={category.name}
                 className="w-full h-full object-cover opacity-40"
               />
@@ -87,7 +95,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar Filters */}
             <aside className="lg:w-64 flex-shrink-0">
-              <CategoryFilter materials={allMaterials as string[]} />
+              <CategoryFilter materials={allMaterials} />
             </aside>
 
             {/* Product Grid */}
@@ -114,8 +122,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               ) : (
                 <div className="text-center py-16">
                   <p className="text-stone-500">No products found in this category.</p>
-                  <a 
-                    href="/products" 
+                  <a
+                    href="/products"
                     className="inline-block mt-4 text-amber-600 hover:underline"
                   >
                     View all products

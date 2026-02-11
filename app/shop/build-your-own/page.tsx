@@ -1,15 +1,16 @@
-'use client';
-
-import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles, Ruler, Palette, Box } from 'lucide-react';
-import { products } from '@/data/products';
+import { prisma } from '@/lib/prisma/client';
 import { ProductCard } from '@/components/product/ProductCard';
-import { formatPrice } from '@/lib/utils/currency';
 
-export default function BuildYourOwnPage() {
-  const customizableProducts = products.filter(p => p.configurable);
-  
+export const dynamic = 'force-dynamic';
+
+export default async function BuildYourOwnPage() {
+  const customizableProducts = await prisma.product.findMany({
+    where: { isConfigurable: true },
+    include: { category: true }
+  });
+
   const features = [
     {
       icon: Ruler,
@@ -48,19 +49,19 @@ export default function BuildYourOwnPage() {
               <span className="text-amber-400">Furniture</span>
             </h1>
             <p className="text-xl text-stone-300 mb-8">
-              Create furniture that fits your space perfectly. Choose dimensions, 
+              Create furniture that fits your space perfectly. Choose dimensions,
               materials, and finishes to build your dream piece.
             </p>
             <div className="flex flex-wrap gap-4">
-              <a 
-                href="#products" 
+              <a
+                href="#products"
                 className="inline-flex items-center px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
               >
                 Start Building
                 <ArrowRight className="ml-2 w-5 h-5" />
               </a>
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="inline-flex items-center px-6 py-3 border border-white/30 text-white font-medium rounded-lg hover:bg-white/10 transition-colors"
               >
                 Talk to a Designer
@@ -76,7 +77,7 @@ export default function BuildYourOwnPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-stone-900 mb-4">How It Works</h2>
             <p className="text-stone-600 max-w-2xl mx-auto">
-              Building your custom furniture is easy. Follow these simple steps to create 
+              Building your custom furniture is easy. Follow these simple steps to create
               a piece that&apos;s uniquely yours.
             </p>
           </div>
@@ -106,14 +107,14 @@ export default function BuildYourOwnPage() {
               Start With a Base Design
             </h2>
             <p className="text-stone-600 max-w-2xl mx-auto">
-              Choose from our collection of customizable furniture pieces. 
+              Choose from our collection of customizable furniture pieces.
               Each can be tailored to your exact specifications.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {customizableProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product as any} />
             ))}
           </div>
         </div>
@@ -135,8 +136,8 @@ export default function BuildYourOwnPage() {
                   <div>
                     <h3 className="font-semibold mb-1">Perfect Fit Guarantee</h3>
                     <p className="text-stone-400">
-                      No more compromising on size. Get furniture that fits your 
-                      space exactly, whether it&apos;s a compact Kathmandu apartment 
+                      No more compromising on size. Get furniture that fits your
+                      space exactly, whether it&apos;s a compact Kathmandu apartment
                       or a spacious home.
                     </p>
                   </div>
@@ -148,7 +149,7 @@ export default function BuildYourOwnPage() {
                   <div>
                     <h3 className="font-semibold mb-1">Match Your Style</h3>
                     <p className="text-stone-400">
-                      Choose from various finishes and materials to match your 
+                      Choose from various finishes and materials to match your
                       existing decor or create a completely new look.
                     </p>
                   </div>
@@ -160,7 +161,7 @@ export default function BuildYourOwnPage() {
                   <div>
                     <h3 className="font-semibold mb-1">Quality Craftsmanship</h3>
                     <p className="text-stone-400">
-                      Each piece is handcrafted by skilled artisans using 
+                      Each piece is handcrafted by skilled artisans using
                       premium materials, ensuring durability and beauty.
                     </p>
                   </div>
@@ -168,7 +169,7 @@ export default function BuildYourOwnPage() {
               </div>
             </div>
             <div className="relative">
-              <img 
+              <img
                 src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&h=500&fit=crop"
                 alt="Custom furniture craftsmanship"
                 className="rounded-2xl"
@@ -189,19 +190,19 @@ export default function BuildYourOwnPage() {
             Ready to Build Your Dream Furniture?
           </h2>
           <p className="text-stone-600 mb-8">
-            Start customizing now or schedule a free consultation with our 
+            Start customizing now or schedule a free consultation with our
             design experts to help you create the perfect piece.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a 
-              href="#products" 
+            <a
+              href="#products"
               className="inline-flex items-center px-8 py-3 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors"
             >
               Browse Customizable Products
               <ArrowRight className="ml-2 w-5 h-5" />
             </a>
-            <Link 
-              href="/contact" 
+            <Link
+              href="/contact"
               className="inline-flex items-center px-8 py-3 border-2 border-stone-900 text-stone-900 font-semibold rounded-lg hover:bg-stone-900 hover:text-white transition-colors"
             >
               Book Free Consultation

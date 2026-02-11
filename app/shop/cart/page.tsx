@@ -18,7 +18,7 @@ export default function CartPage() {
           </div>
           <h1 className="text-2xl font-bold text-stone-900 mb-4">Your Cart is Empty</h1>
           <p className="text-stone-600 mb-8">
-            Looks like you haven&apos;t added any furniture to your cart yet. 
+            Looks like you haven&apos;t added any furniture to your cart yet.
             Browse our collection to find the perfect pieces for your home.
           </p>
           <Link
@@ -42,8 +42,8 @@ export default function CartPage() {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {cart.items.map((item) => (
-              <div 
-                key={item.id} 
+              <div
+                key={item.id}
                 className="flex gap-4 p-4 bg-stone-50 rounded-xl"
               >
                 {/* Product Image */}
@@ -59,13 +59,13 @@ export default function CartPage() {
 
                 {/* Product Info */}
                 <div className="flex-1 min-w-0">
-                  <Link 
-                    href={`/products/${item.product.slug}`}
+                  <Link
+                    href={`/shop/products/${item.product.slug}`}
                     className="font-semibold text-stone-900 hover:text-amber-600 transition-colors line-clamp-1"
                   >
                     {item.product.name}
                   </Link>
-                  
+
                   {/* Variant/Configuration Info */}
                   <div className="text-sm text-stone-500 mt-1">
                     {item.variant && (
@@ -171,7 +171,7 @@ export default function CartPage() {
 
               {/* Checkout Button */}
               <Link
-                href="/checkout"
+                href="/shop/checkout"
                 className="flex items-center justify-center w-full px-6 py-3 bg-amber-600 text-white font-semibold rounded-lg hover:bg-amber-700 transition-colors"
               >
                 Proceed to Checkout

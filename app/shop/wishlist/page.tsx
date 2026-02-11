@@ -4,16 +4,33 @@ import Link from 'next/link';
 import { Heart, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useWishlist } from '@/hooks/useWishlist';
 import { useCart } from '@/hooks/useCart';
-import { products } from '@/data/products';
 import { ProductCard } from '@/components/product/ProductCard';
+import { useQuery } from '@tanstack/react-query';
+
+async function fetchWishlistProducts(ids: string[]) {
+  if (ids.length === 0) return [];
+  const res = await fetch('/api/products/batch', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ids }),
+  });
+  if (!res.ok) throw new Error('Failed to fetch wishlist products');
+  return res.json();
+}
 
 export default function WishlistPage() {
   const { wishlist, toggleWishlist } = useWishlist();
   const { addToCart } = useCart();
 
-  const wishlistProducts = products.filter(p => wishlist.includes(p.id));
+  const { data: wishlistProducts = [], isLoading } = useQuery({
+    queryKey: ['wishlist-products', wishlist],
+    queryFn: () => fetchWishlistProducts(wishlist),
+    enabled: wishlist.length > 0,
+  });
 
-  if (wishlistProducts.length === 0) {
+  if (isLoading) return <div className="p-8 text-center">Loading wishlist...</div>;
+
+  if (wishlist.length === 0 || wishlistProducts.length === 0) {
     return (
       <div className="min-h-screen bg-stone-50 flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
@@ -45,14 +62,14 @@ export default function WishlistPage() {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {wishlistProducts.map((product) => (
+          {wishlistProducts.map((product: any) => (
             <ProductCard
               key={product.id}
               product={product}
               isInWishlist={true}
               onToggleWishlist={() => toggleWishlist(product.id)}
               onAddToCart={() => {
-                const variant = product.variants[0] || null;
+                const variant = product.variants?.[0] || null;
                 addToCart(product, variant, null, 1);
               }}
             />

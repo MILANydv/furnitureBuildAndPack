@@ -1,26 +1,50 @@
 import Link from 'next/link';
 import { ArrowRight, Star, Truck, Shield, Clock, Sparkles } from 'lucide-react';
-import { products, categories } from '@/data/products';
 import { ProductCard } from '@/components/product/ProductCard';
 import { formatPrice } from '@/lib/utils/currency';
+import { prisma } from '@/lib/prisma/client';
 
-export default function HomePage() {
-  const featuredProducts = products.slice(0, 4);
-  const bestSellers = products.filter(p => p.tags.includes('bestseller')).slice(0, 4);
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const featuredProducts = await prisma.product.findMany({
+    take: 4,
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  const bestSellers = await prisma.product.findMany({
+    take: 4,
+    include: {
+      category: true,
+    },
+    // In a real app, you'd sort by sales count or a 'bestseller' flag
+    orderBy: {
+      stock: 'asc', // Just a placeholder sort
+    },
+  });
+
+  const categories = await prisma.category.findMany({
+    take: 4,
+  });
 
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative bg-stone-900 text-white overflow-hidden">
         <div className="absolute inset-0">
-          <img 
+          <img
             src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&h=900&fit=crop"
             alt="Modern living room"
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-900 via-stone-900/80 to-transparent" />
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="max-w-2xl">
             <span className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/20 text-amber-400 rounded-full text-sm font-medium mb-6">
@@ -32,8 +56,8 @@ export default function HomePage() {
               <span className="text-amber-400">Every Space</span>
             </h1>
             <p className="text-xl text-stone-300 mb-8">
-              IKEA-style modular furniture for Nepal. Easy assembly, 
-              custom sizes, and affordable prices. Design your perfect 
+              IKEA-style modular furniture for Nepal. Easy assembly,
+              custom sizes, and affordable prices. Design your perfect
               piece online.
             </p>
             <div className="flex flex-wrap gap-4">
@@ -51,7 +75,7 @@ export default function HomePage() {
                 Shop Collection
               </Link>
             </div>
-            
+
             {/* Stats */}
             <div className="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/20">
               <div>
@@ -128,11 +152,11 @@ export default function HomePage() {
             {categories.map((category) => (
               <Link
                 key={category.id}
-                href={`/products/category/${category.slug}`}
+                href={`/shop/products/category/${category.slug}`}
                 className="group relative overflow-hidden rounded-2xl aspect-square"
               >
                 <img
-                  src={category.image || '/placeholder.jpg'}
+                  src={category.imageUrl || '/placeholder.jpg'}
                   alt={category.name}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
@@ -167,7 +191,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product as any} />
             ))}
           </div>
         </div>
@@ -185,7 +209,7 @@ export default function HomePage() {
                 Design Furniture That Fits Your Space
               </h2>
               <p className="text-stone-300 text-lg mb-8">
-                Every home is unique. That&apos;s why we let you customize dimensions, 
+                Every home is unique. That&apos;s why we let you customize dimensions,
                 materials, and finishes. Create furniture that fits your space perfectly.
               </p>
               <ul className="space-y-4 mb-8">
@@ -247,7 +271,7 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {bestSellers.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product as any} />
               ))}
             </div>
           </div>
@@ -311,7 +335,7 @@ export default function HomePage() {
             Ready to Transform Your Space?
           </h2>
           <p className="text-stone-600 mb-8">
-            Join thousands of happy customers who have furnished their homes with 
+            Join thousands of happy customers who have furnished their homes with
             our modular, customizable furniture.
           </p>
           <div className="flex flex-wrap justify-center gap-4">

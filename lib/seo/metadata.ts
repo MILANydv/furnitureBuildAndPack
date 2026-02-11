@@ -136,9 +136,9 @@ export function generateCategoryMetadata(category: Category): Metadata {
       title,
       description,
       siteName: siteConfig.name,
-      images: category.image ? [
+      images: category.imageUrl ? [
         {
-          url: category.image,
+          url: category.imageUrl,
           width: 400,
           height: 400,
           alt: category.name,
@@ -154,7 +154,7 @@ export function generateCategoryMetadata(category: Category): Metadata {
 
 export function generateProductJsonLd(product: Product) {
   const image = product.images.find(img => img.isPrimary)?.url || product.images[0]?.url;
-  
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -171,8 +171,8 @@ export function generateProductJsonLd(product: Product) {
       priceCurrency: 'NPR',
       lowPrice: Math.min(...product.variants.map(v => v.price)),
       highPrice: Math.max(...product.variants.map(v => v.price)),
-      availability: product.variants.some(v => v.stock > 0) 
-        ? 'https://schema.org/InStock' 
+      availability: product.variants.some(v => v.stock > 0)
+        ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
       seller: {
         '@type': 'Organization',

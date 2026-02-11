@@ -1,15 +1,14 @@
 import { MetadataRoute } from 'next';
-import { products, categories } from '@/data/products';
+import { prisma } from '@/lib/prisma/client';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://moduliving.np';
 
   // Static pages
   const staticPages = [
     '',
-    '/products',
     '/shop/cart',
     '/shop/wishlist',
     '/shop/build-your-own',
@@ -29,17 +28,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // Product pages
+  const products = await prisma.product.findMany({
+    select: { slug: true, updatedAt: true }
+  });
+
   const productPages = products.map((product) => ({
-    url: `${baseUrl}/products/${product.slug}`,
+    url: `${baseUrl}/shop/products/${product.slug}`,
     lastModified: product.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.9,
   }));
 
   // Category pages
+  const categories = await prisma.category.findMany({
+    select: { slug: true, updatedAt: true }
+  });
+
   const categoryPages = categories.map((category) => ({
-    url: `${baseUrl}/products/category/${category.slug}`,
-    lastModified: new Date(),
+    url: `${baseUrl}/shop/products/category/${category.slug}`,
+    lastModified: category.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
