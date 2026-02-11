@@ -47,8 +47,8 @@ export default function AdminBannersPage() {
     <div className="space-y-12 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tight">Hero Campaigns</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Visual hooks of the landing interface</p>
+          <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight">Hero Campaigns</h1>
+          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Visual hooks of the landing interface</p>
         </div>
         <Link href="/admin/banners/new" className="px-10 py-4 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all flex items-center gap-2 text-xs uppercase tracking-widest shadow-2xl active:scale-95">
           <Plus className="w-4 h-4" />
@@ -68,10 +68,10 @@ export default function AdminBannersPage() {
                 )}
 
                 <div className="absolute top-6 left-6 flex gap-2">
-                  <span className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest ring-4 ring-white shadow-2xl ${banner.isActive ? 'bg-emerald-500 text-white' : 'bg-stone-500 text-white'}`}>
+                  <span className={`px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest ring-4 ring-white shadow-2xl ${banner.isActive ? 'bg-emerald-500 text-white' : 'bg-stone-500 text-white'}`}>
                     {banner.isActive ? 'Live' : 'Off-Air'}
                   </span>
-                  <span className="px-5 py-2 rounded-full text-[10px] font-black bg-stone-900 text-white uppercase tracking-widest ring-4 ring-white shadow-2xl">
+                  <span className="px-5 py-2 rounded-full text-[11px] font-bold bg-stone-900 text-white uppercase tracking-widest ring-4 ring-white shadow-2xl">
                     Pos #{banner.displayOrder}
                   </span>
                 </div>
@@ -79,7 +79,7 @@ export default function AdminBannersPage() {
 
               <div className="p-10 flex-1">
                 <h3 className="text-2xl font-black text-stone-900 mb-2 truncate group-hover:text-amber-600 transition-colors uppercase tracking-tight leading-none">{banner.title}</h3>
-                <p className="text-xs text-stone-400 font-bold uppercase tracking-widest mb-10 pb-6 border-b border-stone-50">Visual Campaign Asset</p>
+                <p className="text-[11px] text-stone-500 font-bold uppercase tracking-widest mb-10 pb-6 border-b border-stone-50">Visual Campaign Asset</p>
 
                 <div className="flex items-center justify-between">
                   <div className="flex gap-2">
@@ -105,7 +105,7 @@ export default function AdminBannersPage() {
         <div className="text-center py-32 bg-stone-50 rounded-[10px] border-4 border-dashed border-stone-200">
           <ImageIcon className="w-24 h-24 text-stone-200 mx-auto mb-8" />
           <h2 className="text-3xl font-black text-stone-900 mb-2 tracking-tight uppercase">Empty Gallery</h2>
-          <p className="text-stone-500 mb-12 max-w-sm mx-auto font-bold uppercase tracking-widest text-[10px]">Your storefront is missing its visual pulse.</p>
+          <p className="text-stone-500 mb-12 max-w-sm mx-auto font-bold uppercase tracking-widest text-[11px]">Your storefront is missing its visual pulse.</p>
           <Link href="/admin/banners/new" className="inline-block px-12 py-5 bg-amber-600 text-white font-black rounded-[10px] hover:bg-amber-700 transition-all shadow-2xl shadow-amber-600/30 uppercase tracking-[0.2em] text-xs active:scale-95">
             Initialize Content
           </Link>

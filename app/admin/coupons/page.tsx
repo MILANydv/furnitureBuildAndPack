@@ -50,8 +50,8 @@ export default function AdminCouponsPage() {
     <div className="space-y-12 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tight">Voucher Forge</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Registry of market discount levers</p>
+          <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight">Voucher Forge</h1>
+          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Registry of market discount levers</p>
         </div>
         <Link href="/admin/coupons/new" className="px-10 py-4 bg-amber-600 text-white font-black rounded-[10px] hover:bg-amber-700 transition-all flex items-center gap-2 text-xs uppercase tracking-widest shadow-2xl shadow-amber-600/20 active:scale-95">
           <Plus className="w-4 h-4" />
@@ -66,32 +66,32 @@ export default function AdminCouponsPage() {
               <div className="w-14 h-14 bg-amber-50 rounded-[10px] flex items-center justify-center text-amber-500 shadow-sm border border-amber-500/10">
                 <Ticket className="w-7 h-7" />
               </div>
-              <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${coupon.isActive ? 'bg-emerald-500 text-white' : 'bg-stone-200 text-stone-500'}`}>
+              <span className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest ${coupon.isActive ? 'bg-emerald-500 text-white' : 'bg-stone-200 text-stone-400'}`}>
                 {coupon.isActive ? 'Active' : 'Expired'}
               </span>
             </div>
 
             <div className="p-10 pt-6">
-              <span className="text-[10px] font-black text-stone-400 uppercase tracking-[0.3em] block mb-2">Discount Token</span>
+              <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest block mb-2">Discount Token</span>
               <h3 className="text-3xl font-black text-stone-900 tracking-widest uppercase mb-6 group-hover:text-amber-600 transition-colors leading-none">{coupon.code}</h3>
 
               <div className="grid grid-cols-2 gap-6 bg-stone-50 p-6 rounded-[10px] mb-8 border border-stone-100">
                 <div>
-                  <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">Benefit</p>
-                  <p className="text-xl font-black text-stone-900 leading-none">
+                  <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Benefit</p>
+                  <p className="text-lg font-black text-stone-900 leading-none">
                     {coupon.discountType === 'PERCENTAGE' ? `${coupon.discountValue}%` : `NPR ${coupon.discountValue}`}
                   </p>
                 </div>
                 <div className="border-l border-stone-200 pl-6">
-                  <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mb-1">Uses</p>
-                  <p className="text-xl font-black text-stone-900 leading-none">{coupon.usedCount || 0} hits</p>
+                  <p className="text-[10px] font-bold text-stone-500 uppercase tracking-widest mb-1">Uses</p>
+                  <p className="text-lg font-black text-stone-900 leading-none">{coupon.usedCount || 0} hits</p>
                 </div>
               </div>
 
               <div className="flex items-center justify-between pt-6 border-t border-stone-50">
                 <div className="flex items-center gap-2 text-stone-400">
                   <Calendar className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-widest">{new Date(coupon.validUntil).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                  <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">{new Date(coupon.validUntil).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                 </div>
                 <div className="flex gap-2">
                   <Link href={`/admin/coupons/${coupon.id}/edit`} className="p-3 text-stone-400 hover:text-stone-900 hover:bg-stone-50 rounded-[10px] transition-all">

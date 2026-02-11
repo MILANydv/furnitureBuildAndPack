@@ -48,7 +48,7 @@ export function CouponForm({ initialData }: { initialData?: any }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-10 max-w-4xl mx-auto pb-20">
             <div className="flex items-center justify-between pb-8 border-b border-stone-100">
-                <h1 className="text-3xl font-black uppercase tracking-tight">{initialData ? 'Refine Promotion' : 'Mint New Coupon'}</h1>
+                <h1 className="text-2xl font-black uppercase tracking-tight">{initialData ? 'Refine Promotion' : 'Mint New Coupon'}</h1>
                 <div className="flex gap-4">
                     <button type="button" onClick={() => router.back()} className="px-6 py-3 bg-white border border-stone-200 rounded-[10px] text-stone-600 font-bold hover:bg-stone-50 transition-all text-xs uppercase tracking-widest leading-none">Discard</button>
                     <button type="submit" disabled={isLoading} className="px-8 py-3 bg-amber-600 text-white font-black rounded-[10px] hover:bg-amber-700 transition-all text-xs uppercase tracking-widest leading-none flex items-center gap-2 shadow-xl shadow-amber-600/20 disabled:opacity-50">
@@ -67,7 +67,7 @@ export function CouponForm({ initialData }: { initialData?: any }) {
                             <h2 className="text-sm font-black uppercase tracking-widest text-stone-900">Core Identity</h2>
                         </div>
                         <div className="space-y-4">
-                            <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Redemption Code</label>
+                            <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Redemption Code</label>
                             <input
                                 type="text"
                                 required
@@ -86,7 +86,7 @@ export function CouponForm({ initialData }: { initialData?: any }) {
                         </div>
                         <div className="grid sm:grid-cols-2 gap-6">
                             <div className="space-y-4">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Discount Mode</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Discount Mode</label>
                                 <div className="flex bg-stone-50 p-1 rounded-[10px]">
                                     <button
                                         type="button"
@@ -105,7 +105,7 @@ export function CouponForm({ initialData }: { initialData?: any }) {
                                 </div>
                             </div>
                             <div className="space-y-4">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Magnitude</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Magnitude</label>
                                 <input
                                     type="number"
                                     required
@@ -122,11 +122,11 @@ export function CouponForm({ initialData }: { initialData?: any }) {
                     <section className="bg-stone-900 p-8 rounded-[10px] text-white shadow-2xl space-y-6">
                         <div className="flex items-center gap-3">
                             <Calendar className="w-5 h-5 text-amber-500" />
-                            <h2 className="text-[10px] font-black uppercase tracking-[0.2em]">Temporal Constraints</h2>
+                            <h2 className="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-500">Temporal Constraints</h2>
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <span className="text-[9px] font-black uppercase text-stone-500 tracking-widest">Starts Valid</span>
+                                <span className="text-[10px] font-bold uppercase text-stone-500 tracking-widest">Starts Valid</span>
                                 <input
                                     type="date"
                                     value={formData.validFrom}
@@ -135,7 +135,7 @@ export function CouponForm({ initialData }: { initialData?: any }) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <span className="text-[9px] font-black uppercase text-stone-500 tracking-widest">Ends Valid</span>
+                                <span className="text-[10px] font-bold uppercase text-stone-500 tracking-widest">Ends Valid</span>
                                 <input
                                     type="date"
                                     value={formData.validUntil}
@@ -153,7 +153,7 @@ export function CouponForm({ initialData }: { initialData?: any }) {
                         </div>
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Max Minting (Uses)</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Max Minting (Uses)</label>
                                 <input
                                     type="number"
                                     value={formData.maxUses}
@@ -162,7 +162,7 @@ export function CouponForm({ initialData }: { initialData?: any }) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Threshold NPR</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Threshold NPR</label>
                                 <input
                                     type="number"
                                     value={formData.minOrderAmount}

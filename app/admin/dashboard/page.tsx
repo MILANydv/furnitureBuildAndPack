@@ -56,11 +56,11 @@ export default function AdminDashboard() {
       {/* Dynamic Welcome Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tight leading-none">Command Center</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Real-time synchronization of store heartbeat</p>
+          <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight leading-none">Command Center</h1>
+          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Real-time synchronization of store heartbeat</p>
         </div>
         <div className="flex gap-4">
-          <Link href="/admin/products/new" className="px-8 py-3.5 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] shadow-2xl active:scale-95">
+          <Link href="/admin/products/new" className="px-8 py-3.5 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all flex items-center gap-2 text-[11px] uppercase tracking-[0.1em] shadow-2xl active:scale-95">
             <Package className="w-4 h-4" />
             Forge Product
           </Link>
@@ -77,13 +77,13 @@ export default function AdminDashboard() {
                 <div className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-[10px] flex items-center justify-center transition-transform group-hover:rotate-12`}>
                   <stat.icon className="w-7 h-7" />
                 </div>
-                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${stat.trend.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
+                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest ${stat.trend.startsWith('+') ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-600'}`}>
                   <TrendingUp className="w-3.5 h-3.5" />
                   {stat.trend}
                 </div>
               </div>
               <div className="space-y-1">
-                <p className="text-stone-400 font-black text-[10px] uppercase tracking-[0.3em] leading-none mb-2">{stat.label}</p>
+                <p className="text-stone-500 font-bold text-[11px] uppercase tracking-widest leading-none mb-3">{stat.label}</p>
                 <p className="text-3xl font-black text-stone-900 leading-none">{stat.value}</p>
               </div>
             </div>
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                 <h2 className="text-xl font-black text-stone-900 uppercase tracking-tight">Post-Transaction Log</h2>
-                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">Live order acquisitions</p>
+                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">Live order acquisitions</p>
               </div>
             </div>
             <Link href="/admin/orders" className="p-3 bg-stone-50 text-stone-400 hover:text-stone-900 rounded-[10px] transition-all border border-transparent hover:border-stone-100">
@@ -112,10 +112,10 @@ export default function AdminDashboard() {
             <table className="w-full">
               <thead className="bg-stone-50/30 border-b border-stone-50">
                 <tr>
-                  <th className="px-10 py-5 text-left text-[10px] font-black text-stone-400 uppercase tracking-widest">Token</th>
-                  <th className="px-10 py-5 text-left text-[10px] font-black text-stone-400 uppercase tracking-widest">Entity</th>
-                  <th className="px-10 py-5 text-left text-[10px] font-black text-stone-400 uppercase tracking-widest">Value</th>
-                  <th className="px-10 py-5 text-right text-[10px] font-black text-stone-400 uppercase tracking-widest">State</th>
+                  <th className="px-10 py-5 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Token</th>
+                  <th className="px-10 py-5 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Entity</th>
+                  <th className="px-10 py-5 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Value</th>
+                  <th className="px-10 py-5 text-right text-[11px] font-bold text-stone-400 uppercase tracking-widest">State</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-50">
@@ -124,11 +124,11 @@ export default function AdminDashboard() {
                     <td className="px-10 py-6 font-black text-stone-900 uppercase tracking-tight">#{order.id.slice(-6)}</td>
                     <td className="px-10 py-6">
                       <p className="text-sm font-black text-stone-900 uppercase tracking-tight">{order.customer}</p>
-                      <p className="text-[9px] font-bold text-stone-400 uppercase tracking-widest mt-1">{order.date}</p>
+                      <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">{order.date}</p>
                     </td>
                     <td className="px-10 py-6 font-black text-stone-900 tabular-nums">{formatPrice(order.total)}</td>
                     <td className="px-10 py-6 text-right">
-                      <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest ${order.status === 'delivered' ? 'bg-emerald-50 text-emerald-700' :
+                      <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest ${order.status === 'delivered' ? 'bg-emerald-50 text-emerald-700' :
                         order.status === 'processing' ? 'bg-blue-50 text-blue-700' :
                           'bg-stone-50 text-stone-500'
                         }`}>
@@ -151,8 +151,8 @@ export default function AdminDashboard() {
                 <Ticket className="w-7 h-7 rotate-12" />
               </div>
               <h3 className="text-2xl font-black mb-4 uppercase tracking-tight leading-none">Execute Promotion</h3>
-              <p className="text-white/40 text-xs font-bold uppercase tracking-widest mb-10 leading-relaxed">Injection of new discount tokens into the market can boost quarterly acquisitions by up to 15%.</p>
-              <Link href="/admin/coupons/new" className="w-full py-4 bg-white text-stone-900 font-black rounded-[10px] hover:bg-amber-500 hover:text-white transition-all inline-flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.2em] shadow-xl active:scale-95">
+              <p className="text-white/50 text-sm font-medium uppercase tracking-widest mb-10 leading-relaxed">Injection of new discount tokens into the market can boost quarterly acquisitions by up to 15%.</p>
+              <Link href="/admin/coupons/new" className="w-full py-4 bg-white text-stone-900 font-bold rounded-[10px] hover:bg-amber-500 hover:text-white transition-all inline-flex items-center justify-center gap-3 text-[11px] uppercase tracking-[0.1em] shadow-xl active:scale-95">
                 Generate Token
                 <ArrowRight className="w-4 h-4" />
               </Link>
@@ -170,7 +170,7 @@ export default function AdminDashboard() {
               <div className="space-y-8">
                 <div className="space-y-3">
                   <div className="flex justify-between items-end">
-                    <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest leading-none">Monthly Target</span>
+                    <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest leading-none">Monthly Target</span>
                     <span className="text-sm font-black text-stone-900 leading-none">82%</span>
                   </div>
                   <div className="w-full bg-stone-50 h-3 rounded-full overflow-hidden border border-stone-100">
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
                 <div className="p-6 bg-stone-50 rounded-[10px] border border-stone-100">
-                  <p className="text-[10px] font-bold text-stone-500 leading-relaxed uppercase tracking-widest">The engine predicts a high-volume surge in the &apos;Living Room&apos; category based on current cart activity.</p>
+                  <p className="text-[11px] font-bold text-stone-500 leading-relaxed uppercase tracking-widest">The engine predicts a high-volume surge in the &apos;Living Room&apos; category based on current cart activity.</p>
                 </div>
               </div>
             </div>

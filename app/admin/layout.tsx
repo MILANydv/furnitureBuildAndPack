@@ -51,14 +51,14 @@ export default function AdminLayout({
                 <span className="text-lg font-black text-white tracking-tight leading-none">
                   MODU<span className="text-amber-500">LIVING</span>
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-stone-500 mt-1">Management</span>
+                <span className="text-[11px] uppercase tracking-[0.2em] font-extrabold text-stone-500 mt-1">Management</span>
               </div>
             </Link>
           </div>
 
           <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto custom-scrollbar">
             <div className="mb-8">
-              <p className="px-5 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 mb-4">Core Management</p>
+              <p className="px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4">Core Management</p>
               {navItems.slice(0, 4).map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -81,7 +81,7 @@ export default function AdminLayout({
             </div>
 
             <div className="mb-8">
-              <p className="px-5 text-[10px] font-black uppercase tracking-[0.2em] text-white/20 mb-4">Marketing & Visuals</p>
+              <p className="px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/30 mb-4">Marketing & Visuals</p>
               {navItems.slice(4).map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -183,7 +183,7 @@ function AdminUserInfo() {
     <div className="flex items-center gap-4">
       <div className="flex flex-col items-end">
         <span className="text-sm font-black text-stone-900 uppercase tracking-tight">{session?.user?.name || 'Admin'}</span>
-        <span className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]">Management Space</span>
+        <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Management Space</span>
       </div>
       <div className="w-12 h-12 bg-amber-100 rounded-[10px] border border-amber-500/20 overflow-hidden flex items-center justify-center text-amber-600 font-black shadow-lg shadow-amber-500/5 overflow-hidden">
         {session?.user?.name?.charAt(0) || <Users className="w-6 h-6" />}

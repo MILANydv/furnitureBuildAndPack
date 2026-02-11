@@ -43,8 +43,8 @@ export default function AdminCustomers() {
     <div className="space-y-12 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tight leading-none">Client Registry</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Management of the ModuLiving community</p>
+          <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight leading-none">Client Registry</h1>
+          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Management of the ModuLiving community</p>
         </div>
         <div className="flex gap-4">
           <div className="px-6 py-3 bg-white border border-stone-100 rounded-[10px] flex items-center gap-3">
@@ -82,7 +82,7 @@ export default function AdminCustomers() {
                 <h3 className="text-xl font-black text-stone-900 uppercase tracking-tight group-hover:text-amber-600 transition-colors">{customer.name || 'Anonymous'}</h3>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-                  <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">{customer.role}</p>
+                  <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">{customer.role}</p>
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@ export default function AdminCustomers() {
             <div className="p-10 flex items-center justify-between border-t border-stone-50 mt-8">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-stone-300" />
-                <span className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Member Since {new Date(customer.createdAt).getFullYear()}</span>
+                <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Member Since {new Date(customer.createdAt).getFullYear()}</span>
               </div>
               <button className="p-4 bg-stone-50 text-stone-300 rounded-[10px] group-hover:bg-stone-900 group-hover:text-white transition-all shadow-sm">
                 <ArrowUpRight className="w-5 h-5" />

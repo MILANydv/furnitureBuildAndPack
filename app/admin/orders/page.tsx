@@ -56,8 +56,8 @@ export default function AdminOrders() {
     <div className="space-y-12 pb-20">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-black text-stone-900 uppercase tracking-tight leading-none">Commerce Flow</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Real-time transaction & fulfillment stream</p>
+          <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight leading-none">Commerce Flow</h1>
+          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Real-time transaction & fulfillment stream</p>
         </div>
         <div className="flex gap-4">
           <div className="px-6 py-3 bg-white border border-stone-100 rounded-[10px] flex items-center gap-3">
@@ -89,11 +89,11 @@ export default function AdminOrders() {
           <table className="w-full">
             <thead className="bg-stone-50/50 border-b border-stone-100">
               <tr>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Transaction</th>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Customer Identity</th>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Deployment</th>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Order Value</th>
-                <th className="px-10 py-6 text-right text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Lifecycle</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Transaction</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Customer Identity</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Deployment</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Order Value</th>
+                <th className="px-10 py-6 text-right text-[11px] font-bold text-stone-400 uppercase tracking-widest">Lifecycle</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -108,18 +108,18 @@ export default function AdminOrders() {
                         </div>
                         <div>
                           <p className="font-black text-stone-900 uppercase tracking-tight">{new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
-                          <p className="text-[9px] font-black text-stone-400 uppercase tracking-widest mt-1">Ref ID: {order.id.slice(-12).toUpperCase()}</p>
+                          <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">Ref ID: {order.id.slice(-12).toUpperCase()}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-10 py-6">
                       <div className="flex flex-col">
                         <span className="text-sm font-black text-stone-900 uppercase tracking-tight">{order.user?.name}</span>
-                        <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">{order.user?.email}</span>
+                        <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">{order.user?.email}</span>
                       </div>
                     </td>
                     <td className="px-10 py-6">
-                      <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${statusConfig[order.status]?.color}`}>
+                      <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest border ${statusConfig[order.status]?.color}`}>
                         <StatusIcon className="w-3.5 h-3.5" />
                         {order.status}
                       </span>

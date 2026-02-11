@@ -66,10 +66,10 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
         <form onSubmit={handleSubmit} className="space-y-10 pb-24">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-stone-100">
                 <div>
-                    <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight">
+                    <h1 className="text-2xl font-black text-stone-900 uppercase tracking-tight">
                         {initialData ? 'Edit Masterpiece' : 'Craft New Product'}
                     </h1>
-                    <p className="text-xs font-bold text-stone-400 uppercase tracking-widest mt-1">
+                    <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">
                         Defining the essence of ModuLiving
                     </p>
                 </div>
@@ -107,7 +107,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
                         <div className="space-y-6">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Product Designation</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Product Designation</label>
                                 <input
                                     type="text"
                                     required
@@ -124,7 +124,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
                             <div className="grid sm:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Unique Slug</label>
+                                    <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Unique Slug</label>
                                     <input
                                         type="text"
                                         required
@@ -134,7 +134,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Category Classification</label>
+                                    <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Category Classification</label>
                                     <select
                                         required
                                         value={formData.categoryId}
@@ -150,7 +150,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Narrative Description</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Narrative Description</label>
                                 <textarea
                                     rows={6}
                                     value={formData.description}
@@ -169,7 +169,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
                         <div className="grid sm:grid-cols-2 gap-8">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Base Price (NPR)</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Base Price (NPR)</label>
                                 <input
                                     type="number"
                                     required
@@ -179,7 +179,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Current Stock Units</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Current Stock Units</label>
                                 <input
                                     type="number"
                                     required
@@ -222,7 +222,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                                         <div className="w-16 h-16 bg-white rounded-[10px] flex items-center justify-center text-stone-300 mb-4 shadow-sm">
                                             <Upload className="w-8 h-8" />
                                         </div>
-                                        <p className="text-xs font-bold text-stone-500 uppercase tracking-widest leading-relaxed">External Asset Link Required</p>
+                                        <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest leading-relaxed">External Asset Link Required</p>
                                     </>
                                 )}
                             </div>
@@ -245,7 +245,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
                         <div className="flex items-center justify-between p-6 bg-white/5 rounded-[10px] border border-white/5">
                             <div>
                                 <p className="text-xs font-black uppercase tracking-widest">Modular System</p>
-                                <p className="text-[10px] font-bold text-stone-500 mt-1">Enable multi-variant behavior?</p>
+                                <p className="text-[11px] font-bold text-stone-500 mt-1">Enable multi-variant behavior?</p>
                             </div>
                             <button
                                 type="button"
@@ -258,7 +258,7 @@ export function ProductForm({ initialData, categories }: ProductFormProps) {
 
                         <div className="bg-white/5 p-6 rounded-[10px] border border-dashed border-white/10 text-center">
                             <CheckCircle2 className="w-8 h-8 text-white/20 mx-auto mb-4" />
-                            <p className="text-[10px] font-bold text-stone-500 leading-relaxed uppercase tracking-widest">Advanced variants (colors, materials) can be managed after publication</p>
+                            <p className="text-[11px] font-bold text-stone-500 leading-relaxed uppercase tracking-widest">Advanced variants (colors, materials) can be managed after publication</p>
                         </div>
                     </section>
                 </div>

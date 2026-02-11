@@ -46,7 +46,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
     return (
         <form onSubmit={handleSubmit} className="space-y-10 max-w-4xl mx-auto pb-20">
             <div className="flex items-center justify-between pb-8 border-b border-stone-100">
-                <h1 className="text-3xl font-black uppercase tracking-tight">{initialData ? 'Update Campaign' : 'New Campaign'}</h1>
+                <h1 className="text-2xl font-black uppercase tracking-tight">{initialData ? 'Update Campaign' : 'New Campaign'}</h1>
                 <div className="flex gap-4">
                     <button type="button" onClick={() => router.back()} className="px-6 py-3 bg-white border border-stone-200 rounded-[10px] text-stone-600 font-bold hover:bg-stone-50 transition-all text-xs uppercase tracking-widest leading-none">Discard</button>
                     <button type="submit" disabled={isLoading} className="px-8 py-3 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-xs uppercase tracking-widest leading-none flex items-center gap-2 shadow-2xl disabled:opacity-50">
@@ -71,7 +71,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                 ) : (
                                     <div className="w-full h-full flex flex-col items-center justify-center text-stone-300 gap-2">
                                         <Upload className="w-8 h-8" />
-                                        <p className="text-[10px] font-black uppercase tracking-widest">Awaiting Media</p>
+                                        <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest">Awaiting Media</p>
                                     </div>
                                 )}
                             </div>
@@ -92,7 +92,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                         </div>
                         <div className="space-y-4">
                             <div className="flex items-center justify-between p-4 bg-stone-50 rounded-[10px]">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-stone-400">Campaign Status</span>
+                                <span className="text-[11px] font-bold uppercase tracking-widest text-stone-500">Campaign Status</span>
                                 <button
                                     type="button"
                                     onClick={() => setFormData({ ...formData, isActive: !formData.isActive })}
@@ -102,7 +102,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                 </button>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Sequence Priority</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Sequence Priority</label>
                                 <input
                                     type="number"
                                     value={formData.displayOrder}
@@ -119,7 +119,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                         <h2 className="text-sm font-black uppercase tracking-widest text-stone-900 border-b pb-4">Content Metadata</h2>
                         <div className="space-y-6">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Hero Title</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Hero Title</label>
                                 <input
                                     type="text"
                                     placeholder="e.g. Winter Luxury Collection"
@@ -129,7 +129,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1">Sub-Narrative</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1">Sub-Narrative</label>
                                 <textarea
                                     rows={4}
                                     placeholder="Brief description of the campaign..."
@@ -139,7 +139,7 @@ export function BannerForm({ initialData }: { initialData?: any }) {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest ml-1 leading-relaxed">Destination URL</label>
+                                <label className="text-[11px] font-bold text-stone-500 uppercase tracking-widest ml-1 leading-relaxed">Destination URL</label>
                                 <div className="relative">
                                     <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-300" />
                                     <input

@@ -39,14 +39,14 @@ export default function AdminAnalytics() {
         <div className="space-y-12 pb-20">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-stone-900 leading-tight uppercase tracking-tight">Analytics Center</h1>
-                    <p className="text-stone-500 font-bold mt-2 uppercase tracking-[0.1em] text-xs">Deep scan of store performance metrics</p>
+                    <h1 className="text-3xl font-black text-stone-900 leading-tight uppercase tracking-tight">Analytics Center</h1>
+                    <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Deep scan of store performance metrics</p>
                 </div>
                 <div className="flex gap-4">
                     <div className="px-6 py-3 bg-white border border-stone-200 rounded-[10px] flex items-center gap-3">
                         <Target className="w-5 h-5 text-amber-500" />
                         <div className="flex flex-col">
-                            <span className="text-[10px] font-black text-stone-400 uppercase leading-none mb-1">Store Target</span>
+                            <span className="text-[11px] font-bold text-stone-500 uppercase leading-none mb-1">Store Target</span>
                             <span className="text-sm font-black text-stone-900 leading-none">84.2% Reached</span>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ export default function AdminAnalytics() {
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <p className="text-[10px] font-black text-stone-400 uppercase tracking-widest leading-none mb-2">{stat.label}</p>
+                                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest leading-none mb-3">{stat.label}</p>
                                 <div className="flex items-end gap-3">
                                     <p className="text-3xl font-black text-stone-900 leading-none">{stat.value}</p>
                                     <div className={`flex items-center gap-1 text-[11px] font-black ${stat.up ? 'text-emerald-600' : 'text-red-600'} pb-1`}>
@@ -94,7 +94,7 @@ export default function AdminAnalytics() {
                             </div>
                             <div>
                                 <h2 className="text-xl font-black text-stone-900 uppercase tracking-tight">Best Sellers</h2>
-                                <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">Based on recent sales volume</p>
+                                <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">Based on recent sales volume</p>
                             </div>
                         </div>
                         <div className="px-4 py-2 bg-stone-50 rounded-[10px] text-xs font-bold text-stone-600 border border-stone-100 uppercase tracking-widest">Global</div>
@@ -107,7 +107,7 @@ export default function AdminAnalytics() {
                                     <span className="w-8 text-sm font-black text-stone-300">#{i + 1}</span>
                                     <div>
                                         <p className="font-black text-stone-900 group-hover:text-amber-600 transition-colors uppercase tracking-tight">{product.name}</p>
-                                        <p className="text-xs font-bold text-stone-400 mt-1 uppercase tracking-widest">{product.sold} Units Sold</p>
+                                        <p className="text-[11px] font-bold text-stone-500 mt-1 uppercase tracking-widest">{product.sold} Units Sold</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
@@ -132,7 +132,7 @@ export default function AdminAnalytics() {
                             </div>
                             <div>
                                 <h2 className="text-xl font-black text-white uppercase tracking-tight">Segments</h2>
-                                <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Product distribution</p>
+                                <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest mt-1">Product distribution</p>
                             </div>
                         </div>
 
@@ -154,7 +154,7 @@ export default function AdminAnalytics() {
                                     <div className="w-10 h-10 bg-white/5 rounded-[10px] flex items-center justify-center text-white/30">
                                         <Layers className="w-5 h-5" />
                                     </div>
-                                    <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] leading-relaxed">Inventory Utilization is currently at 89% capacity</p>
+                                    <p className="text-[11px] font-bold text-white/30 uppercase tracking-widest leading-relaxed">Inventory Utilization is currently at 89% capacity</p>
                                 </div>
                                 <button className="w-full py-4 bg-white text-stone-900 font-black rounded-[10px] hover:bg-amber-500 hover:text-white transition-all text-xs uppercase tracking-widest active:scale-95 shadow-xl shadow-white/5">
                                     Expand Catalog
@@ -172,7 +172,7 @@ export default function AdminAnalytics() {
                 </div>
                 <div className="space-y-3">
                     <h2 className="text-3xl font-black text-stone-900 uppercase tracking-tight">Behavioral Intelligence</h2>
-                    <p className="text-stone-500 max-w-xl font-bold uppercase tracking-widest text-[10px] leading-relaxed">Predictive engine is currently indexing past transaction patterns to provide revenue forecasting.</p>
+                    <p className="text-stone-500 max-w-xl font-bold uppercase tracking-widest text-[11px] leading-relaxed">Predictive engine is currently indexing past transaction patterns to provide revenue forecasting.</p>
                 </div>
                 <div className="flex gap-4">
                     <button className="px-10 py-4 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-xs uppercase tracking-widest shadow-2xl active:scale-95">

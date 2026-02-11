@@ -77,11 +77,11 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                     <div>
                         <div className="flex items-center gap-3">
                             <h1 className="text-3xl font-black text-stone-900 uppercase tracking-tight">Order #{order.id.slice(-8).toUpperCase()}</h1>
-                            <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-stone-900 text-white`}>
+                            <span className={`px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest bg-stone-900 text-white`}>
                                 {order.status}
                             </span>
                         </div>
-                        <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em] mt-2">
+                        <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-2">
                             Transaction recorded on {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                         </p>
                     </div>
@@ -112,7 +112,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                                     <step.icon className="w-6 h-6" />
                                 </div>
                                 <div className="text-center">
-                                    <p className={`text-[10px] font-black uppercase tracking-widest ${isPast || isCurrent ? 'text-stone-900' : 'text-stone-300'}`}>{step.label}</p>
+                                    <p className={`text-[11px] font-bold uppercase tracking-widest ${isPast || isCurrent ? 'text-stone-900' : 'text-stone-300'}`}>{step.label}</p>
                                 </div>
                             </div>
                         )
@@ -125,7 +125,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                     {/* Order Items */}
                     <section className="bg-white rounded-[10px] border border-stone-100 shadow-sm overflow-hidden">
                         <div className="p-8 border-b border-stone-100 bg-stone-50/50">
-                            <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest flex items-center gap-3">
+                            <h2 className="text-[12px] font-black text-stone-900 uppercase tracking-widest flex items-center gap-3">
                                 <Package className="w-5 h-5 text-amber-500" />
                                 Component Inventory
                             </h2>
@@ -139,12 +139,12 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                                         </div>
                                         <div>
                                             <p className="font-black text-stone-900 uppercase tracking-tight">{item.product?.name}</p>
-                                            <p className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em] mt-1">Quantity: {item.qty} units</p>
+                                            <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">Quantity: {item.qty} units</p>
                                         </div>
                                     </div>
                                     <div className="text-right">
                                         <p className="text-lg font-black text-stone-900">{formatPrice(item.price * item.qty)}</p>
-                                        <p className="text-[10px] font-bold text-stone-400 uppercase mt-1">{formatPrice(item.price)} / unit</p>
+                                        <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">{formatPrice(item.price)} / unit</p>
                                     </div>
                                 </div>
                             ))}
@@ -152,7 +152,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                         <div className="p-10 bg-stone-900 text-white">
                             <div className="flex justify-between items-end">
                                 <div>
-                                    <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-2">Total Value</p>
+                                    <p className="text-[11px] font-bold text-white/30 uppercase tracking-widest mb-2">Total Value</p>
                                     <p className="text-4xl font-black">{formatPrice(order.total)}</p>
                                 </div>
                                 <div className="text-right">
@@ -168,7 +168,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
 
                     {/* Quick Updates */}
                     <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm">
-                        <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest mb-8">System Overrides</h2>
+                        <h2 className="text-[12px] font-black text-stone-900 uppercase tracking-widest mb-8">System Overrides</h2>
                         <div className="grid sm:grid-cols-2 gap-4">
                             {statusFlow.map((s) => (
                                 <button
@@ -179,7 +179,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                                 >
                                     <div className="flex items-center gap-4">
                                         <s.icon className={`w-5 h-5 ${order.status === s.value ? 'text-amber-500' : 'text-stone-300'}`} />
-                                        <span className="text-xs font-black uppercase tracking-widest">{s.label}</span>
+                                        <span className="text-[11px] font-bold uppercase tracking-widest">{s.label}</span>
                                     </div>
                                     {order.status === s.value && <CheckCircle2 className="w-4 h-4 text-amber-500" />}
                                 </button>
@@ -197,7 +197,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                             </div>
                             <div>
                                 <h2 className="text-xl font-black text-white uppercase tracking-tight">Customer Info</h2>
-                                <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mt-1">Acquisition Details</p>
+                                <p className="text-[11px] font-bold text-white/40 uppercase tracking-widest mt-1">Acquisition Details</p>
                             </div>
                         </div>
 
@@ -207,7 +207,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                                     <Mail className="w-4.5 h-4.5" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-1">Email Channel</span>
+                                    <span className="text-[11px] font-bold text-white/30 uppercase tracking-widest mb-1">Email Channel</span>
                                     <span className="text-sm font-bold text-white/80">{order.user?.email}</span>
                                 </div>
                             </div>
@@ -216,7 +216,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                                     <Phone className="w-4.5 h-4.5" />
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-[10px] font-black text-white/30 uppercase tracking-widest mb-1">Direct Line</span>
+                                    <span className="text-[11px] font-bold text-white/30 uppercase tracking-widest mb-1">Direct Line</span>
                                     <span className="text-sm font-bold text-white/80">{order.user?.phone || '+977 N/A'}</span>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                     <section className="bg-white p-10 rounded-[10px] border border-stone-100 shadow-sm space-y-8">
                         <div className="flex items-center gap-4">
                             <MapPin className="w-5 h-5 text-amber-500" />
-                            <h2 className="text-sm font-black text-stone-900 uppercase tracking-widest">Deployment Address</h2>
+                            <h2 className="text-[12px] font-black text-stone-900 uppercase tracking-widest">Deployment Address</h2>
                         </div>
 
                         <div className="bg-stone-50 p-8 rounded-[10px] border border-stone-100">
@@ -239,7 +239,7 @@ export default function OrderDetailPage({ params }: { params: { id: string } }) 
                             </div>
                         </div>
 
-                        <button className="w-full py-4 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-stone-900/10">
+                        <button className="w-full py-4 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all text-[11px] font-bold uppercase tracking-widest shadow-xl shadow-stone-900/10">
                             Open in Logistics Engine
                         </button>
                     </section>

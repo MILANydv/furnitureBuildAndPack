@@ -60,8 +60,8 @@ export default function AdminProducts() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8">
         <div>
-          <h1 className="text-4xl font-black text-stone-900 leading-none uppercase tracking-tight">Product Catalog</h1>
-          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[10px]">Registry of all crafted inventory</p>
+          <h1 className="text-3xl font-black text-stone-900 leading-none uppercase tracking-tight">Product Catalog</h1>
+          <p className="text-stone-500 font-bold mt-2 uppercase tracking-widest text-[11px]">Registry of all crafted inventory</p>
         </div>
         <div className="flex gap-4">
           <Link href="/admin/products/new" className="px-10 py-4 bg-stone-900 text-white font-black rounded-[10px] hover:bg-stone-800 transition-all flex items-center gap-2 text-xs uppercase tracking-widest shadow-2xl active:scale-95">
@@ -80,7 +80,7 @@ export default function AdminProducts() {
           { label: 'Archived', value: products.filter((p: any) => p.stock <= 0).length, color: 'text-red-600' }
         ].map((s, i) => (
           <div key={i} className="bg-white p-6 rounded-[10px] border border-stone-100 shadow-sm">
-            <p className="text-[10px] font-black text-stone-400 uppercase tracking-[0.2em] mb-2">{s.label}</p>
+            <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mb-2">{s.label}</p>
             <p className={`text-3xl font-black ${s.color}`}>{s.value}</p>
           </div>
         ))}
@@ -110,11 +110,11 @@ export default function AdminProducts() {
           <table className="w-full">
             <thead className="bg-stone-50/50 border-b border-stone-100">
               <tr>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Product Info</th>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Inventory</th>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Price Set</th>
-                <th className="px-10 py-6 text-left text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Lifecycle</th>
-                <th className="px-10 py-6 text-right text-[10px] font-black text-stone-400 uppercase tracking-[0.2em]">Actions</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Product Info</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Inventory</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Price Set</th>
+                <th className="px-10 py-6 text-left text-[11px] font-bold text-stone-400 uppercase tracking-widest">Lifecycle</th>
+                <th className="px-10 py-6 text-right text-[11px] font-bold text-stone-400 uppercase tracking-widest">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -131,14 +131,14 @@ export default function AdminProducts() {
                       </div>
                       <div>
                         <p className="font-black text-stone-900 uppercase tracking-tight group-hover:text-amber-600 transition-colors">{product.name}</p>
-                        <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">{product.category?.name || 'Modular'}</p>
+                        <p className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">{product.category?.name || 'Modular'}</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-10 py-6">
                     <div className="flex flex-col">
                       <span className="text-sm font-black text-stone-900">{product.stock} Units</span>
-                      <span className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-1">{product.variants?.length || 0} variants</span>
+                      <span className="text-[11px] font-bold text-stone-500 uppercase tracking-widest mt-1">{product.variants?.length || 0} variants</span>
                     </div>
                   </td>
                   <td className="px-10 py-6">
@@ -147,7 +147,7 @@ export default function AdminProducts() {
                   <td className="px-10 py-6">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${product.stock > 0 ? 'bg-emerald-500 shadow-lg shadow-emerald-500/50' : 'bg-red-500 shadow-lg shadow-red-500/50'}`}></div>
-                      <span className={`text-[10px] font-black uppercase tracking-widest ${product.stock > 0 ? 'text-emerald-700' : 'text-red-700'}`}>
+                      <span className={`text-[11px] font-bold uppercase tracking-widest ${product.stock > 0 ? 'text-emerald-700' : 'text-red-700'}`}>
                         {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
                       </span>
                     </div>
