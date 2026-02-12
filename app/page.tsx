@@ -7,33 +7,82 @@ import { prisma } from '@/lib/prisma/client';
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const featuredProducts = await prisma.product.findMany({
-    take: 4,
-    include: {
-      category: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  let featuredProducts: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    basePrice: number;
+    imageUrl: string | null;
+    category: { id: string; name: string; slug: string };
+  }> = [];
+  let bestSellers: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    basePrice: number;
+    imageUrl: string | null;
+    category: { id: string; name: string; slug: string };
+  }> = [];
+  let categories: Array<{
+    id: string;
+    name: string;
+    slug: string;
+    imageUrl: string | null;
+  }> = [];
+  let error: string | null = null;
 
-  const bestSellers = await prisma.product.findMany({
-    take: 4,
-    include: {
-      category: true,
-    },
-    // In a real app, you'd sort by sales count or a 'bestseller' flag
-    orderBy: {
-      stock: 'asc', // Just a placeholder sort
-    },
-  });
+  try {
+    featuredProducts = await prisma.product.findMany({
+      take: 4,
+      include: {
+        category: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
 
-  const categories = await prisma.category.findMany({
-    take: 4,
-  });
+    bestSellers = await prisma.product.findMany({
+      take: 4,
+      include: {
+        category: true,
+      },
+      // In a real app, you'd sort by sales count or a 'bestseller' flag
+      orderBy: {
+        stock: 'asc', // Just a placeholder sort
+      },
+    });
+
+    categories = await prisma.category.findMany({
+      take: 4,
+    });
+  } catch (err: any) {
+    console.error('Database error:', err);
+    error = process.env.NODE_ENV === 'development' 
+      ? err.message 
+      : 'Failed to load products. Please check your database connection.';
+  }
 
   return (
     <div className="min-h-screen">
+      {/* Error Display */}
+      {error && (
+        <div className="bg-red-50 border-l-4 border-red-400 p-4 m-4">
+          <div className="flex">
+            <div className="ml-3">
+              <p className="text-sm text-red-700">
+                {error}
+                {process.env.NODE_ENV === 'development' && (
+                  <span className="block mt-2 text-xs">
+                    Make sure DATABASE_URL is set and database is migrated.
+                  </span>
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Hero Section */}
       <section className="relative bg-stone-900 text-white overflow-hidden">
         <div className="absolute inset-0">
@@ -149,7 +198,7 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {categories.map((category) => (
+            {categories.length > 0 ? categories.map((category) => (
               <Link
                 key={category.id}
                 href={`/shop/products/category/${category.slug}`}
@@ -168,7 +217,11 @@ export default async function HomePage() {
                   </p>
                 </div>
               </Link>
-            ))}
+            )) : (
+              <div className="col-span-4 text-center py-12 text-stone-500">
+                No categories available. {process.env.NODE_ENV === 'development' && 'Check your database connection.'}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -190,9 +243,13 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
+            {featuredProducts.length > 0 ? featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product as any} />
-            ))}
+            )) : (
+              <div className="col-span-4 text-center py-12 text-stone-500">
+                No featured products available. {process.env.NODE_ENV === 'development' && 'Check your database connection.'}
+              </div>
+            )}
           </div>
         </div>
       </section>
