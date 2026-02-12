@@ -21,10 +21,12 @@ import {
   Save,
   Users,
   ChevronDown,
-  Activity
+  Activity,
+  Eye
 } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
+import Link from 'next/link';
 
 async function fetchCustomers() {
   const res = await fetch('/api/admin/customers');
@@ -163,6 +165,13 @@ export default function AdminCustomers() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all translate-x-2 group-hover:translate-x-0">
+                      <Link
+                        href={`/admin/customers/${customer.id}`}
+                        className="p-2 text-stone-300 hover:text-blue-600 transition-colors"
+                        title="View Details"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Link>
                       <button
                         onClick={() => setEditingCustomer(customer)}
                         className="p-2 text-stone-300 hover:text-stone-900 transition-colors"

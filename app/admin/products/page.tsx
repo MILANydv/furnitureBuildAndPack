@@ -151,7 +151,7 @@ export default function AdminProducts() {
                           <div className="w-full h-full flex items-center justify-center text-stone-200"><Box className="w-5 h-5" /></div>
                         )}
                       </div>
-                      <Link href={`/admin/products/${product.id}/edit`} className="font-bold text-[13px] text-stone-900 hover:text-blue-600 transition-colors uppercase tracking-tight truncate max-w-[200px]">
+                      <Link href={`/admin/products/${product.id}`} className="font-bold text-[13px] text-stone-900 hover:text-blue-600 transition-colors uppercase tracking-tight truncate max-w-[200px]">
                         {product.name}
                       </Link>
                     </div>
@@ -171,6 +171,9 @@ export default function AdminProducts() {
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-1 translate-x-4 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all">
                       <Link href={`/shop/products/${product.slug}`} target="_blank" className="p-2 text-stone-300 hover:text-stone-900 transition-colors" title="View in Store">
+                        <Eye className="w-4 h-4" />
+                      </Link>
+                      <Link href={`/admin/products/${product.id}`} className="p-2 text-stone-300 hover:text-blue-600 transition-colors" title="View Details">
                         <Eye className="w-4 h-4" />
                       </Link>
                       <Link href={`/admin/products/${product.id}/edit`} className="p-2 text-stone-300 hover:text-blue-600 transition-colors" title="Edit Masterpiece">

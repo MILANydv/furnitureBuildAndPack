@@ -3,13 +3,13 @@ import { ProductForm } from '@/app/admin/components/ProductForm';
 import { notFound } from 'next/navigation';
 
 interface EditProductPageProps {
-    params: {
+    params: Promise<{
         id: string;
-    };
+    }>;
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
-    const { id } = params;
+    const { id } = await params;
 
     const [product, categories] = await Promise.all([
         prisma.product.findUnique({

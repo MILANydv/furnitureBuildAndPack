@@ -3,6 +3,56 @@ import { prisma } from '@/lib/prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/config';
 
+export async function GET(
+    req: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session || session.user.role !== 'ADMIN') {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const { id } = await params;
+
+        const user = await prisma.user.findUnique({
+            where: { id },
+            include: {
+                orders: {
+                    include: {
+                        items: {
+                            include: {
+                                product: true
+                            }
+                        }
+                    },
+                    orderBy: {
+                        createdAt: 'desc'
+                    },
+                    take: 10
+                },
+                _count: {
+                    select: {
+                        orders: true
+                    }
+                }
+            }
+        });
+
+        if (!user) {
+            return NextResponse.json({ error: 'Customer not found' }, { status: 404 });
+        }
+
+        // Remove password from response
+        const { password, ...userWithoutPassword } = user;
+
+        return NextResponse.json(userWithoutPassword);
+    } catch (error) {
+        console.error('Get Customer Error:', error);
+        return NextResponse.json({ error: 'Failed to fetch customer' }, { status: 500 });
+    }
+}
+
 export async function PATCH(
     req: Request,
     { params }: { params: Promise<{ id: string }> }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import {
     ChevronLeft,
     Package,
@@ -35,10 +35,11 @@ const statusFlow = [
     { value: 'CANCELLED', label: 'Cancelled', icon: XCircle, color: 'text-red-500', bg: 'bg-red-50' }
 ];
 
-export default function OrderDetailPage({ params }: { params: { id: string } }) {
+export default function OrderDetailPage() {
     const router = useRouter();
     const queryClient = useQueryClient();
-    const { id } = params;
+    const params = useParams();
+    const id = params.id as string;
 
     const { data: order, isLoading } = useQuery({
         queryKey: ['admin-orders', id],

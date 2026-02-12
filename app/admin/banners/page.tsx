@@ -86,7 +86,7 @@ export default function AdminBannersPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-1">
-                  <Link href={`/admin/banners/${banner.id}/edit`} className="text-[14px] font-bold text-stone-900 uppercase tracking-tight hover:text-blue-600 transition-colors truncate">
+                  <Link href={`/admin/banners/${banner.id}`} className="text-[14px] font-bold text-stone-900 uppercase tracking-tight hover:text-blue-600 transition-colors truncate">
                     {banner.title || 'Draft Campaign'}
                   </Link>
                   <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest ${banner.isActive ? 'bg-emerald-50 text-emerald-600' : 'bg-stone-100 text-stone-400'}`}>
@@ -107,6 +107,7 @@ export default function AdminBannersPage() {
                 <button className="p-1.5 text-stone-300 hover:text-stone-900 transition-colors" title="Move Down"><MoveDown className="w-3.5 h-3.5" /></button>
               </div>
               <div className="h-4 w-px bg-stone-100 mx-1"></div>
+              <Link href={`/admin/banners/${banner.id}`} className="p-2 text-stone-300 hover:text-blue-600 transition-colors" title="View Details"><Eye className="w-4 h-4" /></Link>
               <Link href={`/admin/banners/${banner.id}/edit`} className="p-2 text-stone-300 hover:text-stone-900 transition-colors"><Edit className="w-4 h-4" /></Link>
               <button
                 onClick={() => { if (confirm('Cease this campaign?')) deleteMutation.mutate(banner.id) }}
