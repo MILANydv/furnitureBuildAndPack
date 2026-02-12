@@ -69,8 +69,8 @@ model Product {
   categoryId     String
   isConfigurable Boolean  @default(false)
   imageUrl       String?
-  images         String   @default("")
-  dimensions     String?  // JSON string: { length, width, height }
+  images         Json?    @default("[]") // Array of image URLs stored as JSON
+  dimensions     Json?    // { length, width, height }
   stock          Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt

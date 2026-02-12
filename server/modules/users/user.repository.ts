@@ -19,7 +19,7 @@ export class UserRepository {
     search?: string;
     skip?: number;
     take?: number;
-  }): Promise<User[]> {
+  }): Promise<Pick<User, 'id' | 'name' | 'email' | 'role' | 'createdAt' | 'updatedAt'>[]> {
     const where: Prisma.UserWhereInput = {};
 
     if (filters?.role) {

@@ -82,13 +82,21 @@ export default async function OrdersPage() {
                                     {order.items.map((item, idx) => (
                                         <div key={idx} className="flex gap-4">
                                             <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-stone-100 border border-stone-200">
-                                                {item.product.images?.split(',')[0] ? (
-                                                    <img src={item.product.images.split(',')[0]} alt={item.product.name} className="object-cover w-full h-full text-[10px]" />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-stone-300">
-                                                        <Package className="w-6 h-6" />
-                                                    </div>
-                                                )}
+                                                {(() => {
+                                                    const imageArray = Array.isArray(item.product.images) 
+                                                        ? item.product.images 
+                                                        : typeof item.product.images === 'string' 
+                                                            ? JSON.parse(item.product.images) 
+                                                            : [];
+                                                    const firstImage = Array.isArray(imageArray) && imageArray.length > 0 ? imageArray[0] : null;
+                                                    return firstImage ? (
+                                                        <img src={typeof firstImage === 'string' ? firstImage : String(firstImage)} alt={item.product.name} className="object-cover w-full h-full text-[10px]" />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center text-stone-300">
+                                                            <Package className="w-6 h-6" />
+                                                        </div>
+                                                    );
+                                                })()}
                                             </div>
                                             <div className="flex-1">
                                                 <p className="font-bold text-stone-900 line-clamp-1">{item.product.name}</p>

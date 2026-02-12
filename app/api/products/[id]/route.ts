@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/config';
 import { ProductService } from '@/server/modules/products/product.service';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 const productService = new ProductService();
@@ -63,15 +64,17 @@ export async function PUT(
     const body = await request.json();
     const validated = updateProductSchema.parse(body);
 
-    const updateData: any = {};
+    const updateData: Prisma.ProductUpdateInput = {};
     if (validated.name) updateData.name = validated.name;
     if (validated.slug) updateData.slug = validated.slug;
     if (validated.description !== undefined) updateData.description = validated.description;
     if (validated.basePrice) updateData.basePrice = validated.basePrice;
     if (validated.isConfigurable !== undefined) updateData.isConfigurable = validated.isConfigurable;
     if (validated.imageUrl) updateData.imageUrl = validated.imageUrl;
-    if (validated.images) updateData.images = validated.images;
-    if (validated.dimensions) updateData.dimensions = validated.dimensions;
+    if (validated.images !== undefined) {
+      (updateData as any).images = validated.images.length > 0 ? validated.images : null;
+    }
+    if (validated.dimensions) (updateData as any).dimensions = validated.dimensions;
     if (validated.stock !== undefined) updateData.stock = validated.stock;
     if (validated.categoryId) {
       updateData.category = { connect: { id: validated.categoryId } };

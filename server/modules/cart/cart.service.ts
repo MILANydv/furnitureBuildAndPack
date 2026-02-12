@@ -40,11 +40,12 @@ export class CartService {
       });
     } else {
       await this.repository.addItem(cartId, {
+        cart: { connect: { id: cartId } },
         product: { connect: { id: data.productId } },
         ...(data.variantId && { variant: { connect: { id: data.variantId } } }),
         qty: data.qty,
         configuration: data.configuration || null,
-      });
+      } as Prisma.CartItemCreateInput);
     }
   }
 

@@ -5,7 +5,7 @@ import { authOptions } from '@/lib/auth/config';
 
 export async function PATCH(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const session = await getServerSession(authOptions);
@@ -14,7 +14,7 @@ export async function PATCH(
         }
 
         const body = await req.json();
-        const { id } = params;
+        const { id } = await params;
 
         const coupon = await prisma.coupon.update({
             where: { id },
@@ -39,7 +39,7 @@ export async function PATCH(
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const session = await getServerSession(authOptions);
@@ -47,7 +47,7 @@ export async function DELETE(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { id } = params;
+        const { id } = await params;
 
         await prisma.coupon.delete({
             where: { id }

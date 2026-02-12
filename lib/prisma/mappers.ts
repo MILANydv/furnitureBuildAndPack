@@ -81,21 +81,29 @@ export function mapPrismaProduct(
     }
 
     if (product.images) {
-        const additionalImages = product.images.split(',').filter(Boolean);
-        additionalImages.forEach((url, index) => {
-            images.push({
-                id: `img-${index}`,
-                productId: product.id,
-                url: url.trim(),
-                alt: product.name,
-                order: index + 1,
-                isPrimary: false,
-            });
+        const additionalImages = Array.isArray(product.images) 
+            ? product.images 
+            : typeof product.images === 'string' 
+                ? JSON.parse(product.images) 
+                : [];
+        additionalImages.forEach((url: string, index: number) => {
+            if (url) {
+                images.push({
+                    id: `img-${index}`,
+                    productId: product.id,
+                    url: typeof url === 'string' ? url.trim() : String(url),
+                    alt: product.name,
+                    order: index + 1,
+                    isPrimary: false,
+                });
+            }
         });
     }
 
     const dimensions: Dimensions | null = product.dimensions
-        ? JSON.parse(product.dimensions)
+        ? (typeof product.dimensions === 'string' 
+            ? JSON.parse(product.dimensions) 
+            : product.dimensions as unknown as Dimensions)
         : null;
 
     const variants: ProductVariant[] = product.variants.map(v => ({

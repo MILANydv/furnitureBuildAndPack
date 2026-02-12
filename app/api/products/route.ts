@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/config';
 import { ProductService } from '@/server/modules/products/product.service';
+import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
 const productService = new ProductService();
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const validated = createProductSchema.parse(body);
 
-    const product = await productService.createProduct({
+    const productData: Prisma.ProductCreateInput = {
       name: validated.name,
       slug: validated.slug,
       description: validated.description,
@@ -72,13 +73,15 @@ export async function POST(request: NextRequest) {
       categoryId: validated.categoryId,
       isConfigurable: validated.isConfigurable,
       imageUrl: validated.imageUrl,
-      images: validated.images,
+      images: validated.images.length > 0 ? validated.images : null,
       dimensions: validated.dimensions,
       stock: validated.stock,
       category: {
         connect: { id: validated.categoryId },
       },
-    });
+    } as Prisma.ProductCreateInput;
+
+    const product = await productService.createProduct(productData);
 
     return NextResponse.json(product, { status: 201 });
   } catch (error) {
