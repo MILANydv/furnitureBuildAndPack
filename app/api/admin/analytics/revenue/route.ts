@@ -12,13 +12,21 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const stats = await analyticsService.getDashboardStats();
+        const { searchParams } = new URL(request.url);
+        const start = searchParams.get('start');
+        const end = searchParams.get('end');
 
-        return NextResponse.json(stats);
+        const range = start && end
+            ? { start: new Date(start), end: new Date(end) }
+            : undefined;
+
+        const revenueStats = await analyticsService.getRevenueStats(range);
+
+        return NextResponse.json(revenueStats);
     } catch (error) {
-        console.error('Stats error:', error);
+        console.error('Revenue analytics error:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch analytics' },
+            { error: 'Failed to fetch revenue analytics' },
             { status: 500 }
         );
     }

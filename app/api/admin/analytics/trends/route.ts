@@ -12,13 +12,16 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const stats = await analyticsService.getDashboardStats();
+        const { searchParams } = new URL(request.url);
+        const days = parseInt(searchParams.get('days') || '30', 10);
 
-        return NextResponse.json(stats);
+        const trends = await analyticsService.getSalesTrends(days);
+
+        return NextResponse.json(trends);
     } catch (error) {
-        console.error('Stats error:', error);
+        console.error('Trends analytics error:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch analytics' },
+            { error: 'Failed to fetch trends analytics' },
             { status: 500 }
         );
     }
