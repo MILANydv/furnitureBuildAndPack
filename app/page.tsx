@@ -32,10 +32,22 @@ export default async function HomePage() {
   let error: string | null = null;
 
   try {
+    // Exclude JSON fields that might have invalid data to avoid parsing errors
     featuredProducts = await prisma.product.findMany({
       take: 4,
-      include: {
-        category: true,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        basePrice: true,
+        imageUrl: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',
@@ -44,8 +56,19 @@ export default async function HomePage() {
 
     bestSellers = await prisma.product.findMany({
       take: 4,
-      include: {
-        category: true,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        basePrice: true,
+        imageUrl: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
       },
       // In a real app, you'd sort by sales count or a 'bestseller' flag
       orderBy: {
@@ -55,6 +78,12 @@ export default async function HomePage() {
 
     categories = await prisma.category.findMany({
       take: 4,
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        imageUrl: true,
+      },
     });
   } catch (err: any) {
     console.error('Database error:', err);

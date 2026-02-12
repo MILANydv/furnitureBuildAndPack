@@ -6,6 +6,7 @@ import { authOptions } from '@/lib/auth/config';
 import { prisma } from '@/lib/prisma/client';
 import { redirect } from 'next/navigation';
 import { OrderStatus } from '@prisma/client';
+import { safeJsonParse } from '@/lib/utils/json';
 
 export default async function OrdersPage() {
     const session = await getServerSession(authOptions);
@@ -83,11 +84,8 @@ export default async function OrdersPage() {
                                         <div key={idx} className="flex gap-4">
                                             <div className="relative w-16 h-16 rounded-xl overflow-hidden flex-shrink-0 bg-stone-100 border border-stone-200">
                                                 {(() => {
-                                                    const imageArray = Array.isArray(item.product.images) 
-                                                        ? item.product.images 
-                                                        : typeof item.product.images === 'string' 
-                                                            ? JSON.parse(item.product.images) 
-                                                            : [];
+                                                    const imageValue = item.product.images as any;
+                                                    const imageArray = safeJsonParse<string[]>(imageValue, []);
                                                     const firstImage = Array.isArray(imageArray) && imageArray.length > 0 ? imageArray[0] : null;
                                                     return firstImage ? (
                                                         <img src={typeof firstImage === 'string' ? firstImage : String(firstImage)} alt={item.product.name} className="object-cover w-full h-full text-[10px]" />
