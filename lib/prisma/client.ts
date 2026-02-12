@@ -4,6 +4,7 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+// Prisma Client singleton for serverless environments (Vercel)
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({

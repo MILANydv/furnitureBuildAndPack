@@ -195,11 +195,48 @@ npm run lint
 
 ## Deployment
 
-1. Set up a PostgreSQL database (e.g., on Vercel Postgres, Supabase, or Railway)
-2. Update `DATABASE_URL` in your environment variables
-3. Set `NEXTAUTH_SECRET` to a secure random string
-4. Set `NEXTAUTH_URL` to your production URL
-5. Deploy to Vercel, Netlify, or your preferred platform
+### Deploying to Vercel
+
+This app is optimized for Vercel deployment. See [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md) for detailed instructions.
+
+**Quick Start:**
+
+1. **Set up a PostgreSQL database:**
+   - Recommended: [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres) (integrated)
+   - Alternative: [Supabase](https://supabase.com) or [Neon](https://neon.tech)
+
+2. **Deploy to Vercel:**
+   ```bash
+   # Install Vercel CLI
+   npm i -g vercel
+   
+   # Deploy
+   vercel
+   ```
+
+3. **Configure Environment Variables in Vercel Dashboard:**
+   - `DATABASE_URL` - Your PostgreSQL connection string
+   - `NEXTAUTH_URL` - Your production URL (e.g., `https://your-app.vercel.app`)
+   - `NEXTAUTH_SECRET` - Generate with: `openssl rand -base64 32`
+
+4. **Run database migrations:**
+   ```bash
+   npx prisma migrate deploy
+   ```
+
+The app includes:
+- ✅ Automatic Prisma Client generation on build (`postinstall` script)
+- ✅ Optimized Next.js config for Vercel
+- ✅ Serverless-friendly Prisma Client setup
+- ✅ Proper environment variable handling
+
+### Other Platforms
+
+For other platforms, ensure:
+- PostgreSQL database is accessible
+- Environment variables are configured
+- Prisma Client is generated during build
+- Node.js 18+ is available
 
 ## License
 

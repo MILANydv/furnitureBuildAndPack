@@ -1,12 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // output: 'export',
-  distDir: 'dist',
+  // Vercel optimizations
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
-  trailingSlash: true,
+  // Enable React strict mode
+  reactStrictMode: true,
+  // Optimize for Vercel
+  swcMinify: true,
 };
 
 export default nextConfig;
