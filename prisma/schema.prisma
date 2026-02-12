@@ -232,6 +232,7 @@ model Coupon {
   code          String       @unique
   discountType  DiscountType
   discountValue Float
+  minOrderAmount Float        @default(0)
   validFrom     DateTime
   validUntil    DateTime
   maxUses       Int?
@@ -247,6 +248,7 @@ model Coupon {
 model CampaignBanner {
   id          String   @id @default(cuid())
   title       String
+  subtitle    String?
   imageUrl    String
   linkUrl     String?
   isActive    Boolean  @default(true)

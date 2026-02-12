@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
       user: { connect: { id: session.user.id } },
       total,
       status: 'PENDING',
-      shippingAddress: validated.shippingAddress,
+      shippingAddress: JSON.stringify(validated.shippingAddress),
       items: {
         create: cart.items.map((item) => ({
           product: { connect: { id: item.productId } },
