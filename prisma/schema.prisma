@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,6 +5,227 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  password  String
+  role      UserRole   @default(CUSTOMER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  isBlocked Boolean    @default(false)
+  cart      Cart?
+  orders    Order[]
+  reviews   Review[]
+  wishlist  Wishlist[]
+
+  @@map("users")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                String             @id @default(cuid())
+  name              String
+  slug              String             @unique
+  description       String?
+  basePrice         Float
+  categoryId        String
+  isConfigurable    Boolean            @default(false)
+  imageUrl          String?
+  images            String             @default("")
+  dimensions        String?
+  stock             Int                @default(0)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  cartItems         CartItem[]
+  configurableParts ConfigurablePart[]
+  orderItems        OrderItem[]
+  variants          ProductVariant[]
+  category          Category           @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  reviews           Review[]
+  wishlist          Wishlist[]
+
+  @@index([categoryId])
+  @@index([slug])
+  @@map("products")
+}
+
+model ProductVariant {
+  id         String      @id @default(cuid())
+  productId  String
+  size       String?
+  color      String?
+  material   String?
+  price      Float
+  stock      Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model ConfigurablePart {
+  id            String   @id @default(cuid())
+  productId     String
+  frameType     String?
+  legType       String?
+  tabletopType  String?
+  finish        String?
+  priceModifier Float    @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("configurable_parts")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  total           Float
+  status          OrderStatus @default(PENDING)
+  shippingAddress String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+  user            User        @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@map("orders")
+}
+
+model OrderItem {
+  id            String          @id @default(cuid())
+  orderId       String
+  productId     String
+  variantId     String?
+  qty           Int
+  price         Float
+  configuration String?
+  createdAt     DateTime        @default(now())
+  order         Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product       Product         @relation(fields: [productId], references: [id])
+  variant       ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, userId])
+  @@index([productId])
+  @@index([userId])
+  @@map("reviews")
+}
+
+model Wishlist {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+  @@map("wishlist")
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String?    @unique
+  sessionId String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items     CartItem[]
+
+  @@index([userId])
+  @@index([sessionId])
+  @@map("cart")
+}
+
+model CartItem {
+  id            String          @id @default(cuid())
+  cartId        String
+  productId     String
+  variantId     String?
+  qty           Int             @default(1)
+  configuration String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  cart          Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product       Product         @relation(fields: [productId], references: [id])
+  variant       ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@index([cartId])
+  @@index([productId])
+  @@map("cart_items")
+}
+
+model Coupon {
+  id             String       @id @default(cuid())
+  code           String       @unique
+  discountType   DiscountType
+  discountValue  Float
+  validFrom      DateTime
+  validUntil     DateTime
+  maxUses        Int?
+  usedCount      Int          @default(0)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  minOrderAmount Float        @default(0)
+
+  @@index([code])
+  @@map("coupons")
+}
+
+model CampaignBanner {
+  id           String   @id @default(cuid())
+  title        String
+  imageUrl     String
+  linkUrl      String?
+  isActive     Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  subtitle     String?
+
+  @@index([isActive, displayOrder])
+  @@map("campaign_banners")
 }
 
 enum UserRole {
@@ -26,236 +244,4 @@ enum OrderStatus {
 enum DiscountType {
   PERCENTAGE
   FIXED
-}
-
-model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      UserRole @default(CUSTOMER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  orders    Order[]
-  reviews   Review[]
-  wishlist  Wishlist[]
-  cart      Cart?
-  isBlocked Boolean  @default(false)
-
-  @@map("users")
-}
-
-model Category {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  description String?
-  imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  products Product[]
-
-  @@map("categories")
-}
-
-model Product {
-  id             String   @id @default(cuid())
-  name           String
-  slug           String   @unique
-  description    String?
-  basePrice      Float
-  categoryId     String
-  isConfigurable Boolean  @default(false)
-  imageUrl       String?
-  images         Json?    @default("[]") // Array of image URLs stored as JSON
-  dimensions     Json?    // { length, width, height }
-  stock          Int      @default(0)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  category        Category          @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  variants        ProductVariant[]
-  configurableParts ConfigurablePart[]
-  reviews         Review[]
-  wishlist        Wishlist[]
-  cartItems       CartItem[]
-  orderItems      OrderItem[]
-
-  @@index([categoryId])
-  @@index([slug])
-  @@map("products")
-}
-
-model ProductVariant {
-  id        String   @id @default(cuid())
-  productId String
-  size      String?
-  color     String?
-  material  String?
-  price     Float
-  stock     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  cartItems CartItem[]
-  orderItems OrderItem[]
-
-  @@index([productId])
-  @@map("product_variants")
-}
-
-model ConfigurablePart {
-  id             String   @id @default(cuid())
-  productId      String
-  frameType      String?
-  legType        String?
-  tabletopType   String?
-  finish         String?
-  priceModifier  Float    @default(0)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@index([productId])
-  @@map("configurable_parts")
-}
-
-model Order {
-  id              String      @id @default(cuid())
-  userId          String
-  total           Float
-  status          OrderStatus @default(PENDING)
-  shippingAddress String      // JSON string: { street, city, postalCode, country, phone }
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  user  User       @relation(fields: [userId], references: [id])
-  items OrderItem[]
-
-  @@index([userId])
-  @@index([status])
-  @@map("orders")
-}
-
-model OrderItem {
-  id          String   @id @default(cuid())
-  orderId     String
-  productId   String
-  variantId   String?
-  qty         Int
-  price       Float
-  configuration String?  // JSON string: Saved configuration for configurable products
-  createdAt   DateTime @default(now())
-
-  order   Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product      @relation(fields: [productId], references: [id])
-  variant ProductVariant? @relation(fields: [variantId], references: [id])
-
-  @@index([orderId])
-  @@index([productId])
-  @@map("order_items")
-}
-
-model Review {
-  id        String   @id @default(cuid())
-  productId String
-  userId    String
-  rating    Int      // 1-5
-  comment   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([productId, userId])
-  @@index([productId])
-  @@index([userId])
-  @@map("reviews")
-}
-
-model Wishlist {
-  id        String   @id @default(cuid())
-  userId    String
-  productId String
-  createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, productId])
-  @@index([userId])
-  @@index([productId])
-  @@map("wishlist")
-}
-
-model Cart {
-  id        String   @id @default(cuid())
-  userId    String?  @unique
-  sessionId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user  User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  items CartItem[]
-
-  @@index([userId])
-  @@index([sessionId])
-  @@map("cart")
-}
-
-model CartItem {
-  id            String   @id @default(cuid())
-  cartId        String
-  productId     String
-  variantId     String?
-  qty           Int      @default(1)
-  configuration String?  // JSON string: Saved configuration for configurable products
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  cart    Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  product Product        @relation(fields: [productId], references: [id])
-  variant ProductVariant? @relation(fields: [variantId], references: [id])
-
-  @@index([cartId])
-  @@index([productId])
-  @@map("cart_items")
-}
-
-model Coupon {
-  id            String       @id @default(cuid())
-  code          String       @unique
-  discountType  DiscountType
-  discountValue Float
-  minOrderAmount Float        @default(0)
-  validFrom     DateTime
-  validUntil    DateTime
-  maxUses       Int?
-  usedCount     Int          @default(0)
-  isActive      Boolean      @default(true)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-
-  @@index([code])
-  @@map("coupons")
-}
-
-model CampaignBanner {
-  id          String   @id @default(cuid())
-  title       String
-  subtitle    String?
-  imageUrl    String
-  linkUrl     String?
-  isActive    Boolean  @default(true)
-  displayOrder Int     @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([isActive, displayOrder])
-  @@map("campaign_banners")
 }
